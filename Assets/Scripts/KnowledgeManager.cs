@@ -9,7 +9,7 @@ public class KnowledgeManager : MonoBehaviour
     public string rootDocument = "root";
     public List<Task> Tasks;
     public List<Query> Queries;
-
+    
     public void ReadKnowledgeAndSetUp()
     {
         var jsonContent = Resources.Load<TextAsset>("Knowledge/" + rootDocument);

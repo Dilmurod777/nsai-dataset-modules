@@ -23,6 +23,19 @@ public class UIManager : MonoBehaviour
         SetUpQueryOptions(queries);
     }
 
+    public void UpdateUI()
+    {
+        if (RootManager.Instance.contextManager.CurrentQuery != null)
+        {
+            var queryText = GameObject.FindWithTag("QueryText");
+
+            if (queryText != null)
+            {
+                queryText.GetComponent<InputField>().text = RootManager.Instance.contextManager.CurrentQuery.Title;
+            }
+        }
+    }
+
     private void SetUpKnowledgeOptions(List<Task> tasks)
     {
         for (var i = 0; i < tasks.Count; i++)
@@ -84,7 +97,7 @@ public class UIManager : MonoBehaviour
         queryScrollRect.normalizedPosition = new Vector2(0, 1);
     }
 
-    public void UIOptionClick(UIOptionType type, dynamic[] data)
+    private void UIOptionClick(UIOptionType type, dynamic[] data)
     {
         Task task;
         Subtask subtask;
@@ -94,19 +107,22 @@ public class UIManager : MonoBehaviour
         {
             case UIOptionType.Task:
                 task = data[0] as Task;
-                Debug.Log("task " + task!.TaskId);
+                RootManager.Instance.contextManager.SetCurrentTask(task);
                 break;
             case UIOptionType.Subtask:
                 task = data[0] as Task;
                 subtask = data[1] as Subtask;
-                Debug.Log("task " + task!.TaskId + " | subtask " + subtask!.SubtaskId);
+                RootManager.Instance.contextManager.SetCurrentTask(task);
+                RootManager.Instance.contextManager.SetCurrentSubtask(subtask);
                 break;
             case UIOptionType.Query:
                 query = data[0] as Query;
-                Debug.Log("query " + query!.Filename);
+                RootManager.Instance.contextManager.SetCurrentQuery(query);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
+
+        RootManager.Instance.sceneManager.LoadMainScene();
     }
 }
