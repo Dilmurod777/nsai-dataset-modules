@@ -1,0 +1,15 @@
+﻿{
+  "query": "Show left side of figure 402-32-11-61-990-802-A",
+  "programs": [
+    "ExtractNumbers query",
+    "SaveVal2Var prev var1",
+    "ExtractID figure query",
+    "Unique prev",
+    "SaveVal2Var prev var2",
+    "Same var2 prev",
+    "Filter3DAttr name prev root",
+    "Unique prev",
+    "ShowSide left prev"
+  ],
+  "reply": "402-32-11-61-990-802-A"
+}

@@ -1,0 +1,15 @@
+﻿{
+  "query": "Scale up 402-32-11-61-990-802-A by 0.5",
+  "programs": [
+    "ExtractNumbers query",
+    "SaveVal2Var prev var1",
+    "ExtractID figure query",
+    "Unique prev",
+    "SaveVal2Var prev var2",
+    "Same var2 prev",
+    "Filter3DAttr name prev root",
+    "Unique prev",
+    "Scale up prev var1"
+  ],
+  "reply": "402-32-11-61-990-802-A"
+}

@@ -1,0 +1,1082 @@
+[
+  {
+    "tasks": [
+      {
+        "task_id": "32-11-61-000-802",
+        "title": "Main Landing Gear Lower Side Strut Removal",
+        "general": [
+          {
+            "1": "This procedure supplies instructions to remove the lower side strut."
+          }
+        ],
+        "references": [
+          {
+            "reference": "07-11-01-580-815",
+            "title": "Lift the Airplane with the Jacks (P/B 201)"
+          },
+          {
+            "reference": "29-11-00-860-805",
+            "title": "Hydraulic System A or B Power Removal (P/B 201)"
+          },
+          {
+            "reference": "32-00-01-480-801",
+            "title": "Landing Gear Downlock Pins Installation (P/B 201)"
+          },
+          {
+            "reference": "32-32-91-000-801",
+            "title": "Main Gear Downlock Springs Removal (P/B 401)"
+          }
+        ],
+        "tools_equipment": [
+          {
+            "reference": "SPL-1370",
+            "description": "Protector - Thread (C32029-14, Part of Kit C32029-38 or C32029-45)"
+          }
+        ],
+        "zones": [
+          {
+            "zone": "133",
+            "area": "Main Landing Gear Wheel Well, Body Station 663.75 to Body Station 727.00 - Left"
+          },
+          {
+            "zone": "134",
+            "area": "Main Landing Gear Wheel Well, Body Station 663.75 to Body Station 727.00 - Right"
+          },
+          {
+            "zone": "713",
+            "area": "Nose Landing Gear"
+          },
+          {
+            "zone": "734",
+            "area": "Left Main Landing Gear"
+          },
+          {
+            "zone": "744",
+            "area": "Right Main Landing Gear"
+          }
+        ],
+        "preparation": {
+          "subtasks": [
+            {
+              "subtask_id": "32-11-61-480-003",
+              "content": "If the downlock pins are not installed on all the landing gear, do this task: Landing Gear Downlock Pins Installation, TASK 32-00-01-480-801",
+              "warnings": [
+                {
+                  "content": "MAKE SURE THE DOWNLOCK PINS ARE INSTALLED ON ALL THE LANDING GEAR BUT THE ONE TO BE REMOVED. WITHOUT THE DOWNLOCK PINS, THE LANDING GEAR COULD RETRACT AND CAUSE INJURIES TO PERSONS AND DAMAGE TO EQUIPMENT."
+                }
+              ]
+            },
+            {
+              "subtask_id": "32-11-61-580-006",
+              "content": "Do this task: Lift the Airplane with the Jacks, TASK 07-11-01-580-815."
+            },
+            {
+              "subtask_id": "32-11-61-860-002",
+              "content": "For hydraulic system A, do this task: Hydraulic System A or B Power Removal, TASK 29-11-00-860-805."
+            },
+            {
+              "subtask_id": "32-11-61-020-006",
+              "content": "Do this task: Main Gear Downlock Springs Removal, TASK 32-32-91-000-801."
+            }
+          ]
+        },
+        "figures": [
+          {
+            "title": "402-32-11-61-990-802-A",
+            "figure_items": {
+              "8": "[8] LOWER SIDE STRUT",
+              "41": "[41] PUSHROD",
+              "42": "[42] NUT",
+              "43": "[43] WASHER",
+              "45": "[45] BUSHING",
+              "46": "[46] BOLT"
+            }
+          },
+          {
+            "title": "402-32-11-61-990-802-B",
+            "figure_items": {
+              "8": "[8] LOWER SIDE STRUT",
+              "47": "[47] CROSS BOLT",
+              "48": "[48] WASHER",
+              "49": "[49] COTTER PIN",
+              "50": "[50] NUT",
+              "51": "[51] SHOCK STRUT",
+              "52": "[52] SIDE STRUT PIN",
+              "53": "[53] SIDE STRUT WASHER",
+              "54": "[54] SIDE STRUT NUT"
+            }
+          },
+          {
+            "title": "402-32-11-61-990-802-C",
+            "figure_items": {
+              "3": "[3] UPPER SIDE STRUT",
+              "7": "[7] SIDE STRUT PIN",
+              "8": "[8] LOWER SIDE STRUT",
+              "9": "[9] END CAP",
+              "11": "[11] BOLT",
+              "12": "[12] WASHER",
+              "13": "[13] COTTER PIN",
+              "14": "[14] NUT"
+            }
+          }
+        ],
+        "subtasks": [
+          {
+            "subtask_id": "32-11-61-020-007",
+            "content": "Disconnect the lower side strut assembly, lower [8] from the pushrod [41]",
+            "figure": "402-32-11-61-990-802-A",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "Remove the nut [42], washer [43] from the bolt [46]",
+                "actions": [
+                  {
+                    "detach": [
+                      42,
+                      46
+                    ]
+                  },
+                  {
+                    "detach": [
+                      43,
+                      46
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "2",
+                "content": "Remove the bolt [46] to disconnect the lower side strut assembly, lower [8] from the pushrod [41]",
+                "actions": [
+                  {
+                    "detach": [
+                      46,
+                      8
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "3",
+                "content": "Isolate the pushrod [41] from the lower side strut assembly, lower [8]",
+                "actions": [
+                  {
+                    "detach": [
+                      41,
+                      8
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "subtask_id": "32-11-61-480-004",
+            "content": "Use a rope to hold the pushrod [41] and the inner door in its position",
+            "figure": "402-32-11-61-990-802-A"
+          },
+          {
+            "subtask_id": "32-11-61-020-008",
+            "content": "Disconnect the lower side strut assembly, lower [8] from the shock strut [51]",
+            "figure": "402-32-11-61-990-802-B",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "Remove the pin [49], nut [50], and washer [48] from the cross bolt [47]",
+                "actions": [
+                  {
+                    "detach": [
+                      49,
+                      47
+                    ]
+                  },
+                  {
+                    "detach": [
+                      50,
+                      47
+                    ]
+                  },
+                  {
+                    "detach": [
+                      48,
+                      47
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "2",
+                "content": "Remove the cross bolt [47] from the side strut pin [52]",
+                "actions": [
+                  {
+                    "detach": [
+                      47,
+                      52
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "3",
+                "content": "Remove the side strut nut [54], and the side strut washer [53] from the side strut pin [52]",
+                "actions": [
+                  {
+                    "detach": [
+                      54,
+                      52
+                    ]
+                  },
+                  {
+                    "detach": [
+                      53,
+                      52
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "4",
+                "content": "Remove the side strut pin [52] to disconnect the lower side strut assembly, lower [8] from the shock strut [51]",
+                "actions": [
+                  {
+                    "detach": [
+                      52,
+                      51
+                    ]
+                  }
+                ],
+                "note": "Use the thread protector, SPL-1370, for the side strut pin [52] when you do this step"
+              }
+            ]
+          },
+          {
+            "subtask_id": "32-11-61-020-009",
+            "content": "Disconnect the lower strut assembly, lower [8] from the upper side strut assembly [3]",
+            "figure": "402-32-11-61-990-802-C",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "Remove the cotter pin [13], nut [14], and washer [12] from the bolt [11]",
+                "actions": [
+                  {
+                    "detach": [
+                      13,
+                      11
+                    ]
+                  },
+                  {
+                    "detach": [
+                      14,
+                      11
+                    ]
+                  },
+                  {
+                    "detach": [
+                      12,
+                      11
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "2",
+                "content": "Remove the bolt [11] from the side strut pin [7]",
+                "actions": [
+                  {
+                    "detach": [
+                      11,
+                      7
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "3",
+                "content": "Remove the end cap [9] from the side strut pin [7]",
+                "actions": [
+                  {
+                    "detach": [
+                      9,
+                      7
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "4",
+                "content": "Use a rope to support the upper end of the lower side strut assembly, lower [8] and attach the rope to the outboard side of the reaction link assembly [15]",
+                "note": "The lower side strut weighs approximately 48.3 lb (21.91 kg)"
+              },
+              {
+                "order": "5",
+                "content": "Remove the side strut pin [7] to disconnect the upper side strut assembly [3] from the lower side strut assembly, lower [8]",
+                "actions": [
+                  {
+                    "detach": [
+                      7,
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "subtask_id": "32-11-61-020-016",
+            "content": "Carefully lower and remove the lower side strut assembly, lower [8] from the airplane",
+            "figure": "402-32-11-61-990-802-C",
+            "note": "The lower side strut assembly, lower [8] weighs approximately 48.3 lb (21.91 kg). Make sure its sufficiently supported"
+          }
+        ]
+      },
+      {
+        "task_id": "32-11-61-000-801",
+        "title": "Main Landing Gear Upper Side Strut Removal",
+        "general": [
+          {
+            "1": "This procedure supplies instructions to remove the upper side strut."
+          }
+        ],
+        "references": [
+          {
+            "reference": "07-11-01-580-815",
+            "title": "Lift the Airplane with the Jacks (P/B 201)"
+          },
+          {
+            "reference": "29-11-00-860-805",
+            "title": "Hydraulic System A or B Power Removal (P/B 201)"
+          },
+          {
+            "reference": "32-00-01-480-801",
+            "title": "Landing Gear Downlock Pins Installation (P/B 201)"
+          },
+          {
+            "reference": "32-32-91-000-801",
+            "title": "Main Gear Downlock Springs Removal (P/B 401)"
+          }
+        ],
+        "tools_equipment": [
+          {
+            "reference": "SPL-1359",
+            "description": "Assembly - Wrench Adapter (C32029-3, Part of Kit C32029-38 or C32029-45)"
+          },
+          {
+            "reference": "SPL-1367",
+            "description": "Driver - Slug (C32029-11, Part of Kit C32029-38 or C32029-45)"
+          },
+          {
+            "reference": "SPL-1368",
+            "description": "Protector - Thread (C32029-12, Part of Kit C32029-38 or C32029-45)"
+          },
+          {
+            "reference": "SPL-1369",
+            "description": "Protector - Thread (C32029-13, Part of Kit C32029-38 or C32029-45)"
+          }
+        ],
+        "zones": [
+          {
+            "zone": "133",
+            "area": "Main Landing Gear Wheel Well, Body Station 663.75 to Body Station 727.00 - Left"
+          },
+          {
+            "zone": "134",
+            "area": "Main Landing Gear Wheel Well, Body Station 663.75 to Body Station 727.00 - Right"
+          },
+          {
+            "zone": "713",
+            "area": "Nose Landing Gear"
+          },
+          {
+            "zone": "734",
+            "area": "Left Main Landing Gear"
+          },
+          {
+            "zone": "744",
+            "area": "Right Main Landing Gear"
+          }
+        ],
+        "figures": [
+          {
+            "title": "401-32-11-61-990-801-A",
+            "figure_items": {
+              "1": "[1] DOWNLOCK STRUT",
+              "2": "[2] DOWNLOCK LINK PIN",
+              "3": "[3] UPPER SIDE STRUT",
+              "4": "[4] WASHER",
+              "5": "[5] NUT"
+            }
+          },
+          {
+            "title": "401-32-11-61-990-801-B",
+            "figure_items": {
+              "3": "[3] UPPER SIDE STRUT",
+              "12": "[12] WASHER",
+              "14": "[14] NUT",
+              "13": "[13] COTTER PIN",
+              "7": "[7] SIDE STRUT PIN",
+              "8": "[8] LOWER SIDE STRUT",
+              "9": "[9] END CAP",
+              "11": "[11] BOLT"
+            }
+          },
+          {
+            "title": "401-32-11-61-990-801-C",
+            "figure_items": {
+              "15": "[15] REACTION LINK ASSEMBLY",
+              "22": "[22] SIDE STRUT PIN",
+              "3": "[3] UPPER SIDE STRUT",
+              "21": "[21] SIDE STRUT WASHER",
+              "20": "[20] SIDE STRUT NUT",
+              "19": "[19] COTTER PIN",
+              "18": "[18] NUT",
+              "17": "[17] WASHER",
+              "16": "[16] CROSS BOLT"
+            }
+          }
+        ],
+        "subtasks": [
+          {
+            "subtask_id": "32-11-61-020-002",
+            "content": "Disconnect the upper side strut assembly [3] from the downlock strut [1]",
+            "figure": "401-32-11-61-990-801-A",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "Remove the pin [6] from the downlock link pin [2]",
+                "actions": [
+                  {
+                    "detach": [
+                      6,
+                      2
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "2",
+                "content": "Remove the nut [5], and the washer [4] from the downlock link pin [2]",
+                "actions": [
+                  {
+                    "detach": [
+                      5,
+                      2
+                    ]
+                  },
+                  {
+                    "detach": [
+                      4,
+                      2
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "3",
+                "content": "Remove the downlock link pin [2] to disconnect the upper side strut assembly [3] from the downlock strut [1]",
+                "actions": [
+                  {
+                    "detach": [
+                      2,
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "subtask_id": "32-11-61-020-003",
+            "content": "Disconnect the upper side strut assembly [3] from the lower side strut assembly, lower [8]]",
+            "figure": "401-32-11-61-990-801-B",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "Remove the cotter pin [13], nut [14], and washer [12] from the bolt [11]",
+                "actions": [
+                  {
+                    "detach": [
+                      13,
+                      11
+                    ]
+                  },
+                  {
+                    "detach": [
+                      14,
+                      11
+                    ]
+                  },
+                  {
+                    "detach": [
+                      12,
+                      11
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "2",
+                "content": "Remove the bolt [11] from the side strut pin [7]",
+                "actions": [
+                  {
+                    "detach": [
+                      11,
+                      7
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "3",
+                "content": "Use a rope to support the upper end of the lower side strut assembly, lower [8] and attach the rope to the outboard side of the reaction link assembly [15].",
+                "actions": []
+              },
+              {
+                "order": "4",
+                "content": "Remove the end cap [9] from the side strut pin [7]",
+                "actions": [
+                  {
+                    "detach": [
+                      9,
+                      7
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "5",
+                "content": "Remove the side strut pin [7] to disconnect the upper side strut assembly [3] from the lower side strut assembly, lower [8]",
+                "actions": [
+                  {
+                    "detach": [
+                      7,
+                      8
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "subtask_id": "32-11-61-020-004",
+            "content": "Disconnect the upper side strut assembly [3] from the reaction link assembly [15]",
+            "figure": "401-32-11-61-990-801-C",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "Remove the pin [19], nut [18], and washer [17] from cross bolt [16]",
+                "actions": [
+                  {
+                    "detach": [
+                      19,
+                      16
+                    ]
+                  },
+                  {
+                    "detach": [
+                      18,
+                      16
+                    ]
+                  },
+                  {
+                    "detach": [
+                      17,
+                      16
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "2",
+                "content": "Remove the cross bolt [16] from the side strut pin [22]",
+                "actions": [
+                  {
+                    "detach": [
+                      16,
+                      22
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "3",
+                "content": "Remove the side strut nut [20], and the side strut washer [21] from the side strut pin [22]",
+                "actions": [
+                  {
+                    "detach": [
+                      20,
+                      22
+                    ]
+                  },
+                  {
+                    "detach": [
+                      21,
+                      22
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "4",
+                "content": "Remove the side strut pin [22] that holds the upper side strut assembly [3] to the reaction link assembly [15]",
+                "actions": [
+                  {
+                    "detach": [
+                      22,
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "subtask_id": "32-11-61-020-005",
+            "content": "Lower the upper side strut assembly [3] carefully and remove it from the airplane",
+            "figure": "401-32-11-61-990-801-C"
+          }
+        ]
+      },
+      {
+        "task_id": "32-11-61-400-801",
+        "title": "Main Landing Gear Upper Side Strut Installation",
+        "general": [
+          {
+            "1": "This procedure supplies instructions to install the upper side strut"
+          }
+        ],
+        "references": [
+          {
+            "reference": "07-11-01-580-816",
+            "title": "Lower the Airplane Off the Jacks (P/B 201)"
+          },
+          {
+            "reference": "12-21-11-640-801",
+            "title": "Main Landing Gear Upper End Components Servicing (P/B 301)"
+          },
+          {
+            "reference": "29-11-00-860-801",
+            "title": "Hydraulic System A or B Pressurization (P/B 201)"
+          },
+          {
+            "reference": "32-00-01-480-801",
+            "title": "Landing Gear Downlock Pins Installation (P/B 201)"
+          },
+          {
+            "reference": "32-32-00-710-801",
+            "title": "Main Landing Gear Operational Test (P/B 501)"
+          },
+          {
+            "reference": "32-32-00-710-802",
+            "title": "Main Landing Gear Test - Component Replacement (P/B 501)"
+          },
+          {
+            "reference": "32-32-91-400-801",
+            "title": "Main Gear Downlock Spring Installation (P/B 401)"
+          }
+        ],
+        "tools_equipment": [
+          {
+            "reference": "SPL-1359",
+            "description": "Assembly - Wrench Adapter (C32029-3, Part of Kit C32029-38 or C32029-45)"
+          },
+          {
+            "reference": "SPL-1368",
+            "description": "Protector - Thread (C32029-12, Part of Kit C32029-38 or C32029-45)"
+          },
+          {
+            "reference": "SPL-1369",
+            "description": "Protector - Thread (C32029-13, Part of Kit C32029-38 or C32029-45)"
+          }
+        ],
+        "zones": [
+          {
+            "zone": "133",
+            "area": "Main Landing Gear Wheel Well, Body Station 663.75 to Body Station 727.00 - Left"
+          },
+          {
+            "zone": "134",
+            "area": "Main Landing Gear Wheel Well, Body Station 663.75 to Body Station 727.00 - Right"
+          },
+          {
+            "zone": "713",
+            "area": "Nose Landing Gear"
+          },
+          {
+            "zone": "734",
+            "area": "Left Main Landing Gear"
+          },
+          {
+            "zone": "744",
+            "area": "Right Main Landing Gear"
+          }
+        ],
+        "preparation": {
+          "subtasks": [
+            {
+              "subtask_id": "32-11-61-480-002",
+              "content": "If the downlock pins are not installed on all the landing gear, do this task: Landing Gear Downlock Pins Installation, TASK 32-00-01-480-801",
+              "warnings": [
+                {
+                  "content": "MAKE SURE THE DOWNLOCK PINS ARE INSTALLED ON ALL THE LANDING GEAR, BUT THE ONE TO BE WORKED ON. WITHOUT THE DOWNLOCK PINS, THE LANDING GEAR COULD RETRACT AND CAUSE INJURIES TO PERSONS AND DAMAGE TO EQUIPMENT."
+                }
+              ]
+            }
+          ]
+        },
+        "figures": [
+          {
+            "title": "402-32-11-61-990-802-C",
+            "figure_items": {
+              "3": "[3] UPPER SIDE STRUT",
+              "7": "[7] SIDE STRUT PIN",
+              "8": "[8] LOWER SIDE STRUT",
+              "9": "[9] END CAP",
+              "11": "[11] BOLT",
+              "12": "[12] WASHER",
+              "13": "[13] COTTER PIN",
+              "14": "[14] NUT"
+            }
+          },
+          {
+            "title": "402-32-11-61-990-802-B",
+            "figure_items": {
+              "8": "[8] LOWER SIDE STRUT",
+              "47": "[47] CROSS BOLT",
+              "48": "[48] WASHER",
+              "49": "[49] COTTER PIN",
+              "50": "[50] NUT",
+              "51": "[51] SHOCK STRUT",
+              "52": "[52] SIDE STRUT PIN",
+              "53": "[53] SIDE STRUT WASHER",
+              "54": "[54] SIDE STRUT NUT"
+            }
+          },
+          {
+            "title": "402-32-11-61-990-802-A",
+            "figure_items": {
+              "8": "[8] LOWER SIDE STRUT",
+              "41": "[41] PUSHROD",
+              "42": "[42] NUT",
+              "43": "[43] WASHER",
+              "45": "[45] BUSHING",
+              "46": "[46] BOLT"
+            }
+          }
+        ],
+        "subtasks": [
+          {
+            "subtask_id": "32-11-61-420-001",
+            "content": "Connect the upper side strut assembly [3] to the reaction link assembly [15]",
+            "figure": "402-32-11-61-990-802-C",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "Lubricate the chrome plated surfaces of the side strut pin [22] with grease, D00633"
+              },
+              {
+                "order": "2",
+                "content": "Remove all unwanted grease, D00633"
+              },
+              {
+                "order": "3",
+                "content": "Put the upper side strut assembly [3] in its position for connection to the reaction link assembly [15]",
+                "actions": [
+                  {
+                    "attach": [
+                      3,
+                      15
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "4",
+                "content": "Put the side strut pin [22] through the upper side strut assembly [3] and the reaction link assembly [15]",
+                "actions": [
+                  {
+                    "attach": [
+                      22,
+                      3
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "5",
+                "content": "Apply a thin layer of the corrosion preventive Cor-Ban 27L Compound, G50237 (preferred) or corrosion inhibiting material, G50136 (alternate) to these items"
+              },
+              {
+                "order": "6",
+                "content": "Remove all unwanted corrosion preventive Cor-Ban 27L Compound, G50237"
+              },
+              {
+                "order": "7",
+                "content": "Install the side strut washer [21], and the side strut nut [20] on the side strut pin [22]",
+                "actions": [
+                  {
+                    "attach": [
+                      21,
+                      22
+                    ]
+                  },
+                  {
+                    "attach": [
+                      20,
+                      22
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "8",
+                "content": "Tighten the side strut nut [20] to 600 in-lb (67.79 N*m) – 900 in-lb (101.69 N*m)"
+              },
+              {
+                "order": "9",
+                "content": "If it is necessary, loosen the side strut nut [20] to the nearest castellation to align the hole for the cross bolt [16]"
+              },
+              {
+                "order": "10",
+                "content": "Install the cross bolt [16] in the side strut pin [22]",
+                "actions": [
+                  {
+                    "attach": [
+                      16,
+                      22
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "11",
+                "content": "Install the washer [17], and the nut [18] on the cross bolt [16]",
+                "actions": [
+                  {
+                    "attach": [
+                      17,
+                      16
+                    ]
+                  },
+                  {
+                    "attach": [
+                      18,
+                      16
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "12",
+                "content": "Tighten the nut [18] to 30 in-lb (3.39 N*m) – 50 in-lb (5.65 N*m)"
+              },
+              {
+                "order": "13",
+                "content": "If it is necessary, loosen the nut [18] to the nearest castellation to align the holes for the pin [19]."
+              },
+              {
+                "order": "14",
+                "content": "Install the pin [19] in the cross bolt [16]",
+                "actions": [
+                  {
+                    "attach": [
+                      19,
+                      16
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "subtask_id": "32-11-61-420-002",
+            "content": "Connect the upper side strut assembly [3] to the strut assembly, lower [8]",
+            "figure": "402-32-11-61-990-802-B",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "Remove the rope that supports the strut assembly, lower [8] to the reaction link assembly [15]"
+              },
+              {
+                "order": "2",
+                "content": "Put the upper side strut assembly [3] in its position for connection to the strut assembly, lower [8]",
+                "actions": [
+                  {
+                    "attach": [
+                      3,
+                      8
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "3",
+                "content": "Put the side strut pin [7] through the upper side strut assembly [3] and the strut assembly, lower [8]",
+                "actions": [
+                  {
+                    "attach": [
+                      7,
+                      8
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "4",
+                "content": "Install the end cap [9] on the side strut pin [7]",
+                "actions": [
+                  {
+                    "attach": [
+                      9,
+                      7
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "5",
+                "content": "Apply a thin layer of the corrosion preventive Cor-Ban 27L Compound, G50237 (preferred) or corrosion inhibiting material, G50136 (alternate), to the threads, thread reliefs of the bolt [11], and its shank."
+              },
+              {
+                "order": "6",
+                "content": "Install the bolt [11] in the side strut pin [7]",
+                "actions": [
+                  {
+                    "attach": [
+                      11,
+                      7
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "7",
+                "content": "Install the washer [12], and the nut [14] on the bolt [11]",
+                "actions": [
+                  {
+                    "attach": [
+                      12,
+                      11
+                    ]
+                  },
+                  {
+                    "attach": [
+                      14,
+                      11
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "8",
+                "content": "Tighten the nut [14] to 30 in-lb (3.39 N*m) – 50 in-lb (5.65 N*m) more than the run on torque."
+              },
+              {
+                "order": "9",
+                "content": "If it is necessary, loosen the nut [14] to the nearest castellation to align the hole for the cotter pin [13]."
+              },
+              {
+                "order": "10",
+                "content": "Install the cotter pin [13] in the bolt [11]",
+                "actions": [
+                  {
+                    "attach": [
+                      13,
+                      11
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "subtask_id": "32-11-61-420-003",
+            "content": "Connect the upper side strut assembly [3] to the downlock strut [1]",
+            "figure": "402-32-11-61-990-802-A",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "Lubricate the chrome plated surfaces of the downlock link pin [2] with grease, D00633"
+              },
+              {
+                "order": "2",
+                "content": "Remove all unwanted grease, D00633"
+              },
+              {
+                "order": "3",
+                "content": "Put the downlock strut [1] in its position for connection to the upper side strut assembly [3]",
+                "actions": [
+                  {
+                    "attach": [
+                      1,
+                      3
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "4",
+                "content": "Put the downlock link pin [2] through the upper side strut assembly [3] and the downlock strut [1]",
+                "actions": [
+                  {
+                    "attach": [
+                      2,
+                      3
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "5",
+                "content": "Apply a thin layer of the corrosion preventive Cor-Ban 27L Compound, G50237 (preferred) or corrosion inhibiting material, G50136 (alternate) to these items"
+              },
+              {
+                "order": "6",
+                "content": "Remove all unwanted corrosion preventive Cor-Ban 27L Compound, G50237"
+              },
+              {
+                "order": "7",
+                "content": "Install the washer [4], and the nut [5] on the downlock link pin [2]",
+                "actions": [
+                  {
+                    "attach": [
+                      4,
+                      2
+                    ]
+                  },
+                  {
+                    "attach": [
+                      5,
+                      2
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "8",
+                "content": "Tighten the nut [5] to 360 in-lb (40.67 N*m) – 600 in-lb (67.79 N*m)"
+              },
+              {
+                "order": "9",
+                "content": "If it is necessary, loosen the nut [5] to the nearest castellation to align the hole for the pin [6]"
+              },
+              {
+                "order": "10",
+                "content": "Install the pin [6] in the downlock link pin [2]",
+                "actions": [
+                  {
+                    "attach": [
+                      6,
+                      2
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+
+

@@ -1,0 +1,12 @@
+﻿{
+  "query": "Show highlight [41], [46]",
+  "programs": [
+    "ExtractNumbers query",
+    "SaveVal2Var prev var1",
+    "ExtractID object query",
+    "SaveVal2Var prev var2",
+    "Filter3DAttr name prev root",
+    "Highlight on prev"
+  ],
+  "reply": "[41], [46]"
+}
