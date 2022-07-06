@@ -157,7 +157,25 @@
                 ]
               },
               {
-                "order": "3",
+                "order": "2",
+                "content": "Remove the washer [45], bushing [45] from the pushrod [41]",
+                "actions": [
+                  {
+                    "detach": [
+                      44,
+                      41
+                    ]
+                  },
+                  {
+                    "detach": [
+                      45,
+                      41
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "4",
                 "content": "Isolate the pushrod [41] from the lower side strut assembly, lower [8]",
                 "actions": [
                   {

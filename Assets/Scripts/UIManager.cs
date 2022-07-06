@@ -28,6 +28,10 @@ public class UIManager : MonoBehaviour
 		homeButton!.GetComponent<Button>().onClick.RemoveAllListeners();
 		homeButton!.GetComponent<Button>().onClick.AddListener(() => { RootManager.Instance.sceneManager.LoadScene(SceneManager.StartMenuSceneName); });
 
+		var playButton = GameObject.FindWithTag("PlayButton");
+		playButton!.GetComponent<Button>().onClick.RemoveAllListeners();
+		playButton!.GetComponent<Button>().onClick.AddListener(() => { RootManager.Instance.knowledgeManager.ExecuteSubtask(); });
+
 
 		var query = RootManager.Instance.contextManager.CurrentQuery;
 		if (query != null)
@@ -59,7 +63,8 @@ public class UIManager : MonoBehaviour
 			: "";
 
 		var knowledgeActionsUI = GameObject.FindWithTag("KnowledgeActionsUI");
-		knowledgeActionsUI!.transform.GetChild(0).GetChild(0).GetComponent<Text>().enabled = RootManager.Instance.contextManager.CurrentInstruction != null;
+		knowledgeActionsUI!.transform.GetChild(0).GetChild(0).GetComponent<Text>().enabled =
+			RootManager.Instance.contextManager.CurrentInstruction != null;
 		knowledgeActionsUI!.transform.GetChild(0).GetComponent<Image>().enabled = RootManager.Instance.contextManager.CurrentInstruction != null;
 		var actions = RootManager.Instance.contextManager.CurrentInstruction != null
 			? RootManager.Instance.contextManager.CurrentInstruction.Actions
@@ -82,6 +87,12 @@ public class UIManager : MonoBehaviour
 				newUIAction.transform.GetChild(0).GetComponent<Text>().text = capitalizedOperation + " " + action.Components[0] + "," + action.Components[1];
 			}
 		}
+	}
+
+	public void updateActionsList(string text)
+	{
+		var actionsList = GameObject.FindWithTag("ActionsListUI");
+		
 	}
 
 	private void SetUpKnowledgeOptions(List<Task> tasks)

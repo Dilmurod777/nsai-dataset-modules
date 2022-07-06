@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class RootManager : MonoBehaviour
 {
@@ -27,5 +29,15 @@ public class RootManager : MonoBehaviour
 	private void Start()
 	{
 		Robot = new Robot();
+	}
+	
+	public IEnumerator Sequence(List<IEnumerator> sequence)
+	{
+		foreach (var coroutine in sequence)
+		{
+			yield return StartCoroutine(coroutine);
+		}
+
+		yield return null;
 	}
 }

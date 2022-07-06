@@ -15,6 +15,7 @@ TagManager:
   - Figure
   - KnowledgeActionsUI
   - PlayButton
+  - ActionsListUI
   layers:
   - Default
   - TransparentFX

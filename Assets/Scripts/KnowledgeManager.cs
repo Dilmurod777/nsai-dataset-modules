@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Custom;
 using Instances;
 using UnityEngine;
@@ -173,5 +174,84 @@ public class KnowledgeManager : MonoBehaviour
 		}
 
 		return actions;
+	}
+
+	public void ExecuteSubtask()
+	{
+		var instructions = RootManager.Instance.contextManager.CurrentSubtask.Instructions;
+		var primitives = new List<IEnumerator>();
+
+		foreach (var instruction in instructions)
+		{
+			primitives.Add(PrimitiveManager.SimplePrimitive(() => { Debug.Log(instruction.Content); }));
+			primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.contextManager.SetCurrentInstruction(instruction); }));
+			primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.UpdateUI(); }));
+
+			var actions = instruction.Actions;
+
+			foreach (var action in actions)
+			{
+				primitives.Add(PrimitiveManager.SimplePrimitive(() => { Debug.Log(action.Operation); }));
+
+				if (action.Operation == "detach")
+				{
+					var attachingObj = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[0] + "]");
+					var referenceObj = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[1] + "]");
+
+					var objectMeta = attachingObj.GetComponent<ObjectMeta>();
+
+					var text = "";
+					const string delimiter = " and ";
+
+					text += objectMeta.attachType switch
+					{
+						ObjectMeta.AttachTypes.SmoothInstall => "Smooth Uninstall ",
+						ObjectMeta.AttachTypes.StepInstall => "Step Uninstall ",
+						ObjectMeta.AttachTypes.SmoothScrew => "Smooth Unscrew ",
+						ObjectMeta.AttachTypes.StepScrew => "Step Unscrew ",
+						_ => "Smooth Uninstall "
+					};
+
+					text += attachingObj.name + delimiter + referenceObj.name;
+					primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.updateActionsList("- " + text); }));
+
+					var rotationAxis = objectMeta.attachRotationAxis;
+
+					var attachRotationVector = rotationAxis switch
+					{
+						ObjectMeta.RotationAxisEnum.X => Vector3.right,
+						ObjectMeta.RotationAxisEnum.NegX => Vector3.left,
+						ObjectMeta.RotationAxisEnum.Y => Vector3.up,
+						ObjectMeta.RotationAxisEnum.NegY => Vector3.down,
+						ObjectMeta.RotationAxisEnum.Z => Vector3.forward,
+						ObjectMeta.RotationAxisEnum.NegZ => Vector3.back,
+						_ => Vector3.forward
+					};
+
+					switch (objectMeta.attachType)
+					{
+						case ObjectMeta.AttachTypes.SmoothInstall:
+							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+							break;
+						case ObjectMeta.AttachTypes.StepInstall:
+							primitives.AddRange(PrimitiveManager.StepInstall(attachingObj, referenceObj));
+							break;
+						case ObjectMeta.AttachTypes.SmoothScrew:
+							primitives.AddRange(PrimitiveManager.SmoothScrew(attachingObj, referenceObj, attachRotationVector));
+							break;
+						case ObjectMeta.AttachTypes.StepScrew:
+							primitives.AddRange(PrimitiveManager.StepScrew(attachingObj, referenceObj, attachRotationVector));
+							break;
+						default:
+							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+							break;
+					}
+
+					primitives.Add(RootManager.Robot.Wait(0.5f));
+				}
+			}
+		}
+
+		StartCoroutine(RootManager.Instance.Sequence(primitives));
 	}
 }
