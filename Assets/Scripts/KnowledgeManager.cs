@@ -6,169 +6,172 @@ using System.IO;
 
 public class KnowledgeManager : MonoBehaviour
 {
-    public string rootDocument = "root";
-    public List<Task> Tasks;
-    public List<Query> Queries;
-    
-    public void ReadKnowledgeAndSetUp()
-    {
-        var jsonContent = Resources.Load<TextAsset>("Knowledge/" + rootDocument);
-        var itemsData = JSON.Parse(jsonContent.ToString());
-        var tasksNode = itemsData[0]["tasks"];
+	public string rootDocument = "root";
+	public List<Task> Tasks;
+	public List<Query> Queries;
 
-        Tasks = CreateTasks(tasksNode);
-    }
+	public void ReadKnowledgeAndSetUp()
+	{
+		var jsonContent = Resources.Load<TextAsset>("Knowledge/" + rootDocument);
+		var itemsData = JSON.Parse(jsonContent.ToString());
+		var tasksNode = itemsData[0]["tasks"];
 
-    public void ReadQueriesAndSetUp()
-    {
-        Queries = new List<Query>();
-        var directoryInfo = new DirectoryInfo("Assets/Resources/Queries");
-        var files = directoryInfo.GetFiles();
+		Tasks = CreateTasks(tasksNode);
+	}
 
-        foreach (var file in files)
-        {
-            if (!file.Name.EndsWith(".json")) continue;
+	public void ReadQueriesAndSetUp()
+	{
+		Queries = new List<Query>();
+		var directoryInfo = new DirectoryInfo("Assets/Resources/Queries");
+		var files = directoryInfo.GetFiles();
 
-            var basename = file.Name.Split('.')[0];
-            var jsonContent = Resources.Load<TextAsset>("Queries/" + basename);
-            var queryData = JSON.Parse(jsonContent.ToString());
+		foreach (var file in files)
+		{
+			if (!file.Name.EndsWith(".json")) continue;
 
-            var programs = new List<string>();
+			var basename = file.Name.Split('.')[0];
+			var jsonContent = Resources.Load<TextAsset>("Queries/" + basename);
+			var queryData = JSON.Parse(jsonContent.ToString());
 
-            foreach (var value in queryData["programs"].Values)
-            {
-                programs.Add(value[1]);
-            }
+			var programs = new List<string>();
 
-            Queries.Add(new Query(
-                file.Name,
-                queryData["query"],
-                programs,
-                queryData["reply"]
-            ));
-        }
-    }
+			foreach (var value in queryData["programs"].Values)
+			{
+				programs.Add(value[1]);
+			}
 
-    private List<Task> CreateTasks(JSONNode node)
-    {
-        var tasks = new List<Task>();
-        for (var i = 0; i < node.Count; i++)
-        {
-            string taskId = node[i]["task_id"];
-            string title = node[i]["title"];
-            var figures = new List<Figure>();
-            var subtasks = new List<Subtask>();
+			Queries.Add(new Query(
+				file.Name,
+				queryData["query"],
+				programs,
+				queryData["reply"],
+				queryData["context"]["taskId"],
+				queryData["context"]["subtaskId"],
+				queryData["context"]["instructionOrder"]
+			));
+		}
+	}
 
-            if (node[i].HasKey("figures"))
-            {
-                figures = CreateFigures(node[i]["figures"]);
-            }
+	private List<Task> CreateTasks(JSONNode node)
+	{
+		var tasks = new List<Task>();
+		for (var i = 0; i < node.Count; i++)
+		{
+			string taskId = node[i]["task_id"];
+			string title = node[i]["title"];
+			var figures = new List<Figure>();
+			var subtasks = new List<Subtask>();
 
-            if (node[i].HasKey("subtasks"))
-            {
-                subtasks = CreateSubtasks(node[i]["subtasks"]);
-            }
+			if (node[i].HasKey("figures"))
+			{
+				figures = CreateFigures(node[i]["figures"]);
+			}
 
-            tasks.Add(new Task(
-                taskId: taskId,
-                title: title,
-                figures: figures,
-                subtasks: subtasks
-            ));
-        }
+			if (node[i].HasKey("subtasks"))
+			{
+				subtasks = CreateSubtasks(node[i]["subtasks"]);
+			}
 
-        return tasks;
-    }
+			tasks.Add(new Task(
+				taskId: taskId,
+				title: title,
+				figures: figures,
+				subtasks: subtasks
+			));
+		}
 
-    private static List<Figure> CreateFigures(JSONNode node)
-    {
-        var figures = new List<Figure>();
-        for (var i = 0; i < node.Count; i++)
-        {
-            string title = node[i]["title"];
-            var figureItems = new Dictionary<string, string>();
+		return tasks;
+	}
 
-            foreach (var item in node[i]["figure_items"].Keys)
-            {
-                figureItems.Add(item, node[i]["figure_items"][item]);
-            }
+	private static List<Figure> CreateFigures(JSONNode node)
+	{
+		var figures = new List<Figure>();
+		for (var i = 0; i < node.Count; i++)
+		{
+			string title = node[i]["title"];
+			var figureItems = new Dictionary<string, string>();
 
-            figures.Add(new Figure(
-                title: title,
-                figureItems: figureItems
-            ));
-        }
+			foreach (var item in node[i]["figure_items"].Keys)
+			{
+				figureItems.Add(item, node[i]["figure_items"][item]);
+			}
 
-        return figures;
-    }
+			figures.Add(new Figure(
+				title: title,
+				figureItems: figureItems
+			));
+		}
 
-    private static List<Subtask> CreateSubtasks(JSONNode node)
-    {
-        var subtasks = new List<Subtask>();
-        for (var i = 0; i < node.Count; i++)
-        {
-            string subtaskId = node[i]["subtask_id"];
-            string content = node[i]["content"];
-            string figure = node[i]["figure"];
-            var instructions = new List<Instruction>();
+		return figures;
+	}
 
-            if (node[i].HasKey("instructions"))
-            {
-                instructions = CreateInstructions(node[i]["instructions"]);
-            }
+	private static List<Subtask> CreateSubtasks(JSONNode node)
+	{
+		var subtasks = new List<Subtask>();
+		for (var i = 0; i < node.Count; i++)
+		{
+			string subtaskId = node[i]["subtask_id"];
+			string content = node[i]["content"];
+			string figure = node[i]["figure"];
+			var instructions = new List<Instruction>();
 
-            subtasks.Add(new Subtask(
-                subtaskId: subtaskId,
-                content: content,
-                instructions: instructions,
-                figure: figure
-            ));
-        }
+			if (node[i].HasKey("instructions"))
+			{
+				instructions = CreateInstructions(node[i]["instructions"]);
+			}
 
-        return subtasks;
-    }
+			subtasks.Add(new Subtask(
+				subtaskId: subtaskId,
+				content: content,
+				instructions: instructions,
+				figure: figure
+			));
+		}
 
-    private static List<Instruction> CreateInstructions(JSONNode node)
-    {
-        var instructions = new List<Instruction>();
-        for (var i = 0; i < node.Count; i++)
-        {
-            string order = node[i]["order"];
-            string content = node[i]["content"];
-            var actions = new List<Action>();
+		return subtasks;
+	}
 
-            if (node[i].HasKey("actions"))
-            {
-                actions = CreateActions(node[i]["actions"]);
-            }
+	private static List<Instruction> CreateInstructions(JSONNode node)
+	{
+		var instructions = new List<Instruction>();
+		for (var i = 0; i < node.Count; i++)
+		{
+			string order = node[i]["order"];
+			string content = node[i]["content"];
+			var actions = new List<Action>();
 
-            instructions.Add(new Instruction(
-                order: order,
-                content: content,
-                actions: actions
-            ));
-        }
+			if (node[i].HasKey("actions"))
+			{
+				actions = CreateActions(node[i]["actions"]);
+			}
 
-        return instructions;
-    }
+			instructions.Add(new Instruction(
+				order: order,
+				content: content,
+				actions: actions
+			));
+		}
 
-    private static List<Action> CreateActions(JSONNode node)
-    {
-        var actions = new List<Action>();
+		return instructions;
+	}
 
-        for (var i = 0; i < node.Count; i++)
-        {
-            var action = node[i];
+	private static List<Action> CreateActions(JSONNode node)
+	{
+		var actions = new List<Action>();
 
-            foreach (var operation in action.Keys)
-            {
-                actions.Add(new Action(
-                    operation: operation,
-                    components: new List<string> {action[operation][0].ToString(), action[operation][1].ToString()}
-                ));
-            }
-        }
+		for (var i = 0; i < node.Count; i++)
+		{
+			var action = node[i];
 
-        return actions;
-    }
+			foreach (var operation in action.Keys)
+			{
+				actions.Add(new Action(
+					operation: operation,
+					components: new List<string> {action[operation][0].ToString(), action[operation][1].ToString()}
+				));
+			}
+		}
+
+		return actions;
+	}
 }

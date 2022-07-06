@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 	public GameObject uiOption;
+	public GameObject uiAction;
 
 	public enum UIOptionType
 	{
@@ -26,16 +27,17 @@ public class UIManager : MonoBehaviour
 		var homeButton = GameObject.FindWithTag("HomeButton");
 		homeButton!.GetComponent<Button>().onClick.RemoveAllListeners();
 		homeButton!.GetComponent<Button>().onClick.AddListener(() => { RootManager.Instance.sceneManager.LoadScene(SceneManager.StartMenuSceneName); });
-		;
 
-		if (RootManager.Instance.contextManager.CurrentQuery != null)
+
+		var query = RootManager.Instance.contextManager.CurrentQuery;
+		if (query != null)
 		{
 			var queryText = GameObject.FindWithTag("QueryText");
+			queryText!.GetComponent<InputField>().text = query.Title;
 
-			if (queryText != null)
-			{
-				queryText.GetComponent<InputField>().text = RootManager.Instance.contextManager.CurrentQuery.Title;
-			}
+			RootManager.Instance.contextManager.SetCurrentTask(query.TaskId);
+			RootManager.Instance.contextManager.SetCurrentSubtask(query.SubtaskId);
+			RootManager.Instance.contextManager.SetCurrentInstruction(query.InstructionOrder);
 		}
 
 		var knowledgeTaskUI = GameObject.FindWithTag("KnowledgeTaskUI");
@@ -55,6 +57,31 @@ public class UIManager : MonoBehaviour
 		knowledgeInstructionUI!.transform.GetChild(0).GetComponent<Text>().text = RootManager.Instance.contextManager.CurrentInstruction != null
 			? RootManager.Instance.contextManager.CurrentInstruction.Content
 			: "";
+
+		var knowledgeActionsUI = GameObject.FindWithTag("KnowledgeActionsUI");
+		knowledgeActionsUI!.transform.GetChild(0).GetChild(0).GetComponent<Text>().enabled = RootManager.Instance.contextManager.CurrentInstruction != null;
+		knowledgeActionsUI!.transform.GetChild(0).GetComponent<Image>().enabled = RootManager.Instance.contextManager.CurrentInstruction != null;
+		var actions = RootManager.Instance.contextManager.CurrentInstruction != null
+			? RootManager.Instance.contextManager.CurrentInstruction.Actions
+			: null;
+
+		if (actions != null)
+		{
+			var contentScrollList = knowledgeActionsUI.transform.GetChild(1).GetChild(0);
+
+			for (var i = 0; i < contentScrollList.childCount; i++)
+			{
+				Destroy(contentScrollList.GetChild(i).gameObject);
+			}
+
+			foreach (var action in actions)
+			{
+				var newUIAction = Instantiate(uiAction, contentScrollList.transform, false);
+				var capitalizedOperation = action.Operation.Substring(0, 1).ToUpper() + action.Operation.Substring(1);
+
+				newUIAction.transform.GetChild(0).GetComponent<Text>().text = capitalizedOperation + " " + action.Components[0] + "," + action.Components[1];
+			}
+		}
 	}
 
 	private void SetUpKnowledgeOptions(List<Task> tasks)
@@ -147,7 +174,7 @@ public class UIManager : MonoBehaviour
 				task = data[0] as Task;
 				subtask = data[1] as Subtask;
 				instruction = subtask?.Instructions.Count > 0 ? subtask.Instructions[0] : null;
-				
+
 				RootManager.Instance.contextManager.SetCurrentTask(task);
 				RootManager.Instance.contextManager.SetCurrentSubtask(subtask);
 				RootManager.Instance.contextManager.SetCurrentInstruction(instruction);

@@ -13,6 +13,8 @@ TagManager:
   - KnowledgeContent
   - QueriesContent
   - Figure
+  - KnowledgeActionsUI
+  - PlayButton
   layers:
   - Default
   - TransparentFX
