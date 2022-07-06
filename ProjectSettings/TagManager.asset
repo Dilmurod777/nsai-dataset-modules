@@ -5,6 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - QueryText
+  - KnowledgeTaskUI
+  - KnowledgeSubtaskUI
+  - KnowledgeInstructionUI
+  - KnowledgeUI
+  - HomeButton
+  - KnowledgeContent
+  - QueriesContent
+  - Figure
   layers:
   - Default
   - TransparentFX

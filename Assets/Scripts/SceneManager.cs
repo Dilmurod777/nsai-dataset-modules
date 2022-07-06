@@ -3,28 +3,39 @@ using UnityEngine.SceneManagement;
 
 public class SceneManager : MonoBehaviour
 {
-    public GameObject managers;
+	public GameObject managers;
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(managers);
-    }
+	public const string StartMenuSceneName = "0_StartMenu";
+	public const string MainSceneName = "1_Main";
 
-    public void LoadMainScene()
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("1_Main");
-    }
+	private void Awake()
+	{
+		DontDestroyOnLoad(managers);
+	}
 
-    private void OnEnable()
-    {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
-    }
+	public void LoadScene(string sceneName)
+	{
+		UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+	}
 
-    static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "1_Main")
-        {
-            RootManager.Instance.uiManager.UpdateUI();
-        }
-    }
+	private void OnEnable()
+	{
+		UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	{
+		switch (scene.name)
+		{
+			case MainSceneName:
+				RootManager.Instance.uiManager.UpdateUI();
+				RootManager.Instance.assetManager.UpdateAssets();
+				break;
+			case StartMenuSceneName:
+				RootManager.Instance.knowledgeManager.ReadKnowledgeAndSetUp();
+				RootManager.Instance.knowledgeManager.ReadQueriesAndSetUp();
+				RootManager.Instance.uiManager.SetUpMenus();
+				break;
+		}
+	}
 }
