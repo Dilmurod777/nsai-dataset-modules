@@ -92,7 +92,15 @@ public class UIManager : MonoBehaviour
 	public void updateActionsList(string text)
 	{
 		var actionsList = GameObject.FindWithTag("ActionsListUI");
-		
+
+		if (actionsList)
+		{
+			var textComponent = actionsList.GetComponent<Text>();
+			if (textComponent != null)
+			{
+				textComponent.text += textComponent.text == "" ? text : "\n" + text;
+			}
+		}
 	}
 
 	private void SetUpKnowledgeOptions(List<Task> tasks)

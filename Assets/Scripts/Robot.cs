@@ -32,7 +32,7 @@ public class Robot
         var delta = 0f;
         while (delta < GetMoveDuration())
         {
-            delta += Time.deltaTime / GetMoveDuration();
+            delta += Time.deltaTime;
             sourceObject.transform.position = Vector3.Lerp(initialPosition, finalPosition, delta);
             yield return null;
         }
@@ -47,7 +47,7 @@ public class Robot
         var delta = 0f;
         while (delta < GetMoveDuration())
         {
-            delta += Time.deltaTime / GetMoveDuration();
+            delta += Time.deltaTime;
             sourceObject.transform.rotation = Quaternion.Lerp(initialRotation, Quaternion.Euler(finalRotation), delta);
             yield return null;
         }
@@ -64,7 +64,7 @@ public class Robot
         {
             var finalRotation = sourceObject.transform.eulerAngles + rotationAxis * 5.0f;
 
-            delta += Time.deltaTime / GetMoveDuration();
+            delta += Time.deltaTime;
             sourceObject.transform.position = Vector3.Lerp(initialPosition, finalPosition, delta);
             sourceObject.transform.rotation = Quaternion.Lerp(sourceObject.transform.rotation, Quaternion.Euler(finalRotation), delta);
             yield return null;

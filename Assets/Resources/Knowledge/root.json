@@ -124,7 +124,7 @@
           {
             "subtask_id": "32-11-61-020-007",
             "content": "Disconnect the lower side strut assembly, lower [8] from the pushrod [41]",
-            "figure": "402-32-11-61-990-802-A",
+            "figure": "MainLandingGear-IFM",
             "instructions": [
               {
                 "order": "1",
@@ -151,7 +151,7 @@
                   {
                     "detach": [
                       46,
-                      8
+                      41
                     ]
                   }
                 ]

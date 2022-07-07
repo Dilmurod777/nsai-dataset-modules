@@ -183,7 +183,6 @@ public class KnowledgeManager : MonoBehaviour
 
 		foreach (var instruction in instructions)
 		{
-			primitives.Add(PrimitiveManager.SimplePrimitive(() => { Debug.Log(instruction.Content); }));
 			primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.contextManager.SetCurrentInstruction(instruction); }));
 			primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.UpdateUI(); }));
 
@@ -191,18 +190,16 @@ public class KnowledgeManager : MonoBehaviour
 
 			foreach (var action in actions)
 			{
-				primitives.Add(PrimitiveManager.SimplePrimitive(() => { Debug.Log(action.Operation); }));
-
 				if (action.Operation == "detach")
 				{
 					var attachingObj = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[0] + "]");
 					var referenceObj = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[1] + "]");
-
+			
 					var objectMeta = attachingObj.GetComponent<ObjectMeta>();
-
+			
 					var text = "";
 					const string delimiter = " and ";
-
+			
 					text += objectMeta.attachType switch
 					{
 						ObjectMeta.AttachTypes.SmoothInstall => "Smooth Uninstall ",
@@ -211,12 +208,12 @@ public class KnowledgeManager : MonoBehaviour
 						ObjectMeta.AttachTypes.StepScrew => "Step Unscrew ",
 						_ => "Smooth Uninstall "
 					};
-
+			
 					text += attachingObj.name + delimiter + referenceObj.name;
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.updateActionsList("- " + text); }));
-
+			
 					var rotationAxis = objectMeta.attachRotationAxis;
-
+			
 					var attachRotationVector = rotationAxis switch
 					{
 						ObjectMeta.RotationAxisEnum.X => Vector3.right,
@@ -227,7 +224,7 @@ public class KnowledgeManager : MonoBehaviour
 						ObjectMeta.RotationAxisEnum.NegZ => Vector3.back,
 						_ => Vector3.forward
 					};
-
+			
 					switch (objectMeta.attachType)
 					{
 						case ObjectMeta.AttachTypes.SmoothInstall:
@@ -246,8 +243,10 @@ public class KnowledgeManager : MonoBehaviour
 							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
 							break;
 					}
-
+			
 					primitives.Add(RootManager.Robot.Wait(0.5f));
+					primitives.AddRange(PrimitiveManager.CreateRfmToScatteredMovePrimitives(attachingObj));
+					primitives.AddRange(PrimitiveManager.CreateRotatePrimitives(attachingObj));
 				}
 			}
 		}

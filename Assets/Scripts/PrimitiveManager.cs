@@ -11,6 +11,37 @@ public static class PrimitiveManager
 		callback();
 		yield return null;
 	}
+	
+	public static List<IEnumerator> CreateRotatePrimitives(GameObject objA)
+	{
+		var primitives = new List<IEnumerator>();
+
+		var referenceObj = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
+		var finalRotation = referenceObj.transform.eulerAngles;
+		
+		primitives.Add(RootManager.Robot.Rotate(objA, finalRotation));
+		
+		return primitives;
+	}
+
+	public static List<IEnumerator> CreateRfmToScatteredMovePrimitives(GameObject objA)
+	{
+		var primitives = new List<IEnumerator>();
+		
+		var figureStaticComponent = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Current, objA.name);
+		var ifmStaticComponent = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Scattered, objA.name);;
+
+		var ifmReferenceObjA = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Scattered, objA.name);
+		var ifmFinalPosition = ifmReferenceObjA.transform.position +
+		                       new Vector3(0, 0, figureStaticComponent.transform.position.z - ifmStaticComponent.transform.position.z);
+		
+		// var ifmReferenceObjA = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Scattered, objA.name);
+		// var ifmFinalPosition = ifmReferenceObjA.transform.position;
+
+		primitives.Add(RootManager.Robot.Move(objA, ifmFinalPosition));
+
+		return primitives;
+	}
 
 	public static List<IEnumerator> SmoothInstall(GameObject objA, GameObject objB)
 	{

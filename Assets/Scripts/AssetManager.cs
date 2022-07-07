@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AssetManager : MonoBehaviour
@@ -7,7 +8,22 @@ public class AssetManager : MonoBehaviour
 	{
 		Current,
 		IFM,
-		RFM
+		RFM,
+		Scattered
+	}
+
+	private Vector3 offset = new Vector3(-60.7f, -20.4f, 36.9f);
+
+	private string GetPlainFigureName(string figureName)
+	{
+		var needsToReplace = new List<string> {"-IFM", "-RFM", "-Scattered"};
+
+		foreach (var word in needsToReplace)
+		{
+			figureName = figureName.Replace(word, "");
+		}
+
+		return figureName;
 	}
 
 	public void UpdateAssets()
@@ -19,19 +35,20 @@ public class AssetManager : MonoBehaviour
 		if (subtask != null)
 		{
 			var figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + subtask.Figure);
-			var ifmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + subtask.Figure + "-IFM");
-			var rfmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + subtask.Figure + "-RFM");
+			var ifmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.Figure) + "-IFM");
+			var rfmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.Figure) + "-RFM");
+			var scatteredPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.Figure) + "-Scattered");
 
 			if (figurePrefab)
 			{
 				var instantiatedFigure = Instantiate(figurePrefab);
-				instantiatedFigure.transform.position = new Vector3(4.5f, 0, 20);
+				instantiatedFigure.transform.position = offset;
 			}
-			
+
 			if (ifmPrefab)
 			{
 				var instantiatedIfm = Instantiate(ifmPrefab);
-				instantiatedIfm.transform.position = new Vector3(4.5f, 0, 120);
+				instantiatedIfm.transform.position = offset + new Vector3(0, 0, 100f);
 
 				foreach (var child in instantiatedIfm.GetComponentsInChildren<Transform>())
 				{
@@ -42,13 +59,29 @@ public class AssetManager : MonoBehaviour
 					}
 				}
 			}
-			
+
 			if (rfmPrefab)
 			{
 				var instantiatedRfm = Instantiate(rfmPrefab);
-				instantiatedRfm.transform.position = new Vector3(4.5f, 0, 120);
+				instantiatedRfm.transform.position = offset + new Vector3(0, 0, 100f);
+				;
 
 				foreach (var child in instantiatedRfm.GetComponentsInChildren<Transform>())
+				{
+					var meshRenderer = child.GetComponent<MeshRenderer>();
+					if (meshRenderer != null)
+					{
+						meshRenderer.enabled = false;
+					}
+				}
+			}
+
+			if (scatteredPrefab)
+			{
+				var instantiatedScattered = Instantiate(scatteredPrefab);
+				instantiatedScattered.transform.position = offset + new Vector3(0, 0, 100f);
+
+				foreach (var child in instantiatedScattered.GetComponentsInChildren<Transform>())
 				{
 					var meshRenderer = child.GetComponent<MeshRenderer>();
 					if (meshRenderer != null)
@@ -66,9 +99,10 @@ public class AssetManager : MonoBehaviour
 		var figure = type switch
 		{
 			FigureType.Current => GameObject.Find(figureName + "(Clone)"),
-			FigureType.IFM => GameObject.Find(figureName + "-IFM(Clone)"),
-			FigureType.RFM => GameObject.Find(figureName + "-RFM(Clone)"),
-			_ => GameObject.Find(figureName)
+			FigureType.IFM => GameObject.Find(GetPlainFigureName(figureName) + "-IFM(Clone)"),
+			FigureType.RFM => GameObject.Find(GetPlainFigureName(figureName) + "-RFM(Clone)"),
+			FigureType.Scattered => GameObject.Find(GetPlainFigureName(figureName) + "-Scattered(Clone)"),
+			_ => GameObject.Find(figureName + "(Clone)")
 		};
 
 		foreach (var child in figure.GetComponentsInChildren<Transform>())
