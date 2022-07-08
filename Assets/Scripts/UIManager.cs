@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Instances;
 using UnityEngine;
@@ -89,7 +90,7 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
-	public void updateActionsList(string text)
+	public void UpdateActionsList(string text)
 	{
 		var actionsList = GameObject.FindWithTag("ActionsListUI");
 
@@ -100,6 +101,41 @@ public class UIManager : MonoBehaviour
 			{
 				textComponent.text += textComponent.text == "" ? text : "\n" + text;
 			}
+		}
+	}
+
+	public void UpdateReply(string text)
+	{
+		var reply = GameObject.FindWithTag("ReplyUI");
+
+		if (reply)
+		{
+			var textComponent = reply.GetComponent<Text>();
+			if (textComponent != null)
+			{
+				textComponent.text = text;
+			}
+		}
+	}
+
+	public void EnableAllButtons()
+	{
+		var buttons = FindObjectsOfType<Button>();
+
+		foreach (var button in buttons)
+		{
+			button.interactable = true;
+		}
+	}
+
+
+	public void DisableAllButtons()
+	{
+		var buttons = FindObjectsOfType<Button>();
+
+		foreach (var button in buttons)
+		{
+			button.interactable = false;
 		}
 	}
 

@@ -346,7 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7796777963051480535}
   m_Layer: 0
-  m_Name: MainLandingGear-IFM
+  m_Name: MainLandingGear-Initial
   m_TagString: ReferenceObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

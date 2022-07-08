@@ -30,6 +30,12 @@ public class RootManager : MonoBehaviour
 	{
 		Robot = new Robot();
 	}
+
+	public IEnumerator DelayCoroutine(float seconds, PrimitiveManager.FunctionDelegate method = null)
+	{
+		yield return new WaitForSeconds(seconds);
+		method?.Invoke();
+	}
 	
 	public IEnumerator Sequence(List<IEnumerator> sequence)
 	{

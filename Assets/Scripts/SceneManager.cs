@@ -3,15 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneManager : MonoBehaviour
 {
-	public GameObject managers;
-
 	public const string StartMenuSceneName = "0_StartMenu";
 	public const string MainSceneName = "1_Main";
-
-	private void Awake()
-	{
-		DontDestroyOnLoad(managers);
-	}
 
 	public void LoadScene(string sceneName)
 	{

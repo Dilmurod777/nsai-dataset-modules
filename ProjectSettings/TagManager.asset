@@ -16,6 +16,10 @@ TagManager:
   - KnowledgeActionsUI
   - PlayButton
   - ActionsListUI
+  - VirtualCamera
+  - Object
+  - ReferenceObject
+  - ReplyUI
   layers:
   - Default
   - TransparentFX

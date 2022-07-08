@@ -4,6 +4,7 @@ using Custom;
 using Instances;
 using UnityEngine;
 using System.IO;
+using Cinemachine;
 
 public class KnowledgeManager : MonoBehaviour
 {
@@ -180,7 +181,9 @@ public class KnowledgeManager : MonoBehaviour
 	{
 		var instructions = RootManager.Instance.contextManager.CurrentSubtask.Instructions;
 		var primitives = new List<IEnumerator>();
-
+		
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.DisableAllButtons(); }));
+		
 		foreach (var instruction in instructions)
 		{
 			primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.contextManager.SetCurrentInstruction(instruction); }));
@@ -194,12 +197,12 @@ public class KnowledgeManager : MonoBehaviour
 				{
 					var attachingObj = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[0] + "]");
 					var referenceObj = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[1] + "]");
-			
+
 					var objectMeta = attachingObj.GetComponent<ObjectMeta>();
-			
+
 					var text = "";
 					const string delimiter = " and ";
-			
+
 					text += objectMeta.attachType switch
 					{
 						ObjectMeta.AttachTypes.SmoothInstall => "Smooth Uninstall ",
@@ -208,12 +211,24 @@ public class KnowledgeManager : MonoBehaviour
 						ObjectMeta.AttachTypes.StepScrew => "Step Unscrew ",
 						_ => "Smooth Uninstall "
 					};
-			
+
 					text += attachingObj.name + delimiter + referenceObj.name;
-					primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.updateActionsList("- " + text); }));
-			
+					primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.UpdateActionsList("- " + text); }));
+					primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.UpdateReply(text); }));
+
+
+					primitives.Add(PrimitiveManager.SimplePrimitive(() =>
+					{
+						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
+
+						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = attachingObj.transform;
+						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = attachingObj.transform;
+					}));
+
+					primitives.Add(RootManager.Robot.Wait(2f));
+
 					var rotationAxis = objectMeta.attachRotationAxis;
-			
+
 					var attachRotationVector = rotationAxis switch
 					{
 						ObjectMeta.RotationAxisEnum.X => Vector3.right,
@@ -224,7 +239,7 @@ public class KnowledgeManager : MonoBehaviour
 						ObjectMeta.RotationAxisEnum.NegZ => Vector3.back,
 						_ => Vector3.forward
 					};
-			
+
 					switch (objectMeta.attachType)
 					{
 						case ObjectMeta.AttachTypes.SmoothInstall:
@@ -243,13 +258,23 @@ public class KnowledgeManager : MonoBehaviour
 							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
 							break;
 					}
-			
+
+					primitives.Add(PrimitiveManager.SimplePrimitive(() =>
+					{
+						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
+
+						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = null;
+						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = null;
+					}));
+
 					primitives.Add(RootManager.Robot.Wait(0.5f));
 					primitives.AddRange(PrimitiveManager.CreateRfmToScatteredMovePrimitives(attachingObj));
 					primitives.AddRange(PrimitiveManager.CreateRotatePrimitives(attachingObj));
 				}
 			}
 		}
+		
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.EnableAllButtons(); }));
 
 		StartCoroutine(RootManager.Instance.Sequence(primitives));
 	}
