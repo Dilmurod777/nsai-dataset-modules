@@ -33,6 +33,14 @@ public class UIManager : MonoBehaviour
 		playButton!.GetComponent<Button>().onClick.RemoveAllListeners();
 		playButton!.GetComponent<Button>().onClick.AddListener(() => { RootManager.Instance.knowledgeManager.ExecuteSubtask(); });
 
+		var nextButton = GameObject.FindWithTag("NextButton");
+		nextButton!.GetComponent<Button>().onClick.RemoveAllListeners();
+		nextButton!.GetComponent<Button>().onClick.AddListener(() =>
+		{
+			RootManager.Instance.knowledgeManager.GoToNextSubtask();
+			RootManager.Instance.uiManager.UpdateUI();
+		});
+
 
 		var query = RootManager.Instance.contextManager.CurrentQuery;
 		if (query != null)
@@ -71,10 +79,10 @@ public class UIManager : MonoBehaviour
 			? RootManager.Instance.contextManager.CurrentInstruction.Actions
 			: null;
 
+
+		var contentScrollList = knowledgeActionsUI.transform.GetChild(1).GetChild(0);
 		if (actions != null)
 		{
-			var contentScrollList = knowledgeActionsUI.transform.GetChild(1).GetChild(0);
-
 			for (var i = 0; i < contentScrollList.childCount; i++)
 			{
 				Destroy(contentScrollList.GetChild(i).gameObject);
@@ -86,6 +94,13 @@ public class UIManager : MonoBehaviour
 				var capitalizedOperation = action.Operation.Substring(0, 1).ToUpper() + action.Operation.Substring(1);
 
 				newUIAction.transform.GetChild(0).GetComponent<Text>().text = capitalizedOperation + " " + action.Components[0] + "," + action.Components[1];
+			}
+		}
+		else
+		{
+			for (var i = 0; i < contentScrollList.childCount; i++)
+			{
+				Destroy(contentScrollList.transform.GetChild(i).gameObject);
 			}
 		}
 	}
@@ -150,6 +165,7 @@ public class UIManager : MonoBehaviour
 				var task = tasks[i];
 				var newTaskOption = Instantiate(uiOption, knowledgeContent.transform, false);
 				newTaskOption.name = task.TaskId;
+				newTaskOption.tag = "TaskOptionUI";
 				newTaskOption.GetComponent<Button>().onClick.AddListener(() => { UIOptionClick(UIOptionType.Task, new dynamic[] {task}); });
 
 				var newTaskOptionTextComponent = newTaskOption.transform.GetChild(0).GetComponent<Text>();
@@ -173,6 +189,7 @@ public class UIManager : MonoBehaviour
 					var subtask = task.Subtasks[j];
 					var newSubtaskOption = Instantiate(uiOption, list.transform, false);
 					newSubtaskOption.name = subtask.SubtaskId;
+					newSubtaskOption.tag = "SubtaskOptionUI";
 					newSubtaskOption.GetComponent<Button>().onClick.AddListener(() => { UIOptionClick(UIOptionType.Subtask, new dynamic[] {task, subtask}); });
 
 					var newSubtaskOptionTextComponent = newSubtaskOption.transform.GetChild(0).GetComponent<Text>();
@@ -180,6 +197,39 @@ public class UIManager : MonoBehaviour
 				}
 			}
 		}
+
+		// var currentTask = RootManager.Instance.contextManager.CurrentTask;
+		// var currentSubtask = RootManager.Instance.contextManager.CurrentSubtask;
+		// var taskOptionsUI = GameObject.FindGameObjectsWithTag("TaskOptionUI");
+		// var subtaskOptionsUI = GameObject.FindGameObjectsWithTag("SubtaskOptionUI");
+		//
+		// if (currentTask != null)
+		// {
+		// 	foreach (var optionUI in taskOptionsUI)
+		// 	{
+		// 		if (optionUI.name != currentTask.TaskId) continue;
+		// 		if (!currentTask.isCompleted) break;
+		//
+		// 		optionUI.GetComponent<Image>().color = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
+		// 		optionUI.transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 1f);
+		//
+		// 		optionUI.GetComponent<Button>().interactable = false;
+		// 	}
+		// }
+		//
+		// if (currentSubtask != null)
+		// {
+		// 	foreach (var optionUI in subtaskOptionsUI)
+		// 	{
+		// 		if (optionUI.name != currentSubtask.SubtaskId) continue;
+		// 		if (!currentSubtask.isCompleted) break;
+		//
+		// 		optionUI.GetComponent<Image>().color = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
+		// 		optionUI.transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 1f);
+		// 		
+		// 		optionUI.GetComponent<Button>().interactable = false;
+		// 	}
+		// }
 
 		var knowledgeScrollRect = knowledgeContent.transform.parent.GetComponent<ScrollRect>();
 		knowledgeScrollRect!.normalizedPosition = new Vector2(0, 1);
@@ -196,6 +246,7 @@ public class UIManager : MonoBehaviour
 				var query = queries[i];
 				var newQueryOption = Instantiate(uiOption, queriesContent.transform, false);
 				newQueryOption.name = query.Filename;
+				newQueryOption.tag = "QueryOptionUI";
 				newQueryOption.GetComponent<Button>().onClick.AddListener(() => { UIOptionClick(UIOptionType.Query, new dynamic[] {query}); });
 
 				var newQueryOptionTextComponent = newQueryOption.transform.GetChild(0).GetComponent<Text>();

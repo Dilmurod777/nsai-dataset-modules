@@ -181,9 +181,9 @@ public class KnowledgeManager : MonoBehaviour
 	{
 		var instructions = RootManager.Instance.contextManager.CurrentSubtask.Instructions;
 		var primitives = new List<IEnumerator>();
-		
+
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.DisableAllButtons(); }));
-		
+
 		foreach (var instruction in instructions)
 		{
 			primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.contextManager.SetCurrentInstruction(instruction); }));
@@ -273,9 +273,69 @@ public class KnowledgeManager : MonoBehaviour
 				}
 			}
 		}
-		
+
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.EnableAllButtons(); }));
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => RootManager.Instance.knowledgeManager.SetCurrentSubtaskCompleted()));
 
 		StartCoroutine(RootManager.Instance.Sequence(primitives));
+	}
+
+	public void GoToNextSubtask()
+	{
+		var tasks = RootManager.Instance.knowledgeManager.Tasks;
+		var currentTask = RootManager.Instance.contextManager.CurrentTask;
+		var currentSubtask = RootManager.Instance.contextManager.CurrentSubtask;
+
+		for (int i = 0; i < tasks.Count; i++)
+		{
+			if (tasks[i].TaskId == currentTask.TaskId)
+			{
+				for (var j = 0; j < tasks[i].Subtasks.Count; j++)
+				{
+					if (tasks[i].Subtasks[j].SubtaskId == currentSubtask.SubtaskId)
+					{
+						// if has next subtask
+						if (j < tasks[i].Subtasks.Count - 1)
+						{
+							RootManager.Instance.contextManager.SetCurrentSubtask(tasks[i].Subtasks[j + 1]);
+							return;
+						}
+
+						// if has next task
+						if (i < tasks.Count - 1)
+						{
+							RootManager.Instance.contextManager.SetCurrentTask(tasks[i + 1]);
+							RootManager.Instance.contextManager.SetCurrentSubtask(tasks[i].Subtasks[0]);
+							return;
+						}
+
+						// if has nothing else
+						RootManager.Instance.contextManager.ResetCurrentTask();
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	public void SetCurrentSubtaskCompleted()
+	{
+		var currentTask = RootManager.Instance.contextManager.CurrentTask;
+		var currentSubtask = RootManager.Instance.contextManager.CurrentSubtask;
+
+		for (var i = 0; i < Tasks.Count; i++)
+		{
+			if (Tasks[i].TaskId == currentTask.TaskId)
+			{
+				for (var j = 0; j < Tasks[i].Subtasks.Count; j++)
+				{
+					if (Tasks[i].Subtasks[j].SubtaskId == currentSubtask.SubtaskId)
+					{
+						Tasks[i].Subtasks[j].isCompleted = true;
+						break;
+					}
+				}
+			}
+		}
 	}
 }

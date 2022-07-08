@@ -40,8 +40,6 @@ public class AssetManager : MonoBehaviour
 
 	public void UpdateAssets()
 	{
-		// DestroyAllFigures();
-
 		var subtask = RootManager.Instance.contextManager.CurrentSubtask;
 
 		if (subtask != null)
@@ -66,13 +64,9 @@ public class AssetManager : MonoBehaviour
 				instantiatedIfm.tag = "ReferenceObject";
 				instantiatedIfm.AddComponent<CustomDontDestroyOnLoad>();
 
-				foreach (var child in instantiatedIfm.GetComponentsInChildren<Transform>())
+				foreach (var meshRenderer in instantiatedIfm.GetComponentsInChildren<MeshRenderer>())
 				{
-					var meshRenderer = child.GetComponent<MeshRenderer>();
-					if (meshRenderer != null)
-					{
-						meshRenderer.enabled = false;
-					}
+					meshRenderer.enabled = false;
 				}
 			}
 
@@ -83,13 +77,9 @@ public class AssetManager : MonoBehaviour
 				instantiatedRfm.tag = "ReferenceObject";
 				instantiatedRfm.AddComponent<CustomDontDestroyOnLoad>();
 
-				foreach (var child in instantiatedRfm.GetComponentsInChildren<Transform>())
+				foreach (var meshRenderer in instantiatedRfm.GetComponentsInChildren<MeshRenderer>())
 				{
-					var meshRenderer = child.GetComponent<MeshRenderer>();
-					if (meshRenderer != null)
-					{
-						meshRenderer.enabled = false;
-					}
+					meshRenderer.enabled = false;
 				}
 			}
 
@@ -100,13 +90,9 @@ public class AssetManager : MonoBehaviour
 				instantiatedScattered.tag = "ReferenceObject";
 				instantiatedScattered.AddComponent<CustomDontDestroyOnLoad>();
 
-				foreach (var child in instantiatedScattered.GetComponentsInChildren<Transform>())
+				foreach (var meshRenderer in instantiatedScattered.GetComponentsInChildren<MeshRenderer>())
 				{
-					var meshRenderer = child.GetComponent<MeshRenderer>();
-					if (meshRenderer != null)
-					{
-						meshRenderer.enabled = false;
-					}
+					meshRenderer.enabled = false;
 				}
 			}
 		}
@@ -135,18 +121,24 @@ public class AssetManager : MonoBehaviour
 		return null;
 	}
 
-	public void DestroyAllFigures()
+	public void ShowFigure()
 	{
-		var figuresInScene = GameObject.FindGameObjectsWithTag("Figure");
-		foreach (var figureInScene in figuresInScene)
+		var figureInScene = GameObject.FindWithTag("Figure");
+		foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>())
 		{
-			Destroy(figureInScene);
+			meshRenderer.enabled = true;
 		}
-
-		var referenceObjectsInScene = GameObject.FindGameObjectsWithTag("ReferenceObject");
-		foreach (var obj in referenceObjectsInScene)
+	}
+	
+	public void HideFigure()
+	{
+		var figureInScene = GameObject.FindWithTag("Figure");
+		if (figureInScene != null)
 		{
-			Destroy(obj);
+			foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>())
+			{
+				meshRenderer.enabled = false;
+			}
 		}
 	}
 }

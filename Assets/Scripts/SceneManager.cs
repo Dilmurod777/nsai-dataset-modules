@@ -21,10 +21,12 @@ public class SceneManager : MonoBehaviour
 		switch (scene.name)
 		{
 			case MainSceneName:
+				RootManager.Instance.assetManager.ShowFigure();
 				RootManager.Instance.uiManager.UpdateUI();
 				RootManager.Instance.assetManager.UpdateAssets();
 				break;
 			case StartMenuSceneName:
+				RootManager.Instance.assetManager.HideFigure();
 				RootManager.Instance.knowledgeManager.ReadKnowledgeAndSetUp();
 				RootManager.Instance.knowledgeManager.ReadQueriesAndSetUp();
 				RootManager.Instance.uiManager.SetUpMenus();

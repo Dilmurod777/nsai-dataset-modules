@@ -17,11 +17,14 @@ public class ContextManager : MonoBehaviour
 	public void SetCurrentTask(string taskId)
 	{
 		CurrentTask = RootManager.Instance.knowledgeManager.Tasks.First(task => task.TaskId == taskId);
+		CurrentSubtask = CurrentTask != null && CurrentTask.Subtasks.Count > 0 ? CurrentTask.Subtasks[0] : null;
+		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
 	}
 
 	public void SetCurrentSubtask(Subtask subtask)
 	{
 		CurrentSubtask = subtask;
+		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
 		RootManager.Instance.assetManager.UpdateAssets();
 	}
 
@@ -44,5 +47,16 @@ public class ContextManager : MonoBehaviour
 	public void SetCurrentQuery(Query query)
 	{
 		CurrentQuery = query;
+	}
+
+	public void ResetCurrentTask()
+	{
+		CurrentTask = null;
+		CurrentSubtask = null;
+	}
+
+	public void ResetCurrentSubtask()
+	{
+		CurrentSubtask = null;
 	}
 }
