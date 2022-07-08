@@ -294,22 +294,19 @@ public class KnowledgeManager : MonoBehaviour
 				{
 					if (tasks[i].Subtasks[j].SubtaskId == currentSubtask.SubtaskId)
 					{
-						// if has next subtask
 						if (j < tasks[i].Subtasks.Count - 1)
 						{
 							RootManager.Instance.contextManager.SetCurrentSubtask(tasks[i].Subtasks[j + 1]);
 							return;
 						}
 
-						// if has next task
 						if (i < tasks.Count - 1)
 						{
 							RootManager.Instance.contextManager.SetCurrentTask(tasks[i + 1]);
-							RootManager.Instance.contextManager.SetCurrentSubtask(tasks[i].Subtasks[0]);
+							RootManager.Instance.contextManager.SetCurrentSubtask(tasks[i + 1].Subtasks[0]);
 							return;
 						}
 
-						// if has nothing else
 						RootManager.Instance.contextManager.ResetCurrentTask();
 						return;
 					}

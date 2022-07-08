@@ -12,6 +12,8 @@ public class ContextManager : MonoBehaviour
 	public void SetCurrentTask(Task task)
 	{
 		CurrentTask = task;
+		CurrentSubtask = CurrentTask != null && CurrentTask.Subtasks.Count > 0 ? CurrentTask.Subtasks[0] : null;
+		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
 	}
 
 	public void SetCurrentTask(string taskId)
@@ -31,6 +33,7 @@ public class ContextManager : MonoBehaviour
 	public void SetCurrentSubtask(string subtaskId)
 	{
 		CurrentSubtask = RootManager.Instance.contextManager.CurrentTask!.Subtasks.First(subtask => subtask.SubtaskId == subtaskId);
+		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
 		RootManager.Instance.assetManager.UpdateAssets();
 	}
 
