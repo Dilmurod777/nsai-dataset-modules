@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Custom;
 using Instances;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
 	public GameObject uiOption;
 	public GameObject uiAction;
@@ -19,64 +20,64 @@ public class UIManager : MonoBehaviour
 
 	public void SetUpMenus()
 	{
-		SetUpKnowledgeOptions(RootManager.Instance.knowledgeManager.Tasks);
-		SetUpQueryOptions(RootManager.Instance.knowledgeManager.Queries);
+		SetUpKnowledgeOptions(KnowledgeManager.Instance.Tasks);
+		SetUpQueryOptions(KnowledgeManager.Instance.Queries);
 	}
 
 	public void UpdateUI()
 	{
 		var homeButton = GameObject.FindWithTag("HomeButton");
 		homeButton!.GetComponent<Button>().onClick.RemoveAllListeners();
-		homeButton!.GetComponent<Button>().onClick.AddListener(() => { RootManager.Instance.sceneManager.LoadScene(SceneManager.StartMenuSceneName); });
+		homeButton!.GetComponent<Button>().onClick.AddListener(() => { SceneManager.Instance.LoadScene(SceneManager.StartMenuSceneNameGlobal); });
 
 		var playButton = GameObject.FindWithTag("PlayButton");
 		playButton!.GetComponent<Button>().onClick.RemoveAllListeners();
-		playButton!.GetComponent<Button>().onClick.AddListener(() => { RootManager.Instance.knowledgeManager.ExecuteSubtask(); });
+		playButton!.GetComponent<Button>().onClick.AddListener(() => { KnowledgeManager.Instance.ExecuteSubtask(); });
 
 		var nextButton = GameObject.FindWithTag("NextButton");
 		nextButton!.GetComponent<Button>().onClick.RemoveAllListeners();
 		nextButton!.GetComponent<Button>().onClick.AddListener(() =>
 		{
-			RootManager.Instance.knowledgeManager.GoToNextSubtask();
-			RootManager.Instance.uiManager.UpdateUI();
+			KnowledgeManager.Instance.GoToNextSubtask();
+			Instance.UpdateUI();
 		});
 
 
-		var query = RootManager.Instance.contextManager.CurrentQuery;
+		var query = ContextManager.Instance.CurrentQuery;
 		if (query != null)
 		{
 			var queryText = GameObject.FindWithTag("QueryText");
 			queryText!.GetComponent<InputField>().text = query.Title;
 
-			RootManager.Instance.contextManager.SetCurrentTask(query.TaskId);
-			RootManager.Instance.contextManager.SetCurrentSubtask(query.SubtaskId);
-			RootManager.Instance.contextManager.SetCurrentInstruction(query.InstructionOrder);
+			ContextManager.Instance.SetCurrentTask(query.TaskId);
+			ContextManager.Instance.SetCurrentSubtask(query.SubtaskId);
+			ContextManager.Instance.SetCurrentInstruction(query.InstructionOrder);
 		}
 
 		var knowledgeTaskUI = GameObject.FindWithTag("KnowledgeTaskUI");
-		knowledgeTaskUI!.GetComponent<Image>().enabled = RootManager.Instance.contextManager.CurrentTask != null;
-		knowledgeTaskUI!.transform.GetChild(0).GetComponent<Text>().text = RootManager.Instance.contextManager.CurrentTask != null
-			? "Task " + RootManager.Instance.contextManager.CurrentTask.TaskId
+		knowledgeTaskUI!.GetComponent<Image>().enabled = ContextManager.Instance.CurrentTask != null;
+		knowledgeTaskUI!.transform.GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentTask != null
+			? "Task " + ContextManager.Instance.CurrentTask.TaskId
 			: "";
 
 		var knowledgeSubtaskUI = GameObject.FindWithTag("KnowledgeSubtaskUI");
-		knowledgeSubtaskUI!.GetComponent<Image>().enabled = RootManager.Instance.contextManager.CurrentSubtask != null;
-		knowledgeSubtaskUI!.transform.GetChild(0).GetComponent<Text>().text = RootManager.Instance.contextManager.CurrentSubtask != null
-			? "Subtask " + RootManager.Instance.contextManager.CurrentSubtask.SubtaskId
+		knowledgeSubtaskUI!.GetComponent<Image>().enabled = ContextManager.Instance.CurrentSubtask != null;
+		knowledgeSubtaskUI!.transform.GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentSubtask != null
+			? "Subtask " + ContextManager.Instance.CurrentSubtask.SubtaskId
 			: "";
 
 		var knowledgeInstructionUI = GameObject.FindWithTag("KnowledgeInstructionUI");
-		knowledgeInstructionUI!.GetComponent<Image>().enabled = RootManager.Instance.contextManager.CurrentInstruction != null;
-		knowledgeInstructionUI!.transform.GetChild(0).GetComponent<Text>().text = RootManager.Instance.contextManager.CurrentInstruction != null
-			? RootManager.Instance.contextManager.CurrentInstruction.Content
+		knowledgeInstructionUI!.GetComponent<Image>().enabled = ContextManager.Instance.CurrentInstruction != null;
+		knowledgeInstructionUI!.transform.GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentInstruction != null
+			? ContextManager.Instance.CurrentInstruction.Content
 			: "";
 
 		var knowledgeActionsUI = GameObject.FindWithTag("KnowledgeActionsUI");
 		knowledgeActionsUI!.transform.GetChild(0).GetChild(0).GetComponent<Text>().enabled =
-			RootManager.Instance.contextManager.CurrentInstruction != null;
-		knowledgeActionsUI!.transform.GetChild(0).GetComponent<Image>().enabled = RootManager.Instance.contextManager.CurrentInstruction != null;
-		var actions = RootManager.Instance.contextManager.CurrentInstruction != null
-			? RootManager.Instance.contextManager.CurrentInstruction.Actions
+			ContextManager.Instance.CurrentInstruction != null;
+		knowledgeActionsUI!.transform.GetChild(0).GetComponent<Image>().enabled = ContextManager.Instance.CurrentInstruction != null;
+		var actions = ContextManager.Instance.CurrentInstruction != null
+			? ContextManager.Instance.CurrentInstruction.Actions
 			: null;
 
 
@@ -166,16 +167,23 @@ public class UIManager : MonoBehaviour
 				var newTaskOption = Instantiate(uiOption, knowledgeContent.transform, false);
 				newTaskOption.name = task.TaskId;
 				newTaskOption.tag = "TaskOptionUI";
-				newTaskOption.GetComponent<Button>().onClick.AddListener(() => { UIOptionClick(UIOptionType.Task, new dynamic[] {task}); });
+				var newTaskOptionButtonComponent = newTaskOption.GetComponent<Button>();
+				newTaskOptionButtonComponent.interactable = false;
+
+				var newColorBlock = newTaskOptionButtonComponent.colors;
+				newColorBlock.disabledColor = Color.black;
+				newTaskOptionButtonComponent.colors = newColorBlock;
 
 				var newTaskOptionTextComponent = newTaskOption.transform.GetChild(0).GetComponent<Text>();
 				newTaskOptionTextComponent.text = "Task " + task.TaskId;
+				newTaskOptionTextComponent.color = Color.white;
 
-				var list = Instantiate(new GameObject(), knowledgeContent.transform, false);
+				var list = new GameObject("Subtasks-List", typeof(RectTransform));
+				list.transform.SetParent(knowledgeContent.transform, false);
+
 				var listVerticalLayoutGroup = list.AddComponent<VerticalLayoutGroup>();
 				var listContentSizeFitter = list.AddComponent<ContentSizeFitter>();
 
-				list.name = "Subtasks-List";
 				listVerticalLayoutGroup.padding.left = 50;
 				listVerticalLayoutGroup.childControlWidth = false;
 				listVerticalLayoutGroup.childControlHeight = false;
@@ -198,38 +206,38 @@ public class UIManager : MonoBehaviour
 			}
 		}
 
-		// var currentTask = RootManager.Instance.contextManager.CurrentTask;
-		// var currentSubtask = RootManager.Instance.contextManager.CurrentSubtask;
-		// var taskOptionsUI = GameObject.FindGameObjectsWithTag("TaskOptionUI");
-		// var subtaskOptionsUI = GameObject.FindGameObjectsWithTag("SubtaskOptionUI");
-		//
-		// if (currentTask != null)
-		// {
-		// 	foreach (var optionUI in taskOptionsUI)
-		// 	{
-		// 		if (optionUI.name != currentTask.TaskId) continue;
-		// 		if (!currentTask.isCompleted) break;
-		//
-		// 		optionUI.GetComponent<Image>().color = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
-		// 		optionUI.transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 1f);
-		//
-		// 		optionUI.GetComponent<Button>().interactable = false;
-		// 	}
-		// }
-		//
-		// if (currentSubtask != null)
-		// {
-		// 	foreach (var optionUI in subtaskOptionsUI)
-		// 	{
-		// 		if (optionUI.name != currentSubtask.SubtaskId) continue;
-		// 		if (!currentSubtask.isCompleted) break;
-		//
-		// 		optionUI.GetComponent<Image>().color = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
-		// 		optionUI.transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 1f);
-		// 		
-		// 		optionUI.GetComponent<Button>().interactable = false;
-		// 	}
-		// }
+		var currentTask = ContextManager.Instance.CurrentTask;
+		var currentSubtask = ContextManager.Instance.CurrentSubtask;
+		var taskOptionsUI = GameObject.FindGameObjectsWithTag("TaskOptionUI");
+		var subtaskOptionsUI = GameObject.FindGameObjectsWithTag("SubtaskOptionUI");
+
+		if (currentTask != null)
+		{
+			foreach (var optionUI in taskOptionsUI)
+			{
+				if (optionUI.name != currentTask.TaskId) continue;
+				if (!currentTask.isCompleted) break;
+
+				optionUI.GetComponent<Image>().color = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
+				optionUI.transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 1f);
+
+				optionUI.GetComponent<Button>().interactable = false;
+			}
+		}
+
+		if (currentSubtask != null)
+		{
+			foreach (var optionUI in subtaskOptionsUI)
+			{
+				if (optionUI.name != currentSubtask.SubtaskId) continue;
+				if (!currentSubtask.isCompleted) break;
+
+				optionUI.GetComponent<Image>().color = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
+				optionUI.transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 1f);
+
+				optionUI.GetComponent<Button>().interactable = false;
+			}
+		}
 
 		var knowledgeScrollRect = knowledgeContent.transform.parent.GetComponent<ScrollRect>();
 		knowledgeScrollRect!.normalizedPosition = new Vector2(0, 1);
@@ -272,27 +280,27 @@ public class UIManager : MonoBehaviour
 				subtask = task!.Subtasks.Count > 0 ? task!.Subtasks[0] : null;
 				instruction = subtask?.Instructions.Count > 0 ? subtask.Instructions[0] : null;
 
-				RootManager.Instance.contextManager.SetCurrentTask(task);
-				RootManager.Instance.contextManager.SetCurrentSubtask(subtask);
-				RootManager.Instance.contextManager.SetCurrentInstruction(instruction);
+				ContextManager.Instance.SetCurrentTask(task);
+				ContextManager.Instance.SetCurrentSubtask(subtask);
+				ContextManager.Instance.SetCurrentInstruction(instruction);
 				break;
 			case UIOptionType.Subtask:
 				task = data[0] as Task;
 				subtask = data[1] as Subtask;
 				instruction = subtask?.Instructions.Count > 0 ? subtask.Instructions[0] : null;
 
-				RootManager.Instance.contextManager.SetCurrentTask(task);
-				RootManager.Instance.contextManager.SetCurrentSubtask(subtask);
-				RootManager.Instance.contextManager.SetCurrentInstruction(instruction);
+				ContextManager.Instance.SetCurrentTask(task);
+				ContextManager.Instance.SetCurrentSubtask(subtask);
+				ContextManager.Instance.SetCurrentInstruction(instruction);
 				break;
 			case UIOptionType.Query:
 				query = data[0] as Query;
-				RootManager.Instance.contextManager.SetCurrentQuery(query);
+				ContextManager.Instance.SetCurrentQuery(query);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException(nameof(type), type, null);
 		}
-
-		RootManager.Instance.sceneManager.LoadScene(SceneManager.MainSceneName);
+		
+		SceneManager.Instance.LoadScene(SceneManager.MainSceneNameGlobal);
 	}
 }

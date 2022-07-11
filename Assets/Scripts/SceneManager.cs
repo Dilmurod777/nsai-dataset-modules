@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using Custom;
 using UnityEngine.SceneManagement;
 
-public class SceneManager : MonoBehaviour
+public class SceneManager : Singleton<SceneManager>
 {
-	public const string StartMenuSceneName = "0_StartMenu";
-	public const string MainSceneName = "1_Main";
+	private const string StartMenuSceneName = "0_StartMenu";
+	private const string MainSceneName = "1_Main";
+
+	public static string StartMenuSceneNameGlobal = StartMenuSceneName;
+	public static string MainSceneNameGlobal = MainSceneName;
 
 	public void LoadScene(string sceneName)
 	{
@@ -21,15 +24,15 @@ public class SceneManager : MonoBehaviour
 		switch (scene.name)
 		{
 			case MainSceneName:
-				RootManager.Instance.assetManager.ShowFigure();
-				RootManager.Instance.uiManager.UpdateUI();
-				RootManager.Instance.assetManager.UpdateAssets();
+				AssetManager.Instance.ShowFigure();
+				UIManager.Instance.UpdateUI();
+				AssetManager.Instance.UpdateAssets();
 				break;
 			case StartMenuSceneName:
-				RootManager.Instance.assetManager.HideFigure();
-				RootManager.Instance.knowledgeManager.ReadKnowledgeAndSetUp();
-				RootManager.Instance.knowledgeManager.ReadQueriesAndSetUp();
-				RootManager.Instance.uiManager.SetUpMenus();
+				AssetManager.Instance.HideFigure();
+				KnowledgeManager.Instance.ReadKnowledgeAndSetUp();
+				KnowledgeManager.Instance.ReadQueriesAndSetUp();
+				UIManager.Instance.SetUpMenus();
 				break;
 		}
 	}

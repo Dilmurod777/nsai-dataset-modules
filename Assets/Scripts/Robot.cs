@@ -1,7 +1,8 @@
 ﻿using System.Collections;
+using Custom;
 using UnityEngine;
 
-public class Robot
+public class Robot: Singleton<Robot>
 {
 	private float _moveDuration;
 	private float _rotateDuration;

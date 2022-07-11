@@ -6,7 +6,7 @@ using UnityEngine;
 using System.IO;
 using Cinemachine;
 
-public class KnowledgeManager : MonoBehaviour
+public class KnowledgeManager : Singleton<KnowledgeManager>
 {
 	public string rootDocument = "root";
 	public List<Task> Tasks;
@@ -179,15 +179,15 @@ public class KnowledgeManager : MonoBehaviour
 
 	public void ExecuteSubtask()
 	{
-		var instructions = RootManager.Instance.contextManager.CurrentSubtask.Instructions;
+		var instructions = ContextManager.Instance.CurrentSubtask.Instructions;
 		var primitives = new List<IEnumerator>();
 
-		primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.DisableAllButtons(); }));
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.DisableAllButtons(); }));
 
 		foreach (var instruction in instructions)
 		{
-			primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.contextManager.SetCurrentInstruction(instruction); }));
-			primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.UpdateUI(); }));
+			primitives.Add(PrimitiveManager.SimplePrimitive(() => { ContextManager.Instance.SetCurrentInstruction(instruction); }));
+			primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateUI(); }));
 
 			var actions = instruction.Actions;
 
@@ -195,8 +195,8 @@ public class KnowledgeManager : MonoBehaviour
 			{
 				if (action.Operation == "detach")
 				{
-					var attachingObj = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[0] + "]");
-					var referenceObj = RootManager.Instance.assetManager.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[1] + "]");
+					var attachingObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[0] + "]");
+					var referenceObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[1] + "]");
 
 					var objectMeta = attachingObj.GetComponent<ObjectMeta>();
 
@@ -213,8 +213,8 @@ public class KnowledgeManager : MonoBehaviour
 					};
 
 					text += attachingObj.name + delimiter + referenceObj.name;
-					primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.UpdateActionsList("- " + text); }));
-					primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.UpdateReply(text); }));
+					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateActionsList("- " + text); }));
+					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
 
 
 					primitives.Add(PrimitiveManager.SimplePrimitive(() =>
@@ -225,7 +225,7 @@ public class KnowledgeManager : MonoBehaviour
 						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = attachingObj.transform;
 					}));
 
-					primitives.Add(RootManager.Robot.Wait(2f));
+					primitives.Add(Robot.Instance.Wait(2f));
 
 					var rotationAxis = objectMeta.attachRotationAxis;
 
@@ -264,27 +264,27 @@ public class KnowledgeManager : MonoBehaviour
 						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
 
 						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = null;
-						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = null;
+						// virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = null;
 					}));
 
-					primitives.Add(RootManager.Robot.Wait(0.5f));
+					primitives.Add(Robot.Instance.Wait(0.5f));
 					primitives.AddRange(PrimitiveManager.CreateRfmToScatteredMovePrimitives(attachingObj));
 					primitives.AddRange(PrimitiveManager.CreateRotatePrimitives(attachingObj));
 				}
 			}
 		}
 
-		primitives.Add(PrimitiveManager.SimplePrimitive(() => { RootManager.Instance.uiManager.EnableAllButtons(); }));
-		primitives.Add(PrimitiveManager.SimplePrimitive(() => RootManager.Instance.knowledgeManager.SetCurrentSubtaskCompleted()));
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.EnableAllButtons(); }));
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => Instance.SetCurrentSubtaskCompleted()));
 
-		StartCoroutine(RootManager.Instance.Sequence(primitives));
+		StartCoroutine(Sequence(primitives));
 	}
 
 	public void GoToNextSubtask()
 	{
-		var tasks = RootManager.Instance.knowledgeManager.Tasks;
-		var currentTask = RootManager.Instance.contextManager.CurrentTask;
-		var currentSubtask = RootManager.Instance.contextManager.CurrentSubtask;
+		var tasks = Instance.Tasks;
+		var currentTask = ContextManager.Instance.CurrentTask;
+		var currentSubtask = ContextManager.Instance.CurrentSubtask;
 
 		for (int i = 0; i < tasks.Count; i++)
 		{
@@ -296,18 +296,18 @@ public class KnowledgeManager : MonoBehaviour
 					{
 						if (j < tasks[i].Subtasks.Count - 1)
 						{
-							RootManager.Instance.contextManager.SetCurrentSubtask(tasks[i].Subtasks[j + 1]);
+							ContextManager.Instance.SetCurrentSubtask(tasks[i].Subtasks[j + 1]);
 							return;
 						}
 
 						if (i < tasks.Count - 1)
 						{
-							RootManager.Instance.contextManager.SetCurrentTask(tasks[i + 1]);
-							RootManager.Instance.contextManager.SetCurrentSubtask(tasks[i + 1].Subtasks[0]);
+							ContextManager.Instance.SetCurrentTask(tasks[i + 1]);
+							ContextManager.Instance.SetCurrentSubtask(tasks[i + 1].Subtasks[0]);
 							return;
 						}
 
-						RootManager.Instance.contextManager.ResetCurrentTask();
+						ContextManager.Instance.ResetCurrentTask();
 						return;
 					}
 				}
@@ -317,8 +317,8 @@ public class KnowledgeManager : MonoBehaviour
 
 	public void SetCurrentSubtaskCompleted()
 	{
-		var currentTask = RootManager.Instance.contextManager.CurrentTask;
-		var currentSubtask = RootManager.Instance.contextManager.CurrentSubtask;
+		var currentTask = ContextManager.Instance.CurrentTask;
+		var currentSubtask = ContextManager.Instance.CurrentSubtask;
 
 		for (var i = 0; i < Tasks.Count; i++)
 		{
@@ -334,5 +334,15 @@ public class KnowledgeManager : MonoBehaviour
 				}
 			}
 		}
+	}
+	
+	public IEnumerator Sequence(List<IEnumerator> sequence)
+	{
+		foreach (var coroutine in sequence)
+		{
+			yield return StartCoroutine(coroutine);
+		}
+
+		yield return null;
 	}
 }

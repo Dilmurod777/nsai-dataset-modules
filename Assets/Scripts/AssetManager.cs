@@ -5,7 +5,7 @@ using Cinemachine;
 using Custom;
 using UnityEngine;
 
-public class AssetManager : MonoBehaviour
+public class AssetManager : Singleton<AssetManager>
 {
 	public enum FigureType
 	{
@@ -16,7 +16,7 @@ public class AssetManager : MonoBehaviour
 	}
 
 	private Vector3 offset = new Vector3(-60.7f, -20.4f, 36.9f);
-
+	
 	private string GetPlainFigureName(string figureName)
 	{
 		var figureNameToPrefabMatch = new Dictionary<string, string>
@@ -40,7 +40,7 @@ public class AssetManager : MonoBehaviour
 
 	public void UpdateAssets()
 	{
-		var subtask = RootManager.Instance.contextManager.CurrentSubtask;
+		var subtask = ContextManager.Instance.CurrentSubtask;
 
 		if (subtask != null)
 		{
@@ -100,7 +100,7 @@ public class AssetManager : MonoBehaviour
 
 	public GameObject FindObjectInFigure(FigureType type, string objName)
 	{
-		var figureName = RootManager.Instance.contextManager.CurrentSubtask.Figure;
+		var figureName = ContextManager.Instance.CurrentSubtask.Figure;
 		var figure = type switch
 		{
 			FigureType.Current => GameObject.Find(GetPlainFigureName(figureName) + "-Initial(Clone)"),
@@ -129,7 +129,7 @@ public class AssetManager : MonoBehaviour
 			meshRenderer.enabled = true;
 		}
 	}
-	
+
 	public void HideFigure()
 	{
 		var figureInScene = GameObject.FindWithTag("Figure");

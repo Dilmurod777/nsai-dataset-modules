@@ -1,8 +1,9 @@
 ﻿using System.Linq;
+using Custom;
 using Instances;
 using UnityEngine;
 
-public class ContextManager : MonoBehaviour
+public class ContextManager : Singleton<ContextManager>
 {
 	public Task CurrentTask;
 	public Subtask CurrentSubtask;
@@ -18,7 +19,7 @@ public class ContextManager : MonoBehaviour
 
 	public void SetCurrentTask(string taskId)
 	{
-		CurrentTask = RootManager.Instance.knowledgeManager.Tasks.First(task => task.TaskId == taskId);
+		CurrentTask = KnowledgeManager.Instance.Tasks.First(task => task.TaskId == taskId);
 		CurrentSubtask = CurrentTask != null && CurrentTask.Subtasks.Count > 0 ? CurrentTask.Subtasks[0] : null;
 		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
 	}
@@ -27,14 +28,14 @@ public class ContextManager : MonoBehaviour
 	{
 		CurrentSubtask = subtask;
 		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
-		RootManager.Instance.assetManager.UpdateAssets();
+		AssetManager.Instance.UpdateAssets();
 	}
 
 	public void SetCurrentSubtask(string subtaskId)
 	{
-		CurrentSubtask = RootManager.Instance.contextManager.CurrentTask!.Subtasks.First(subtask => subtask.SubtaskId == subtaskId);
+		CurrentSubtask = Instance.CurrentTask!.Subtasks.First(subtask => subtask.SubtaskId == subtaskId);
 		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
-		RootManager.Instance.assetManager.UpdateAssets();
+		AssetManager.Instance.UpdateAssets();
 	}
 
 	public void SetCurrentInstruction(Instruction instruction)
@@ -44,7 +45,7 @@ public class ContextManager : MonoBehaviour
 
 	public void SetCurrentInstruction(string instructionOrder)
 	{
-		CurrentInstruction = RootManager.Instance.contextManager.CurrentSubtask!.Instructions.First(instr => instr.Order == instructionOrder);
+		CurrentInstruction = Instance.CurrentSubtask!.Instructions.First(instr => instr.Order == instructionOrder);
 	}
 
 	public void SetCurrentQuery(Query query)
