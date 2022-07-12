@@ -84,10 +84,7 @@ public class UIManager : Singleton<UIManager>
 		var contentScrollList = knowledgeActionsUI.transform.GetChild(1).GetChild(0);
 		if (actions != null)
 		{
-			for (var i = 0; i < contentScrollList.childCount; i++)
-			{
-				Destroy(contentScrollList.GetChild(i).gameObject);
-			}
+			for (var i = 0; i < contentScrollList.childCount; i++) Destroy(contentScrollList.GetChild(i).gameObject);
 
 			foreach (var action in actions)
 			{
@@ -99,10 +96,7 @@ public class UIManager : Singleton<UIManager>
 		}
 		else
 		{
-			for (var i = 0; i < contentScrollList.childCount; i++)
-			{
-				Destroy(contentScrollList.transform.GetChild(i).gameObject);
-			}
+			for (var i = 0; i < contentScrollList.childCount; i++) Destroy(contentScrollList.transform.GetChild(i).gameObject);
 		}
 	}
 
@@ -113,10 +107,7 @@ public class UIManager : Singleton<UIManager>
 		if (actionsList)
 		{
 			var textComponent = actionsList.GetComponent<Text>();
-			if (textComponent != null)
-			{
-				textComponent.text += textComponent.text == "" ? text : "\n" + text;
-			}
+			if (textComponent != null) textComponent.text += textComponent.text == "" ? text : "\n" + text;
 		}
 	}
 
@@ -127,10 +118,7 @@ public class UIManager : Singleton<UIManager>
 		if (reply)
 		{
 			var textComponent = reply.GetComponent<Text>();
-			if (textComponent != null)
-			{
-				textComponent.text = text;
-			}
+			if (textComponent != null) textComponent.text = text;
 		}
 	}
 
@@ -138,10 +126,7 @@ public class UIManager : Singleton<UIManager>
 	{
 		var buttons = FindObjectsOfType<Button>();
 
-		foreach (var button in buttons)
-		{
-			button.interactable = true;
-		}
+		foreach (var button in buttons) button.interactable = true;
 	}
 
 
@@ -149,10 +134,7 @@ public class UIManager : Singleton<UIManager>
 	{
 		var buttons = FindObjectsOfType<Button>();
 
-		foreach (var button in buttons)
-		{
-			button.interactable = false;
-		}
+		foreach (var button in buttons) button.interactable = false;
 	}
 
 	private void SetUpKnowledgeOptions(List<Task> tasks)
@@ -160,7 +142,6 @@ public class UIManager : Singleton<UIManager>
 		var knowledgeContent = GameObject.FindWithTag("KnowledgeContent");
 
 		if (knowledgeContent.transform.childCount == 0)
-		{
 			for (var i = 0; i < tasks.Count; i++)
 			{
 				var task = tasks[i];
@@ -204,7 +185,6 @@ public class UIManager : Singleton<UIManager>
 					newSubtaskOptionTextComponent.text = "Subtask " + task.Subtasks[j].SubtaskId;
 				}
 			}
-		}
 
 		var currentTask = ContextManager.Instance.CurrentTask;
 		var currentSubtask = ContextManager.Instance.CurrentSubtask;
@@ -212,7 +192,6 @@ public class UIManager : Singleton<UIManager>
 		var subtaskOptionsUI = GameObject.FindGameObjectsWithTag("SubtaskOptionUI");
 
 		if (currentTask != null)
-		{
 			foreach (var optionUI in taskOptionsUI)
 			{
 				if (optionUI.name != currentTask.TaskId) continue;
@@ -223,10 +202,8 @@ public class UIManager : Singleton<UIManager>
 
 				optionUI.GetComponent<Button>().interactable = false;
 			}
-		}
 
 		if (currentSubtask != null)
-		{
 			foreach (var optionUI in subtaskOptionsUI)
 			{
 				if (optionUI.name != currentSubtask.SubtaskId) continue;
@@ -237,7 +214,6 @@ public class UIManager : Singleton<UIManager>
 
 				optionUI.GetComponent<Button>().interactable = false;
 			}
-		}
 
 		var knowledgeScrollRect = knowledgeContent.transform.parent.GetComponent<ScrollRect>();
 		knowledgeScrollRect!.normalizedPosition = new Vector2(0, 1);
@@ -248,7 +224,6 @@ public class UIManager : Singleton<UIManager>
 		var queriesContent = GameObject.FindWithTag("QueriesContent");
 
 		if (queriesContent.transform.childCount == 0)
-		{
 			for (var i = 0; i < queries.Count; i++)
 			{
 				var query = queries[i];
@@ -260,7 +235,6 @@ public class UIManager : Singleton<UIManager>
 				var newQueryOptionTextComponent = newQueryOption.transform.GetChild(0).GetComponent<Text>();
 				newQueryOptionTextComponent.text = query.Filename;
 			}
-		}
 
 		var queryScrollRect = queriesContent.transform.parent.GetComponent<ScrollRect>();
 		queryScrollRect.normalizedPosition = new Vector2(0, 1);
@@ -300,7 +274,7 @@ public class UIManager : Singleton<UIManager>
 			default:
 				throw new ArgumentOutOfRangeException(nameof(type), type, null);
 		}
-		
+
 		SceneManager.Instance.LoadScene(SceneManager.MainSceneNameGlobal);
 	}
 }

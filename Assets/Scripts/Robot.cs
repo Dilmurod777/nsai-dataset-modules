@@ -2,19 +2,19 @@
 using Custom;
 using UnityEngine;
 
-public class Robot: Singleton<Robot>
+public class Robot : Singleton<Robot>
 {
 	private float _moveDuration;
 	private float _rotateDuration;
 	private float _defaultMoveDuration;
 	private float _defaultRotateDuration;
 
-	public Robot(float moveDuration = 1.5f, float rotateDuration = 1.5f)
+	private void Start()
 	{
-		_moveDuration = moveDuration;
-		_rotateDuration = rotateDuration;
-		_defaultMoveDuration = moveDuration;
-		_defaultRotateDuration = rotateDuration;
+		_moveDuration = 1.5f;
+		_rotateDuration = 1.5f;
+		_defaultMoveDuration = _moveDuration;
+		_defaultRotateDuration = _rotateDuration;
 	}
 
 	public IEnumerator SetMoveDuration(float seconds)
@@ -58,7 +58,7 @@ public class Robot: Singleton<Robot>
 		var delta = 0f;
 		while (delta < GetMoveDuration())
 		{
-			delta += Time.deltaTime;
+			delta += Time.fixedDeltaTime;
 			sourceObject.transform.position = Vector3.Lerp(initialPosition, finalPosition, delta / GetMoveDuration());
 			yield return null;
 		}
@@ -73,7 +73,7 @@ public class Robot: Singleton<Robot>
 		var delta = 0f;
 		while (delta < GetRotateDuration())
 		{
-			delta += Time.deltaTime;
+			delta += Time.fixedDeltaTime;
 			sourceObject.transform.rotation = Quaternion.Lerp(initialRotation, Quaternion.Euler(finalRotation), delta / GetRotateDuration());
 			yield return null;
 		}
@@ -88,11 +88,11 @@ public class Robot: Singleton<Robot>
 		var delta = 0f;
 		while (delta < GetMoveDuration())
 		{
-			var finalRotation = sourceObject.transform.eulerAngles + rotationAxis * 5.0f;
+			Debug.Log("rotationAxis " + rotationAxis);
 
-			delta += Time.deltaTime;
-			sourceObject.transform.position = Vector3.Lerp(initialPosition, finalPosition, delta/GetMoveDuration());
-			sourceObject.transform.rotation = Quaternion.Lerp(sourceObject.transform.rotation, Quaternion.Euler(finalRotation), delta/GetRotateDuration());
+			delta += Time.fixedDeltaTime;
+			sourceObject.transform.position = Vector3.Lerp(initialPosition, finalPosition, delta / GetMoveDuration());
+			sourceObject.transform.Rotate(rotationAxis, 5.0f);
 			yield return null;
 		}
 

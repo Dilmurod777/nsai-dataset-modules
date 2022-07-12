@@ -97,7 +97,12 @@ public static class PrimitiveManager
 		var rfmFinalPosition = objB.transform.TransformPoint(rfmDiff);
 		rfmReferenceObjA.transform.SetParent(previousParent);
 
-		primitives.Add(Robot.Instance.Move(objA, rfmFinalPosition));
+		var delta = rfmFinalPosition - objA.transform.position;
+		for (var i = 0; i < steps; i++)
+		{
+			primitives.Add(Robot.Instance.Move(objA, objA.transform.position + (i + 1) * delta / steps));
+			primitives.Add(Robot.Instance.Wait(0.25f));
+		}
 
 		return primitives;
 	}
@@ -115,8 +120,42 @@ public static class PrimitiveManager
 		var rfmFinalPosition = objB.transform.TransformPoint(rfmDiff);
 		rfmReferenceObjA.transform.SetParent(previousParent);
 
-		primitives.Add(Robot.Instance.MoveWithRotation(objA, rfmFinalPosition, direction));
+
+		var delta = rfmFinalPosition - objA.transform.position;
+		for (var i = 0; i < steps; i++)
+		{
+			primitives.Add(Robot.Instance.MoveWithRotation(objA, objA.transform.position + (i + 1) * delta / steps, direction));
+			primitives.Add(Robot.Instance.Wait(0.25f));
+		}
 
 		return primitives;
+	}
+
+	public static IEnumerator MakeObjectTransparent(GameObject obj, float finalAlpha = 0.0f)
+	{
+		var delta = 0.0f;
+		var totalDuration = 2.0f;
+
+		var oldMaterials = obj.GetComponent<MeshRenderer>().materials;
+		foreach (var oldMaterial in oldMaterials)
+		{
+			oldMaterial.SetFloat("_Mode", 2);
+		}
+
+		while (delta < totalDuration)
+		{
+			delta += Time.fixedDeltaTime;
+
+			for (var i = 0; i < oldMaterials.Length; i++)
+			{
+				var oldColor = oldMaterials[i].color;
+				var newColor = new Color(oldColor.r, oldColor.g, oldColor.b, delta / totalDuration * finalAlpha);
+				oldMaterials[i].SetColor("_Color", newColor);
+			}
+
+			yield return null;
+		}
+
+		yield return null;
 	}
 }

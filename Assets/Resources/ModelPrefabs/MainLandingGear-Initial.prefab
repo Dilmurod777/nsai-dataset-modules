@@ -498,10 +498,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
+  attachType: 1
+  detachType: 1
 --- !u!65 &485507258610261152
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -836,10 +836,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
+  attachType: 2
+  detachType: 2
 --- !u!65 &7617462759961038829
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -950,8 +950,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachRotationAxis: 0
   dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachType: 2
+  detachType: 2
 --- !u!65 &7042787166105359678
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1173,9 +1173,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  dettachRotationAxis: 3
+  attachType: 1
+  detachType: 1
 --- !u!65 &8256382476525941104
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1286,8 +1286,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachRotationAxis: 0
   dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachType: 3
+  detachType: 3
 --- !u!65 &6764029004589560202
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1846,10 +1846,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
+  attachType: 1
+  detachType: 1
 --- !u!65 &2452482248246792207
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2184,8 +2184,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachRotationAxis: 0
   dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachType: 2
+  detachType: 2
 --- !u!65 &3228284688211018249
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2338,13 +2338,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4850108452583447743}
-  m_LocalRotation: {x: -0.6889837, y: 0.1590644, z: 0.1590644, w: 0.6889837}
+  m_LocalRotation: {x: 0.07535873, y: 0.59888875, z: -0.7030797, w: -0.37594178}
   m_LocalPosition: {x: 3.893135, y: 1.5191928, z: -1.9211526}
   m_LocalScale: {x: 0.2025893, y: 0.20258941, z: 0.20258945}
   m_Children: []
   m_Father: {fileID: 7796777963051480535}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -308.236, y: -64, z: 90}
 --- !u!33 &6465580334205508194
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2406,10 +2406,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
+  attachType: 2
+  detachType: 2
 --- !u!65 &5695996805041025601
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2868,8 +2868,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachRotationAxis: 0
   dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachType: 2
+  detachType: 2
 --- !u!65 &6382342818278473715
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3090,10 +3090,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
+  attachType: 2
+  detachType: 2
 --- !u!65 &2164744017820386044
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3203,10 +3203,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
+  attachType: 2
+  detachType: 2
 --- !u!65 &7282793371727532608
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3653,9 +3653,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  dettachRotationAxis: 3
+  attachType: 2
+  detachType: 2
 --- !u!65 &5979518611051193215
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4101,10 +4101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
+  attachType: 2
+  detachType: 2
 --- !u!65 &769438889346641078
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4215,8 +4215,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachRotationAxis: 0
   dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachType: 3
+  detachType: 3
 --- !u!65 &7132114398719836539
 BoxCollider:
   m_ObjectHideFlags: 0

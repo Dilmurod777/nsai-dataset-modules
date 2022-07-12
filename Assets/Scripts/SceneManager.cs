@@ -19,7 +19,7 @@ public class SceneManager : Singleton<SceneManager>
 		UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 	}
 
-	static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
 		switch (scene.name)
 		{

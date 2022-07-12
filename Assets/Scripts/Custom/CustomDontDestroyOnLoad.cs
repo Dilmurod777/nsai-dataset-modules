@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Custom
 {
-	public class CustomDontDestroyOnLoad: MonoBehaviour
+	public class CustomDontDestroyOnLoad : MonoBehaviour
 	{
 		private string uniqueID;
 
@@ -16,14 +16,10 @@ namespace Custom
 		{
 			var dontDestroyOnLoadObjects = FindObjectsOfType<CustomDontDestroyOnLoad>();
 
-			for (int i = 0; i < dontDestroyOnLoadObjects.Length; i++)
-			{
+			for (var i = 0; i < dontDestroyOnLoadObjects.Length; i++)
 				if (dontDestroyOnLoadObjects[i] != this && dontDestroyOnLoadObjects[i].uniqueID == uniqueID)
-				{
 					Destroy(gameObject);
-				}
-			}
-			
+
 			DontDestroyOnLoad(gameObject);
 		}
 	}

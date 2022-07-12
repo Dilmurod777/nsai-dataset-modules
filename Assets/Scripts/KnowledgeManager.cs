@@ -37,10 +37,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 
 			var programs = new List<string>();
 
-			foreach (var value in queryData["programs"].Values)
-			{
-				programs.Add(value[1]);
-			}
+			foreach (var value in queryData["programs"].Values) programs.Add(value[1]);
 
 			Queries.Add(new Query(
 				file.Name,
@@ -64,21 +61,15 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 			var figures = new List<Figure>();
 			var subtasks = new List<Subtask>();
 
-			if (node[i].HasKey("figures"))
-			{
-				figures = CreateFigures(node[i]["figures"]);
-			}
+			if (node[i].HasKey("figures")) figures = CreateFigures(node[i]["figures"]);
 
-			if (node[i].HasKey("subtasks"))
-			{
-				subtasks = CreateSubtasks(node[i]["subtasks"]);
-			}
+			if (node[i].HasKey("subtasks")) subtasks = CreateSubtasks(node[i]["subtasks"]);
 
 			tasks.Add(new Task(
-				taskId: taskId,
-				title: title,
-				figures: figures,
-				subtasks: subtasks
+				taskId,
+				title,
+				figures,
+				subtasks
 			));
 		}
 
@@ -93,14 +84,11 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 			string title = node[i]["title"];
 			var figureItems = new Dictionary<string, string>();
 
-			foreach (var item in node[i]["figure_items"].Keys)
-			{
-				figureItems.Add(item, node[i]["figure_items"][item]);
-			}
+			foreach (var item in node[i]["figure_items"].Keys) figureItems.Add(item, node[i]["figure_items"][item]);
 
 			figures.Add(new Figure(
-				title: title,
-				figureItems: figureItems
+				title,
+				figureItems
 			));
 		}
 
@@ -117,16 +105,13 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 			string figure = node[i]["figure"];
 			var instructions = new List<Instruction>();
 
-			if (node[i].HasKey("instructions"))
-			{
-				instructions = CreateInstructions(node[i]["instructions"]);
-			}
+			if (node[i].HasKey("instructions")) instructions = CreateInstructions(node[i]["instructions"]);
 
 			subtasks.Add(new Subtask(
-				subtaskId: subtaskId,
-				content: content,
-				instructions: instructions,
-				figure: figure
+				subtaskId,
+				content,
+				instructions,
+				figure
 			));
 		}
 
@@ -142,15 +127,12 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 			string content = node[i]["content"];
 			var actions = new List<Action>();
 
-			if (node[i].HasKey("actions"))
-			{
-				actions = CreateActions(node[i]["actions"]);
-			}
+			if (node[i].HasKey("actions")) actions = CreateActions(node[i]["actions"]);
 
 			instructions.Add(new Instruction(
-				order: order,
-				content: content,
-				actions: actions
+				order,
+				content,
+				actions
 			));
 		}
 
@@ -166,12 +148,10 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 			var action = node[i];
 
 			foreach (var operation in action.Keys)
-			{
 				actions.Add(new Action(
-					operation: operation,
-					components: new List<string> {action[operation][0].ToString(), action[operation][1].ToString()}
+					operation,
+					new List<string> {action[operation][0].ToString(), action[operation][1].ToString()}
 				));
-			}
 		}
 
 		return actions;
@@ -192,7 +172,6 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 			var actions = instruction.Actions;
 
 			foreach (var action in actions)
-			{
 				if (action.Operation == "detach")
 				{
 					var attachingObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[0] + "]");
@@ -221,6 +200,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					{
 						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
 
+						// virtualCamera.GetComponent<CinemachineVirtualCamera>().enabled = true;
 						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = attachingObj.transform;
 						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = attachingObj.transform;
 					}));
@@ -263,15 +243,16 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					{
 						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
 
-						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = null;
+						// virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = null;
 						// virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = null;
+						// virtualCamera.GetComponent<CinemachineVirtualCamera>().enabled = false;
 					}));
 
 					primitives.Add(Robot.Instance.Wait(0.5f));
-					primitives.AddRange(PrimitiveManager.CreateRfmToScatteredMovePrimitives(attachingObj));
-					primitives.AddRange(PrimitiveManager.CreateRotatePrimitives(attachingObj));
+					primitives.Add(PrimitiveManager.MakeObjectTransparent(attachingObj));
+					// primitives.AddRange(PrimitiveManager.CreateRfmToScatteredMovePrimitives(attachingObj));
+					// primitives.AddRange(PrimitiveManager.CreateRotatePrimitives(attachingObj));
 				}
-			}
 		}
 
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.EnableAllButtons(); }));
@@ -286,12 +267,9 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		var currentTask = ContextManager.Instance.CurrentTask;
 		var currentSubtask = ContextManager.Instance.CurrentSubtask;
 
-		for (int i = 0; i < tasks.Count; i++)
-		{
+		for (var i = 0; i < tasks.Count; i++)
 			if (tasks[i].TaskId == currentTask.TaskId)
-			{
 				for (var j = 0; j < tasks[i].Subtasks.Count; j++)
-				{
 					if (tasks[i].Subtasks[j].SubtaskId == currentSubtask.SubtaskId)
 					{
 						if (j < tasks[i].Subtasks.Count - 1)
@@ -310,9 +288,6 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 						ContextManager.Instance.ResetCurrentTask();
 						return;
 					}
-				}
-			}
-		}
 	}
 
 	public void SetCurrentSubtaskCompleted()
@@ -321,27 +296,18 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		var currentSubtask = ContextManager.Instance.CurrentSubtask;
 
 		for (var i = 0; i < Tasks.Count; i++)
-		{
 			if (Tasks[i].TaskId == currentTask.TaskId)
-			{
 				for (var j = 0; j < Tasks[i].Subtasks.Count; j++)
-				{
 					if (Tasks[i].Subtasks[j].SubtaskId == currentSubtask.SubtaskId)
 					{
 						Tasks[i].Subtasks[j].isCompleted = true;
 						break;
 					}
-				}
-			}
-		}
 	}
-	
+
 	public IEnumerator Sequence(List<IEnumerator> sequence)
 	{
-		foreach (var coroutine in sequence)
-		{
-			yield return StartCoroutine(coroutine);
-		}
+		foreach (var coroutine in sequence) yield return StartCoroutine(coroutine);
 
 		yield return null;
 	}

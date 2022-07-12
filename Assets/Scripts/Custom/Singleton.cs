@@ -9,14 +9,14 @@ namespace Custom
 	{
 		private static readonly Dictionary<Type, object> Singletons = new Dictionary<Type, object>();
 
-		public static T Instance => (T)Singletons[typeof(T)];
+		public static T Instance => (T) Singletons[typeof(T)];
 
-		private void Awake() {
-			if (Singletons.ContainsKey(GetType())) {
+		private void Awake()
+		{
+			if (Singletons.ContainsKey(GetType()))
 				Destroy(this);
-			} else {
+			else
 				Singletons.Add(GetType(), this);
-			}
 		}
 	}
 }

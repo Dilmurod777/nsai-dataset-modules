@@ -16,7 +16,7 @@ public class AssetManager : Singleton<AssetManager>
 	}
 
 	private Vector3 offset = new Vector3(-60.7f, -20.4f, 36.9f);
-	
+
 	private string GetPlainFigureName(string figureName)
 	{
 		var figureNameToPrefabMatch = new Dictionary<string, string>
@@ -29,10 +29,7 @@ public class AssetManager : Singleton<AssetManager>
 
 		var needsToReplace = new List<string> {"-IFM", "-RFM", "-Scattered"};
 
-		foreach (var word in needsToReplace)
-		{
-			prefabName = prefabName.Replace(word, "");
-		}
+		foreach (var word in needsToReplace) prefabName = prefabName.Replace(word, "");
 
 		return prefabName;
 	}
@@ -64,10 +61,7 @@ public class AssetManager : Singleton<AssetManager>
 				instantiatedIfm.tag = "ReferenceObject";
 				instantiatedIfm.AddComponent<CustomDontDestroyOnLoad>();
 
-				foreach (var meshRenderer in instantiatedIfm.GetComponentsInChildren<MeshRenderer>())
-				{
-					meshRenderer.enabled = false;
-				}
+				foreach (var meshRenderer in instantiatedIfm.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
 			}
 
 			if (rfmPrefab != null)
@@ -77,10 +71,7 @@ public class AssetManager : Singleton<AssetManager>
 				instantiatedRfm.tag = "ReferenceObject";
 				instantiatedRfm.AddComponent<CustomDontDestroyOnLoad>();
 
-				foreach (var meshRenderer in instantiatedRfm.GetComponentsInChildren<MeshRenderer>())
-				{
-					meshRenderer.enabled = false;
-				}
+				foreach (var meshRenderer in instantiatedRfm.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
 			}
 
 			if (scatteredPrefab != null)
@@ -90,10 +81,7 @@ public class AssetManager : Singleton<AssetManager>
 				instantiatedScattered.tag = "ReferenceObject";
 				instantiatedScattered.AddComponent<CustomDontDestroyOnLoad>();
 
-				foreach (var meshRenderer in instantiatedScattered.GetComponentsInChildren<MeshRenderer>())
-				{
-					meshRenderer.enabled = false;
-				}
+				foreach (var meshRenderer in instantiatedScattered.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
 			}
 		}
 	}
@@ -111,12 +99,8 @@ public class AssetManager : Singleton<AssetManager>
 		};
 
 		foreach (var child in figure.GetComponentsInChildren<Transform>())
-		{
 			if (child.name.Contains(objName))
-			{
 				return child.gameObject;
-			}
-		}
 
 		return null;
 	}
@@ -124,21 +108,14 @@ public class AssetManager : Singleton<AssetManager>
 	public void ShowFigure()
 	{
 		var figureInScene = GameObject.FindWithTag("Figure");
-		foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>())
-		{
-			meshRenderer.enabled = true;
-		}
+		foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;
 	}
 
 	public void HideFigure()
 	{
 		var figureInScene = GameObject.FindWithTag("Figure");
 		if (figureInScene != null)
-		{
 			foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>())
-			{
 				meshRenderer.enabled = false;
-			}
-		}
 	}
 }
