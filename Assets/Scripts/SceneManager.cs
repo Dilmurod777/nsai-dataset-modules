@@ -3,10 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class SceneManager : Singleton<SceneManager>
 {
-	private const string StartMenuSceneName = "0_StartMenu";
+	private const string MenuSceneName = "0_Menu";
 	private const string MainSceneName = "1_Main";
 
-	public static string StartMenuSceneNameGlobal = StartMenuSceneName;
+	public static string MenuSceneNameGlobal = MenuSceneName;
 	public static string MainSceneNameGlobal = MainSceneName;
 
 	public void LoadScene(string sceneName)
@@ -28,7 +28,7 @@ public class SceneManager : Singleton<SceneManager>
 				UIManager.Instance.UpdateUI();
 				AssetManager.Instance.UpdateAssets();
 				break;
-			case StartMenuSceneName:
+			case MenuSceneName:
 				AssetManager.Instance.HideFigure();
 				KnowledgeManager.Instance.ReadKnowledgeAndSetUp();
 				KnowledgeManager.Instance.ReadQueriesAndSetUp();

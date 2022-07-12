@@ -1609,7 +1609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Width: 0
   m_Damping: 0
-  m_MinFOV: 30
+  m_MinFOV: 20
   m_MaxFOV: 64
 --- !u!114 &1837083066
 MonoBehaviour:

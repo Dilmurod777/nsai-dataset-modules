@@ -20,14 +20,14 @@ public class AssetManager : Singleton<AssetManager>
 	
 	private Vector3 offset = new Vector3(-60.7f, -20.4f, 36.9f);
 
-	private string GetPlainFigureName(string figureName)
+	private string GetPlainFigureName(string subtaskId)
 	{
 		var figureNameToPrefabMatch = new Dictionary<string, string>
 		{
 			{"32", "MainLandingGear"}
 		};
 
-		var id = figureName.Split('-')[1];
+		var id = subtaskId.Split('-')[0];
 		var prefabName = figureNameToPrefabMatch[id];
 
 		var needsToReplace = new List<string> {"-IFM", "-RFM", "-Scattered"};
@@ -46,10 +46,10 @@ public class AssetManager : Singleton<AssetManager>
 		{
 			if (subtask.Figure == null) return;
 			
-			var figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.Figure) + "-Initial");
-			var ifmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.Figure) + "-IFM");
-			var rfmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.Figure) + "-RFM");
-			var scatteredPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.Figure) + "-Scattered");
+			var figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.SubtaskId) + "-Initial");
+			var ifmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.SubtaskId) + "-IFM");
+			var rfmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.SubtaskId) + "-RFM");
+			var scatteredPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.SubtaskId) + "-Scattered");
 
 			if (figurePrefab != null)
 			{
@@ -93,19 +93,40 @@ public class AssetManager : Singleton<AssetManager>
 
 	public void ResetCurrentFigure()
 	{
+		var figure = GameObject.FindWithTag("Figure");
+
+		if (figure != null)
+		{
+			Destroy(figure);
+		}
+		
+		var subtask = ContextManager.Instance.CurrentSubtask;
+
+		if (subtask != null)
+		{
+			var figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.SubtaskId) + "-Initial");
+			
+			if (figurePrefab != null)
+			{
+				var instantiatedFigure = Instantiate(figurePrefab);
+				instantiatedFigure.transform.position = offset;
+				instantiatedFigure.tag = "Figure";
+				instantiatedFigure.AddComponent<CustomDontDestroyOnLoad>();
+			}
+		}
 		
 	}
 	
 	public GameObject FindObjectInFigure(FigureType type, string objName)
 	{
-		var figureName = ContextManager.Instance.CurrentSubtask.Figure;
+		var subtaskId = ContextManager.Instance.CurrentSubtask.SubtaskId;
 		var figure = type switch
 		{
-			FigureType.Current => GameObject.Find(GetPlainFigureName(figureName) + "-Initial(Clone)"),
-			FigureType.IFM => GameObject.Find(GetPlainFigureName(figureName) + "-IFM(Clone)"),
-			FigureType.RFM => GameObject.Find(GetPlainFigureName(figureName) + "-RFM(Clone)"),
-			FigureType.Scattered => GameObject.Find(GetPlainFigureName(figureName) + "-Scattered(Clone)"),
-			_ => GameObject.Find(figureName + "(Clone)")
+			FigureType.Current => GameObject.Find(GetPlainFigureName(subtaskId) + "-Initial(Clone)"),
+			FigureType.IFM => GameObject.Find(GetPlainFigureName(subtaskId) + "-IFM(Clone)"),
+			FigureType.RFM => GameObject.Find(GetPlainFigureName(subtaskId) + "-RFM(Clone)"),
+			FigureType.Scattered => GameObject.Find(GetPlainFigureName(subtaskId) + "-Scattered(Clone)"),
+			_ => GameObject.Find(subtaskId + "(Clone)")
 		};
 
 		foreach (var child in figure.GetComponentsInChildren<Transform>())

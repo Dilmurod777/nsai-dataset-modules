@@ -6,6 +6,7 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using Cinemachine;
+using UnityEngine.Serialization;
 
 public class KnowledgeManager : Singleton<KnowledgeManager>
 {
@@ -13,24 +14,25 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 	public List<Task> Tasks = new List<Task>();
 	public List<Query> Queries = new List<Query>();
 
+	[HideInInspector]
 	public bool isExecutingSubtask;
 
 	public void ReadKnowledgeAndSetUp()
 	{
-		if (Instance.Tasks.Count > 0) return;
+		if (Tasks.Count > 0) return;
 
 		var jsonContent = Resources.Load<TextAsset>("Knowledge/" + rootDocument);
 		var itemsData = JSON.Parse(jsonContent.ToString());
 		var tasksNode = itemsData[0]["tasks"];
 
-		Instance.Tasks = CreateTasks(tasksNode);
+		Tasks = CreateTasks(tasksNode);
 	}
 
 	public void ReadQueriesAndSetUp()
 	{
-		if (Instance.Queries.Count > 0) return;
+		if (Queries.Count > 0) return;
 
-		Instance.Queries = new List<Query>();
+		Queries = new List<Query>();
 		var directoryInfo = new DirectoryInfo("Assets/Resources/Queries");
 		var files = directoryInfo.GetFiles();
 
@@ -46,7 +48,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 
 			foreach (var value in queryData["programs"].Values) programs.Add(value[1]);
 
-			Instance.Queries.Add(new Query(
+			Queries.Add(new Query(
 				file.Name,
 				queryData["query"],
 				programs,
@@ -374,6 +376,15 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 
 	public void ResetTasks()
 	{
+		foreach (var task in Tasks)
+		{
+			task.isCompleted = false;
+
+			foreach (var subtask in task.Subtasks)
+			{
+				subtask.isCompleted = false;
+			}
+		}
 	}
 
 	private void SetCurrentSubtaskCompleted()

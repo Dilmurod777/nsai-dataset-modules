@@ -30,7 +30,7 @@ public class UIManager : Singleton<UIManager>
 		if (homeButton != null)
 		{
 			homeButton.GetComponent<Button>().onClick.RemoveAllListeners();
-			homeButton.GetComponent<Button>().onClick.AddListener(() => { SceneManager.Instance.LoadScene(SceneManager.StartMenuSceneNameGlobal); });
+			homeButton.GetComponent<Button>().onClick.AddListener(() => { SceneManager.Instance.LoadScene(SceneManager.MenuSceneNameGlobal); });
 			homeButton.GetComponent<Button>().interactable = true;
 		}
 
@@ -76,10 +76,11 @@ public class UIManager : Singleton<UIManager>
 			{
 				AssetManager.Instance.ResetCurrentFigure();
 				KnowledgeManager.Instance.ResetTasks();
+				SceneManager.Instance.LoadScene(SceneManager.MenuSceneNameGlobal);
 			});
 			resetButton.GetComponent<Button>().interactable = true;
 		}
-		
+
 		var query = ContextManager.Instance.CurrentQuery;
 		if (query != null)
 		{
@@ -92,16 +93,34 @@ public class UIManager : Singleton<UIManager>
 		}
 
 		var knowledgeTaskUI = GameObject.FindWithTag("KnowledgeTaskUI");
-		knowledgeTaskUI!.GetComponent<Image>().enabled = ContextManager.Instance.CurrentTask != null;
-		knowledgeTaskUI!.transform.GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentTask != null
-			? "Task " + ContextManager.Instance.CurrentTask.TaskId
-			: "";
+		if (knowledgeTaskUI)
+		{
+			knowledgeTaskUI.transform.GetChild(0).GetComponent<Image>().enabled = ContextManager.Instance.CurrentTask != null;
+			knowledgeTaskUI!.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentTask != null
+				? "Task " + ContextManager.Instance.CurrentTask.TaskId
+				: "";
+
+			knowledgeTaskUI.transform.GetChild(1).GetComponent<Image>().enabled = ContextManager.Instance.CurrentTask != null;
+			knowledgeTaskUI!.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentTask != null
+				? ContextManager.Instance.CurrentTask.Title
+				: "";
+		}
+
 
 		var knowledgeSubtaskUI = GameObject.FindWithTag("KnowledgeSubtaskUI");
-		knowledgeSubtaskUI!.GetComponent<Image>().enabled = ContextManager.Instance.CurrentSubtask != null;
-		knowledgeSubtaskUI!.transform.GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentSubtask != null
-			? "Subtask " + ContextManager.Instance.CurrentSubtask.SubtaskId
-			: "";
+		if (knowledgeSubtaskUI)
+		{
+			knowledgeSubtaskUI.transform.GetChild(0).GetComponent<Image>().enabled = ContextManager.Instance.CurrentSubtask != null;
+			knowledgeSubtaskUI!.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentSubtask != null
+				? "Subtask " + ContextManager.Instance.CurrentSubtask.SubtaskId
+				: "";
+
+			knowledgeSubtaskUI.transform.GetChild(1).GetComponent<Image>().enabled = ContextManager.Instance.CurrentSubtask != null;
+			knowledgeSubtaskUI!.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentSubtask != null
+				? ContextManager.Instance.CurrentSubtask.Content
+				: "";
+			knowledgeSubtaskUI.transform.GetChild(1).GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 1);
+		}
 
 		var knowledgeInstructionUI = GameObject.FindWithTag("KnowledgeInstructionUI");
 		knowledgeInstructionUI!.GetComponent<Image>().enabled = ContextManager.Instance.CurrentInstruction != null;
