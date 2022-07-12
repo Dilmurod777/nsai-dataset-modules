@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 public static class PrimitiveManager
@@ -131,27 +132,46 @@ public static class PrimitiveManager
 		return primitives;
 	}
 
-	public static IEnumerator MakeObjectTransparent(GameObject obj, float finalAlpha = 0.0f)
+	public static IEnumerator MakeObjectInProgress(GameObject obj)
 	{
-		var delta = 0.0f;
-		var totalDuration = 2.0f;
-
 		var oldMaterials = obj.GetComponent<MeshRenderer>().materials;
-		foreach (var oldMaterial in oldMaterials)
+		var newMaterials = new Material[oldMaterials.Length];
+		
+		for (var i = 0; i < oldMaterials.Length; i++)
 		{
-			oldMaterial.SetFloat("_Mode", 2);
+			newMaterials[i] = AssetManager.Instance.inProgressMaterial;
 		}
 
-		while (delta < totalDuration)
+		obj.GetComponent<MeshRenderer>().materials = newMaterials;
+
+		yield return null;
+	}
+
+	public static IEnumerator MakeObjectTransparent(GameObject obj, float finalAlpha = 0.0f, float seconds = 1.0f)
+	{
+		var delta = 0.0f;
+
+		var oldMaterials = obj.GetComponent<MeshRenderer>().materials;
+
+		while (delta <= seconds)
 		{
 			delta += Time.fixedDeltaTime;
 
-			for (var i = 0; i < oldMaterials.Length; i++)
+			var newMaterials = new Material[oldMaterials.Length];
+			for (var i = 0; i < newMaterials.Length; i++)
 			{
-				var oldColor = oldMaterials[i].color;
-				var newColor = new Color(oldColor.r, oldColor.g, oldColor.b, delta / totalDuration * finalAlpha);
-				oldMaterials[i].SetColor("_Color", newColor);
+				newMaterials[i] = new Material(AssetManager.Instance.tempMaterial);
+				newMaterials[i].color = oldMaterials[i].color;
 			}
+
+			for (var i = 0; i < newMaterials.Length; i++)
+			{
+				var oldColor = newMaterials[i].color;
+				var newColor = new Color(oldColor.r, oldColor.g, oldColor.b, Mathf.Lerp(oldColor.a, 0.0f, delta / seconds));
+				newMaterials[i].color = newColor;
+			}
+
+			obj.GetComponent<MeshRenderer>().materials = newMaterials;
 
 			yield return null;
 		}

@@ -205,6 +205,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = attachingObj.transform;
 					}));
 
+					primitives.Add(PrimitiveManager.MakeObjectInProgress(attachingObj));
 					primitives.Add(Robot.Instance.Wait(2f));
 
 					var rotationAxis = objectMeta.attachRotationAxis;
@@ -242,10 +243,6 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					primitives.Add(PrimitiveManager.SimplePrimitive(() =>
 					{
 						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
-
-						// virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = null;
-						// virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = null;
-						// virtualCamera.GetComponent<CinemachineVirtualCamera>().enabled = false;
 					}));
 
 					primitives.Add(Robot.Instance.Wait(0.5f));

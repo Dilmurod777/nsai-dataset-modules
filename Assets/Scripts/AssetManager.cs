@@ -15,6 +15,9 @@ public class AssetManager : Singleton<AssetManager>
 		Scattered
 	}
 
+	public Material inProgressMaterial;
+	public Material tempMaterial;
+	
 	private Vector3 offset = new Vector3(-60.7f, -20.4f, 36.9f);
 
 	private string GetPlainFigureName(string figureName)

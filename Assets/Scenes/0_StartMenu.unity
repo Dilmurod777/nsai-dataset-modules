@@ -784,6 +784,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 074ae15fefc342849e17a2b82d4bd608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inProgressMaterial: {fileID: 2100000, guid: b55f86b54231d254ca5f20be97f7ab24, type: 2}
+  tempMaterial: {fileID: 2100000, guid: 68c7a3b45f37bcb47b2592f86f09fbf6, type: 2}
 --- !u!1 &906955088
 GameObject:
   m_ObjectHideFlags: 0

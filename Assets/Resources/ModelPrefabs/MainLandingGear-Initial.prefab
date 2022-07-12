@@ -2866,8 +2866,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
   attachType: 2
   detachType: 2
 --- !u!65 &6382342818278473715

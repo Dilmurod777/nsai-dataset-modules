@@ -88,11 +88,9 @@ public class Robot : Singleton<Robot>
 		var delta = 0f;
 		while (delta < GetMoveDuration())
 		{
-			Debug.Log("rotationAxis " + rotationAxis);
-
 			delta += Time.fixedDeltaTime;
 			sourceObject.transform.position = Vector3.Lerp(initialPosition, finalPosition, delta / GetMoveDuration());
-			sourceObject.transform.Rotate(rotationAxis, 5.0f);
+			sourceObject.transform.Rotate(rotationAxis, 2.5f);
 			yield return null;
 		}
 
