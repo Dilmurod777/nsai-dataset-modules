@@ -57,10 +57,14 @@ public class ContextManager : Singleton<ContextManager>
 	{
 		CurrentTask = null;
 		CurrentSubtask = null;
+		CurrentInstruction = null;
+		CurrentQuery = null;
 	}
 
 	public void ResetCurrentSubtask()
 	{
 		CurrentSubtask = null;
+		CurrentInstruction = null;
+		CurrentQuery = null;
 	}
 }

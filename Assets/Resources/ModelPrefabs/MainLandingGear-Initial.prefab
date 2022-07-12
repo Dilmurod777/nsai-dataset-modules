@@ -1174,8 +1174,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachRotationAxis: 0
   dettachRotationAxis: 3
-  attachType: 1
-  detachType: 1
+  attachType: 2
+  detachType: 2
 --- !u!65 &8256382476525941104
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3443,8 +3443,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0602366, y: 0.107511654, z: 0.23584014}
-  m_Center: {x: 0.4697948, y: 0.00045284815, z: 0.010416448}
+  m_Size: {x: 1.0602366, y: 0.107511654, z: 0.14}
+  m_Center: {x: 0.4697948, y: 0.00045284815, z: -0.03}
 --- !u!1 &7179090487558693466
 GameObject:
   m_ObjectHideFlags: 0

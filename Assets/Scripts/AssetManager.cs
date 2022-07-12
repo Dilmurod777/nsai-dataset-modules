@@ -44,6 +44,8 @@ public class AssetManager : Singleton<AssetManager>
 
 		if (subtask != null)
 		{
+			if (subtask.Figure == null) return;
+			
 			var figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.Figure) + "-Initial");
 			var ifmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.Figure) + "-IFM");
 			var rfmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.Figure) + "-RFM");
@@ -89,6 +91,11 @@ public class AssetManager : Singleton<AssetManager>
 		}
 	}
 
+	public void ResetCurrentFigure()
+	{
+		
+	}
+	
 	public GameObject FindObjectInFigure(FigureType type, string objName)
 	{
 		var figureName = ContextManager.Instance.CurrentSubtask.Figure;

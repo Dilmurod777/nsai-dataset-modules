@@ -24,6 +24,8 @@ TagManager:
   - SubtaskOptionUI
   - QueryOptionUI
   - NextButton
+  - PreviousButton
+  - ResetButton
   layers:
   - Default
   - TransparentFX

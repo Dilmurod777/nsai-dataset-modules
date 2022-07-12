@@ -289,6 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rootDocument: root
+  isExecutingSubtask: 0
 --- !u!1 &441923353
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,7 +876,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 111
+  field of view: 64
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1585,9 +1586,9 @@ MonoBehaviour:
     m_Bits: 0
   m_MinimumDistanceFromTarget: 0.1
   m_AvoidObstacles: 1
-  m_DistanceLimit: 1
-  m_MinimumOcclusionTime: 1
-  m_CameraRadius: 0.59
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.5
   m_Strategy: 2
   m_MaximumEffort: 4
   m_SmoothingTime: 1
@@ -1607,9 +1608,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Width: 0
-  m_Damping: 1.88
-  m_MinFOV: 32
-  m_MaxFOV: 111
+  m_Damping: 0
+  m_MinFOV: 30
+  m_MaxFOV: 64
 --- !u!114 &1837083066
 MonoBehaviour:
   m_ObjectHideFlags: 0

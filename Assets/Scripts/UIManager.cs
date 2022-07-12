@@ -27,22 +27,59 @@ public class UIManager : Singleton<UIManager>
 	public void UpdateUI()
 	{
 		var homeButton = GameObject.FindWithTag("HomeButton");
-		homeButton!.GetComponent<Button>().onClick.RemoveAllListeners();
-		homeButton!.GetComponent<Button>().onClick.AddListener(() => { SceneManager.Instance.LoadScene(SceneManager.StartMenuSceneNameGlobal); });
+		if (homeButton != null)
+		{
+			homeButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			homeButton.GetComponent<Button>().onClick.AddListener(() => { SceneManager.Instance.LoadScene(SceneManager.StartMenuSceneNameGlobal); });
+			homeButton.GetComponent<Button>().interactable = true;
+		}
 
 		var playButton = GameObject.FindWithTag("PlayButton");
-		playButton!.GetComponent<Button>().onClick.RemoveAllListeners();
-		playButton!.GetComponent<Button>().onClick.AddListener(() => { KnowledgeManager.Instance.ExecuteSubtask(); });
+		if (playButton != null)
+		{
+			playButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			playButton.GetComponent<Button>().onClick.AddListener(() => { KnowledgeManager.Instance.ExecuteSubtask(); });
+			playButton.GetComponent<Button>().interactable =
+				!ContextManager.Instance.CurrentTask.isCompleted && !ContextManager.Instance.CurrentSubtask.isCompleted &&
+				!KnowledgeManager.Instance.isExecutingSubtask;
+		}
 
 		var nextButton = GameObject.FindWithTag("NextButton");
-		nextButton!.GetComponent<Button>().onClick.RemoveAllListeners();
-		nextButton!.GetComponent<Button>().onClick.AddListener(() =>
+		if (nextButton != null)
 		{
-			KnowledgeManager.Instance.GoToNextSubtask();
-			Instance.UpdateUI();
-		});
+			nextButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			nextButton.GetComponent<Button>().onClick.AddListener(() =>
+			{
+				KnowledgeManager.GoToNextSubtask();
+				Instance.UpdateUI();
+			});
+			nextButton.GetComponent<Button>().interactable = KnowledgeManager.HasNextSubtask();
+		}
 
+		var previousButton = GameObject.FindWithTag("PreviousButton");
+		if (previousButton != null)
+		{
+			previousButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			previousButton.GetComponent<Button>().onClick.AddListener(() =>
+			{
+				KnowledgeManager.GoToPreviousSubtask();
+				Instance.UpdateUI();
+			});
+			previousButton.GetComponent<Button>().interactable = KnowledgeManager.HasPreviousSubtask();
+		}
 
+		var resetButton = GameObject.FindWithTag("ResetButton");
+		if (resetButton != null)
+		{
+			resetButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			resetButton.GetComponent<Button>().onClick.AddListener(() =>
+			{
+				AssetManager.Instance.ResetCurrentFigure();
+				KnowledgeManager.Instance.ResetTasks();
+			});
+			resetButton.GetComponent<Button>().interactable = true;
+		}
+		
 		var query = ContextManager.Instance.CurrentQuery;
 		if (query != null)
 		{
@@ -106,8 +143,11 @@ public class UIManager : Singleton<UIManager>
 
 		if (actionsList)
 		{
-			var textComponent = actionsList.GetComponent<Text>();
+			var textComponent = actionsList.transform.GetChild(1).GetChild(0).GetComponent<Text>();
 			if (textComponent != null) textComponent.text += textComponent.text == "" ? text : "\n" + text;
+
+			var scrollRectComponent = actionsList.transform.GetChild(1).GetComponent<ScrollRect>();
+			if (scrollRectComponent != null) scrollRectComponent.normalizedPosition = new Vector2(0, 0);
 		}
 	}
 
@@ -122,14 +162,6 @@ public class UIManager : Singleton<UIManager>
 		}
 	}
 
-	public void EnableAllButtons()
-	{
-		var buttons = FindObjectsOfType<Button>();
-
-		foreach (var button in buttons) button.interactable = true;
-	}
-
-
 	public void DisableAllButtons()
 	{
 		var buttons = FindObjectsOfType<Button>();
@@ -141,79 +173,73 @@ public class UIManager : Singleton<UIManager>
 	{
 		var knowledgeContent = GameObject.FindWithTag("KnowledgeContent");
 
-		if (knowledgeContent.transform.childCount == 0)
-			for (var i = 0; i < tasks.Count; i++)
-			{
-				var task = tasks[i];
-				var newTaskOption = Instantiate(uiOption, knowledgeContent.transform, false);
-				newTaskOption.name = task.TaskId;
-				newTaskOption.tag = "TaskOptionUI";
-				var newTaskOptionButtonComponent = newTaskOption.GetComponent<Button>();
-				newTaskOptionButtonComponent.interactable = false;
+		for (var i = 0; i < knowledgeContent.transform.childCount; i++)
+		{
+			Destroy(knowledgeContent.transform.transform.GetChild(i).gameObject);
+		}
 
+		for (var i = 0; i < tasks.Count; i++)
+		{
+			var task = tasks[i];
+			var newTaskOption = Instantiate(uiOption, knowledgeContent.transform, false);
+			newTaskOption.name = task.TaskId;
+			newTaskOption.tag = "TaskOptionUI";
+			var newTaskOptionButtonComponent = newTaskOption.GetComponent<Button>();
+			newTaskOptionButtonComponent.interactable = false;
+
+			var newTaskOptionTextComponent = newTaskOption.transform.GetChild(0).GetComponent<Text>();
+			newTaskOptionTextComponent.text = "Task " + task.TaskId;
+			newTaskOptionTextComponent.color = Color.white;
+
+			if (task.isCompleted)
+			{
+				var newColorBlock = newTaskOptionButtonComponent.colors;
+				newColorBlock.disabledColor = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
+				newTaskOptionButtonComponent.colors = newColorBlock;
+			}
+			else
+			{
 				var newColorBlock = newTaskOptionButtonComponent.colors;
 				newColorBlock.disabledColor = Color.black;
 				newTaskOptionButtonComponent.colors = newColorBlock;
+			}
 
-				var newTaskOptionTextComponent = newTaskOption.transform.GetChild(0).GetComponent<Text>();
-				newTaskOptionTextComponent.text = "Task " + task.TaskId;
-				newTaskOptionTextComponent.color = Color.white;
+			var list = new GameObject("Subtasks-List", typeof(RectTransform));
+			list.transform.SetParent(knowledgeContent.transform, false);
 
-				var list = new GameObject("Subtasks-List", typeof(RectTransform));
-				list.transform.SetParent(knowledgeContent.transform, false);
+			var listVerticalLayoutGroup = list.AddComponent<VerticalLayoutGroup>();
+			var listContentSizeFitter = list.AddComponent<ContentSizeFitter>();
 
-				var listVerticalLayoutGroup = list.AddComponent<VerticalLayoutGroup>();
-				var listContentSizeFitter = list.AddComponent<ContentSizeFitter>();
+			listVerticalLayoutGroup.padding.left = 50;
+			listVerticalLayoutGroup.childControlWidth = false;
+			listVerticalLayoutGroup.childControlHeight = false;
+			listVerticalLayoutGroup.childForceExpandWidth = true;
+			listVerticalLayoutGroup.childForceExpandHeight = false;
 
-				listVerticalLayoutGroup.padding.left = 50;
-				listVerticalLayoutGroup.childControlWidth = false;
-				listVerticalLayoutGroup.childControlHeight = false;
-				listVerticalLayoutGroup.childForceExpandWidth = true;
-				listVerticalLayoutGroup.childForceExpandHeight = false;
+			listContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-				listContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+			for (var j = 0; j < task.Subtasks.Count; j++)
+			{
+				var subtask = task.Subtasks[j];
+				var newSubtaskOption = Instantiate(uiOption, list.transform, false);
+				newSubtaskOption.name = subtask.SubtaskId;
+				newSubtaskOption.tag = "SubtaskOptionUI";
+				var newSubtaskOptionButtonComponent = newSubtaskOption.GetComponent<Button>();
+				newSubtaskOptionButtonComponent.onClick.AddListener(() => { UIOptionClick(UIOptionType.Subtask, new dynamic[] {task, subtask}); });
 
-				for (var j = 0; j < task.Subtasks.Count; j++)
+				var newSubtaskOptionTextComponent = newSubtaskOption.transform.GetChild(0).GetComponent<Text>();
+				newSubtaskOptionTextComponent.text = "Subtask " + task.Subtasks[j].SubtaskId;
+
+				if (subtask.isCompleted)
 				{
-					var subtask = task.Subtasks[j];
-					var newSubtaskOption = Instantiate(uiOption, list.transform, false);
-					newSubtaskOption.name = subtask.SubtaskId;
-					newSubtaskOption.tag = "SubtaskOptionUI";
-					newSubtaskOption.GetComponent<Button>().onClick.AddListener(() => { UIOptionClick(UIOptionType.Subtask, new dynamic[] {task, subtask}); });
+					var newColorBlock = newSubtaskOptionButtonComponent.colors;
+					newColorBlock.normalColor = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
+					newSubtaskOptionButtonComponent.colors = newColorBlock;
 
-					var newSubtaskOptionTextComponent = newSubtaskOption.transform.GetChild(0).GetComponent<Text>();
-					newSubtaskOptionTextComponent.text = "Subtask " + task.Subtasks[j].SubtaskId;
+					newSubtaskOptionTextComponent.color = Color.white;
 				}
 			}
-
-		var currentTask = ContextManager.Instance.CurrentTask;
-		var currentSubtask = ContextManager.Instance.CurrentSubtask;
-		var taskOptionsUI = GameObject.FindGameObjectsWithTag("TaskOptionUI");
-		var subtaskOptionsUI = GameObject.FindGameObjectsWithTag("SubtaskOptionUI");
-
-		if (currentTask != null)
-			foreach (var optionUI in taskOptionsUI)
-			{
-				if (optionUI.name != currentTask.TaskId) continue;
-				if (!currentTask.isCompleted) break;
-
-				optionUI.GetComponent<Image>().color = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
-				optionUI.transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 1f);
-
-				optionUI.GetComponent<Button>().interactable = false;
-			}
-
-		if (currentSubtask != null)
-			foreach (var optionUI in subtaskOptionsUI)
-			{
-				if (optionUI.name != currentSubtask.SubtaskId) continue;
-				if (!currentSubtask.isCompleted) break;
-
-				optionUI.GetComponent<Image>().color = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
-				optionUI.transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 1f);
-
-				optionUI.GetComponent<Button>().interactable = false;
-			}
+		}
 
 		var knowledgeScrollRect = knowledgeContent.transform.parent.GetComponent<ScrollRect>();
 		knowledgeScrollRect!.normalizedPosition = new Vector2(0, 1);

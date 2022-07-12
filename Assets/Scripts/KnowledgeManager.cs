@@ -4,26 +4,33 @@ using Custom;
 using Instances;
 using UnityEngine;
 using System.IO;
+using System.Linq;
 using Cinemachine;
 
 public class KnowledgeManager : Singleton<KnowledgeManager>
 {
 	public string rootDocument = "root";
-	public List<Task> Tasks;
-	public List<Query> Queries;
+	public List<Task> Tasks = new List<Task>();
+	public List<Query> Queries = new List<Query>();
+
+	public bool isExecutingSubtask;
 
 	public void ReadKnowledgeAndSetUp()
 	{
+		if (Instance.Tasks.Count > 0) return;
+
 		var jsonContent = Resources.Load<TextAsset>("Knowledge/" + rootDocument);
 		var itemsData = JSON.Parse(jsonContent.ToString());
 		var tasksNode = itemsData[0]["tasks"];
 
-		Tasks = CreateTasks(tasksNode);
+		Instance.Tasks = CreateTasks(tasksNode);
 	}
 
 	public void ReadQueriesAndSetUp()
 	{
-		Queries = new List<Query>();
+		if (Instance.Queries.Count > 0) return;
+
+		Instance.Queries = new List<Query>();
 		var directoryInfo = new DirectoryInfo("Assets/Resources/Queries");
 		var files = directoryInfo.GetFiles();
 
@@ -39,7 +46,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 
 			foreach (var value in queryData["programs"].Values) programs.Add(value[1]);
 
-			Queries.Add(new Query(
+			Instance.Queries.Add(new Query(
 				file.Name,
 				queryData["query"],
 				programs,
@@ -162,6 +169,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		var instructions = ContextManager.Instance.CurrentSubtask.Instructions;
 		var primitives = new List<IEnumerator>();
 
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { Instance.isExecutingSubtask = true; }));
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.DisableAllButtons(); }));
 
 		foreach (var instruction in instructions)
@@ -172,6 +180,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 			var actions = instruction.Actions;
 
 			foreach (var action in actions)
+			{
 				if (action.Operation == "detach")
 				{
 					var attachingObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[0] + "]");
@@ -195,14 +204,16 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateActionsList("- " + text); }));
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
 
-
 					primitives.Add(PrimitiveManager.SimplePrimitive(() =>
 					{
 						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
 
-						// virtualCamera.GetComponent<CinemachineVirtualCamera>().enabled = true;
 						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = attachingObj.transform;
 						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = attachingObj.transform;
+
+						var volume = MeshVolume.Calculate(attachingObj.GetComponent<MeshFilter>().mesh);
+
+						virtualCamera.GetComponent<CinemachineFollowZoom>().m_MinFOV = volume > 0.0001 ? 30 : 20;
 					}));
 
 					primitives.Add(PrimitiveManager.MakeObjectInProgress(attachingObj));
@@ -240,25 +251,24 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 							break;
 					}
 
-					primitives.Add(PrimitiveManager.SimplePrimitive(() =>
-					{
-						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
-					}));
-
 					primitives.Add(Robot.Instance.Wait(0.5f));
 					primitives.Add(PrimitiveManager.MakeObjectTransparent(attachingObj));
 					// primitives.AddRange(PrimitiveManager.CreateRfmToScatteredMovePrimitives(attachingObj));
 					// primitives.AddRange(PrimitiveManager.CreateRotatePrimitives(attachingObj));
 				}
+			}
+
+			primitives.Add(Robot.Instance.Wait(0.5f));
 		}
 
-		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.EnableAllButtons(); }));
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => Instance.SetCurrentSubtaskCompleted()));
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { Instance.isExecutingSubtask = false; }));
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateUI(); }));
 
 		StartCoroutine(Sequence(primitives));
 	}
 
-	public void GoToNextSubtask()
+	public static void GoToNextSubtask()
 	{
 		var tasks = Instance.Tasks;
 		var currentTask = ContextManager.Instance.CurrentTask;
@@ -266,6 +276,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 
 		for (var i = 0; i < tasks.Count; i++)
 			if (tasks[i].TaskId == currentTask.TaskId)
+			{
 				for (var j = 0; j < tasks[i].Subtasks.Count; j++)
 					if (tasks[i].Subtasks[j].SubtaskId == currentSubtask.SubtaskId)
 					{
@@ -278,7 +289,35 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 						if (i < tasks.Count - 1)
 						{
 							ContextManager.Instance.SetCurrentTask(tasks[i + 1]);
-							ContextManager.Instance.SetCurrentSubtask(tasks[i + 1].Subtasks[0]);
+							return;
+						}
+
+						ContextManager.Instance.ResetCurrentTask();
+						return;
+					}
+			}
+	}
+
+	public static void GoToPreviousSubtask()
+	{
+		var tasks = Instance.Tasks;
+		var currentTask = ContextManager.Instance.CurrentTask;
+		var currentSubtask = ContextManager.Instance.CurrentSubtask;
+
+		for (var i = 0; i < tasks.Count; i++)
+			if (tasks[i].TaskId == currentTask.TaskId)
+				for (var j = 0; j < tasks[i].Subtasks.Count; j++)
+					if (tasks[i].Subtasks[j].SubtaskId == currentSubtask.SubtaskId)
+					{
+						if (j != 0)
+						{
+							ContextManager.Instance.SetCurrentSubtask(tasks[i].Subtasks[j - 1]);
+							return;
+						}
+
+						if (i != 0)
+						{
+							ContextManager.Instance.SetCurrentTask(tasks[i - 1]);
 							return;
 						}
 
@@ -287,22 +326,73 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					}
 	}
 
-	public void SetCurrentSubtaskCompleted()
+	public static bool HasPreviousSubtask()
 	{
+		var tasks = Instance.Tasks;
 		var currentTask = ContextManager.Instance.CurrentTask;
 		var currentSubtask = ContextManager.Instance.CurrentSubtask;
 
-		for (var i = 0; i < Tasks.Count; i++)
-			if (Tasks[i].TaskId == currentTask.TaskId)
-				for (var j = 0; j < Tasks[i].Subtasks.Count; j++)
-					if (Tasks[i].Subtasks[j].SubtaskId == currentSubtask.SubtaskId)
+		for (var i = 0; i < tasks.Count; i++)
+			if (tasks[i].TaskId == currentTask.TaskId)
+				for (var j = 0; j < tasks[i].Subtasks.Count; j++)
+					if (tasks[i].Subtasks[j].SubtaskId == currentSubtask.SubtaskId)
 					{
-						Tasks[i].Subtasks[j].isCompleted = true;
-						break;
+						if (j != 0)
+						{
+							return true;
+						}
+
+						return i != 0;
 					}
+
+		return false;
 	}
 
-	public IEnumerator Sequence(List<IEnumerator> sequence)
+	public static bool HasNextSubtask()
+	{
+		var tasks = Instance.Tasks;
+		var currentTask = ContextManager.Instance.CurrentTask;
+		var currentSubtask = ContextManager.Instance.CurrentSubtask;
+
+		for (var i = 0; i < tasks.Count; i++)
+			if (tasks[i].TaskId == currentTask.TaskId)
+			{
+				for (var j = 0; j < tasks[i].Subtasks.Count; j++)
+					if (tasks[i].Subtasks[j].SubtaskId == currentSubtask.SubtaskId)
+					{
+						if (j != tasks[i].Subtasks.Count - 1)
+						{
+							return true;
+						}
+
+						return i != tasks.Count - 1;
+					}
+			}
+
+		return false;
+	}
+
+	public void ResetTasks()
+	{
+	}
+
+	private void SetCurrentSubtaskCompleted()
+	{
+		var currentTask = ContextManager.Instance.CurrentTask;
+		var currentSubtask = ContextManager.Instance.CurrentSubtask;
+		currentSubtask.isCompleted = true;
+
+		foreach (var t in Tasks.Where(t => t.TaskId == currentTask.TaskId))
+		{
+			foreach (var t1 in t.Subtasks.Where(t1 => t1.SubtaskId == currentSubtask.SubtaskId))
+			{
+				t1.isCompleted = true;
+				break;
+			}
+		}
+	}
+
+	private IEnumerator Sequence(List<IEnumerator> sequence)
 	{
 		foreach (var coroutine in sequence) yield return StartCoroutine(coroutine);
 
