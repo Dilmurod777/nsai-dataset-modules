@@ -85,10 +85,10 @@ public class AssetManager : Singleton<AssetManager>
 			if (figurePrefab != null)
 			{
 				var instantiatedFigure = Instantiate(figurePrefab);
-				instantiatedFigure.transform.position = offset;
 				instantiatedFigure.tag = "Figure";
 				instantiatedFigure.name = "CurrentFigure";
 				instantiatedFigure.transform.rotation = Quaternion.identity;
+				instantiatedFigure.transform.position = Vector3.zero;
 				instantiatedFigure.AddComponent<CustomDontDestroyOnLoad>();
 
 				foreach (var child in instantiatedFigure.GetComponentsInChildren<Transform>())
@@ -136,10 +136,10 @@ public class AssetManager : Singleton<AssetManager>
 			if (ifmPrefab != null)
 			{
 				var instantiatedIfm = Instantiate(ifmPrefab);
-				instantiatedIfm.transform.position = offset + new Vector3(0, 0, 100f);
 				instantiatedIfm.tag = "ReferenceObject";
 				instantiatedIfm.name = "CurrentFigureIFM";
 				instantiatedIfm.transform.rotation = Quaternion.identity;
+				instantiatedIfm.transform.position = Vector3.zero;
 				instantiatedIfm.AddComponent<CustomDontDestroyOnLoad>();
 
 				foreach (var meshRenderer in instantiatedIfm.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
@@ -148,10 +148,10 @@ public class AssetManager : Singleton<AssetManager>
 			if (rfmPrefab != null)
 			{
 				var instantiatedRfm = Instantiate(rfmPrefab);
-				instantiatedRfm.transform.position = offset + new Vector3(0, 0, 100f);
 				instantiatedRfm.tag = "ReferenceObject";
 				instantiatedRfm.name = "CurrentFigureRFM";
 				instantiatedRfm.transform.rotation = Quaternion.identity;
+				instantiatedRfm.transform.position = Vector3.zero;
 				instantiatedRfm.AddComponent<CustomDontDestroyOnLoad>();
 
 				foreach (var meshRenderer in instantiatedRfm.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
@@ -192,8 +192,7 @@ public class AssetManager : Singleton<AssetManager>
 			FigureType.Current => GameObject.Find("CurrentFigure"),
 			FigureType.IFM => GameObject.Find("CurrentFigureIFM"),
 			FigureType.RFM => GameObject.Find("CurrentFigureRFM"),
-			FigureType.Reference => GameObject.Find("CurrentFigureReference"),
-			_ => GameObject.Find("CurrentFigure")
+			FigureType.Reference => GameObject.Find("CurrentFigureReference")
 		};
 
 		foreach (var child in figure.GetComponentsInChildren<Transform>())

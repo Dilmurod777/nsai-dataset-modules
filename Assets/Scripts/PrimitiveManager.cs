@@ -31,20 +31,16 @@ public static class PrimitiveManager
 	{
 		var primitives = new List<IEnumerator>();
 
-		var rfmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-		var rfmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
-
-		var prevParent = rfmReferenceObjA.transform.parent;
-		rfmReferenceObjA.transform.SetParent(rfmReferenceObjB.transform);
-		var rfmDiff = rfmReferenceObjA.transform.localPosition;
-		var rfmFinalPosition = objB.transform.TransformPoint(rfmDiff);
-		rfmReferenceObjA.transform.SetParent(prevParent);
-
 		primitives.Add(SimplePrimitive(() =>
 		{
+			var rfmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
+			var rfmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
+
+			var rfmDiff = rfmReferenceObjA.transform.position - rfmReferenceObjB.transform.position;
+
 			ContextManager.Instance.latestGameObjectPositions[objA.name] = ContextManager.Instance.latestGameObjectPositions[objB.name] + rfmDiff;
 		}));
-		primitives.Add(Robot.Instance.Move(objA, rfmFinalPosition));
+		primitives.Add(Robot.Instance.Move(objA));
 
 		return primitives;
 	}
@@ -136,20 +132,16 @@ public static class PrimitiveManager
 	{
 		var primitives = new List<IEnumerator>();
 
-		// ifm
-		var ifmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
-		var ifmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
-		var rfmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-		var rfmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
+		primitives.Add(SimplePrimitive(() =>
+		{
+			var ifmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
+			var ifmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
 
-		rfmReferenceObjA.transform.parent = rfmReferenceObjB.transform;
-		var rfmDiff = rfmReferenceObjA.transform.localPosition;
-		var rfmFinalPosition =
-			ifmReferenceObjA.transform.parent = ifmReferenceObjB.transform;
-		var ifmDiff = ifmReferenceObjA.transform.localPosition;
-		var ifmFinalPosition = objB.transform.TransformPoint(ifmDiff);
+			var rfmDiff = ifmReferenceObjA.transform.position - ifmReferenceObjB.transform.position;
 
-		primitives.Add(Robot.Instance.Move(objA, ifmFinalPosition));
+			ContextManager.Instance.latestGameObjectPositions[objA.name] = ContextManager.Instance.latestGameObjectPositions[objB.name] - rfmDiff;
+		}));
+		primitives.Add(Robot.Instance.Move(objA));
 
 		return primitives;
 	}
