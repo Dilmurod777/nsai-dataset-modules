@@ -78,7 +78,6 @@ GameObject:
   - component: {fileID: 3800606986678612530}
   - component: {fileID: 1768553761063530276}
   - component: {fileID: 4690878493732252177}
-  - component: {fileID: 4587742301383916105}
   m_Layer: 0
   m_Name: '[1] DOWN LOCK STRUT'
   m_TagString: Object
@@ -149,22 +148,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4587742301383916105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 616280358088729839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &752472016425708210
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +159,6 @@ GameObject:
   - component: {fileID: 8937194296446584802}
   - component: {fileID: 45956904465859411}
   - component: {fileID: 7187160686384775314}
-  - component: {fileID: 6595462404813922290}
   m_Layer: 0
   m_Name: '[9] END CAP'
   m_TagString: Object
@@ -247,22 +229,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6595462404813922290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752472016425708210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &823606623505778577
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +240,6 @@ GameObject:
   - component: {fileID: 57567833798940764}
   - component: {fileID: 3983654782979823004}
   - component: {fileID: 6037408774758337686}
-  - component: {fileID: 4750409407750791499}
   m_Layer: 0
   m_Name: '[52] SIDE STRUT PIN'
   m_TagString: Object
@@ -347,22 +312,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4750409407750791499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 823606623505778577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &924407932876934171
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,7 +323,6 @@ GameObject:
   - component: {fileID: 4521147345320810165}
   - component: {fileID: 6536223421012870603}
   - component: {fileID: 7116151009838087920}
-  - component: {fileID: 3710347888009671243}
   m_Layer: 0
   m_Name: '[49] COTTER PIN'
   m_TagString: Object
@@ -445,22 +393,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3710347888009671243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 924407932876934171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &1196526402397000625
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,7 +404,6 @@ GameObject:
   - component: {fileID: 6507416483006029860}
   - component: {fileID: 294681902648984265}
   - component: {fileID: 4369850917218634353}
-  - component: {fileID: 5457034570628487717}
   m_Layer: 0
   m_Name: '[8] LOWER SIDE STRUT'
   m_TagString: Object
@@ -544,22 +475,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5457034570628487717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1196526402397000625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &1223479786223574961
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,7 +486,6 @@ GameObject:
   - component: {fileID: 4994632599357928839}
   - component: {fileID: 2993923791383709892}
   - component: {fileID: 2372698303872168350}
-  - component: {fileID: 8668653750824020365}
   m_Layer: 0
   m_Name: '[48] WASHER'
   m_TagString: Object
@@ -642,22 +556,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8668653750824020365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223479786223574961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &1345286934272457747
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,7 +567,6 @@ GameObject:
   - component: {fileID: 4525613076127246178}
   - component: {fileID: 4095253939685345519}
   - component: {fileID: 8998021982944713695}
-  - component: {fileID: 8750589411387114606}
   m_Layer: 0
   m_Name: '[4] WASHER'
   m_TagString: Object
@@ -740,22 +637,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8750589411387114606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345286934272457747}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &2282996235268389487
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,7 +648,6 @@ GameObject:
   - component: {fileID: 5545142760884717190}
   - component: {fileID: 4808945087016025769}
   - component: {fileID: 650282359280880396}
-  - component: {fileID: 4403069801026147737}
   m_Layer: 0
   m_Name: '[22] SIDE STRUT PIN'
   m_TagString: Object
@@ -839,22 +719,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4403069801026147737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2282996235268389487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &2714727426240143911
 GameObject:
   m_ObjectHideFlags: 0
@@ -866,7 +730,6 @@ GameObject:
   - component: {fileID: 5022298267563505514}
   - component: {fileID: 176533275127315111}
   - component: {fileID: 4707280632243414124}
-  - component: {fileID: 2155668531535973089}
   m_Layer: 0
   m_Name: '[41] PUSHROD'
   m_TagString: Object
@@ -937,22 +800,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2155668531535973089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2714727426240143911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &2730715165112504349
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,7 +811,6 @@ GameObject:
   - component: {fileID: 4008902438082758142}
   - component: {fileID: 1108463434372266263}
   - component: {fileID: 4656326584433153155}
-  - component: {fileID: 7753248996771728094}
   m_Layer: 0
   m_Name: '[45] BUSHING'
   m_TagString: Object
@@ -1035,22 +881,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7753248996771728094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2730715165112504349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &2876677801558406514
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,7 +892,6 @@ GameObject:
   - component: {fileID: 7120055652235915036}
   - component: {fileID: 1998070422799805462}
   - component: {fileID: 379484550338546891}
-  - component: {fileID: 5273792000546218738}
   m_Layer: 0
   m_Name: '[14] NUT'
   m_TagString: Object
@@ -1133,22 +962,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5273792000546218738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2876677801558406514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &3073918422806125142
 GameObject:
   m_ObjectHideFlags: 0
@@ -1160,7 +973,6 @@ GameObject:
   - component: {fileID: 4509391222401099531}
   - component: {fileID: 2322505974016634203}
   - component: {fileID: 5435294974494801570}
-  - component: {fileID: 1349237727846719843}
   m_Layer: 0
   m_Name: '[47] CROSSBOLT'
   m_TagString: Object
@@ -1231,22 +1043,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1349237727846719843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3073918422806125142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &3815340914464872723
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,7 +1054,6 @@ GameObject:
   - component: {fileID: 8695845861813898631}
   - component: {fileID: 4370090403241202007}
   - component: {fileID: 9223176233049926759}
-  - component: {fileID: 3100736172221764226}
   m_Layer: 0
   m_Name: '[11] BOLT'
   m_TagString: Object
@@ -1329,22 +1124,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3100736172221764226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3815340914464872723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &3880790024548406367
 GameObject:
   m_ObjectHideFlags: 0
@@ -1356,7 +1135,6 @@ GameObject:
   - component: {fileID: 1326996326453591356}
   - component: {fileID: 4546452228706345254}
   - component: {fileID: 142323517979788578}
-  - component: {fileID: 2050113230537693585}
   m_Layer: 0
   m_Name: '[13] COTTER PIN'
   m_TagString: Object
@@ -1427,22 +1205,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2050113230537693585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3880790024548406367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &4106951139183715228
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,7 +1216,6 @@ GameObject:
   - component: {fileID: 5097633496025087797}
   - component: {fileID: 3717710999523332377}
   - component: {fileID: 4996764591678603749}
-  - component: {fileID: 6973307942993957492}
   m_Layer: 0
   m_Name: '[50] NUT'
   m_TagString: Object
@@ -1525,22 +1286,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6973307942993957492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4106951139183715228}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &4156269023201430456
 GameObject:
   m_ObjectHideFlags: 0
@@ -1552,7 +1297,6 @@ GameObject:
   - component: {fileID: 4371035715752222397}
   - component: {fileID: 7554226611356756989}
   - component: {fileID: 5668794878426723510}
-  - component: {fileID: 8447221917280774423}
   m_Layer: 0
   m_Name: '[53] SIDE STRUT WASHER'
   m_TagString: Object
@@ -1623,22 +1367,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8447221917280774423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4156269023201430456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &4211918768577306189
 GameObject:
   m_ObjectHideFlags: 0
@@ -1650,7 +1378,6 @@ GameObject:
   - component: {fileID: 976637511541942003}
   - component: {fileID: 5403513971128903671}
   - component: {fileID: 227174196248124371}
-  - component: {fileID: 627819331922004109}
   m_Layer: 0
   m_Name: '[16] CROSSBOLT'
   m_TagString: Object
@@ -1721,22 +1448,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &627819331922004109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4211918768577306189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &4425149212311235146
 GameObject:
   m_ObjectHideFlags: 0
@@ -1748,7 +1459,6 @@ GameObject:
   - component: {fileID: 3700090554313674622}
   - component: {fileID: 2446988657796232758}
   - component: {fileID: 5520387334010073882}
-  - component: {fileID: 336557483695816903}
   m_Layer: 0
   m_Name: '[18] NUT'
   m_TagString: Object
@@ -1819,22 +1529,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &336557483695816903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4425149212311235146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &4907558342174848206
 GameObject:
   m_ObjectHideFlags: 0
@@ -1846,7 +1540,6 @@ GameObject:
   - component: {fileID: 8289901342104549960}
   - component: {fileID: 5915624055423810165}
   - component: {fileID: 6829137402227042146}
-  - component: {fileID: 8757822912850486255}
   m_Layer: 0
   m_Name: '[10] END CAP'
   m_TagString: Object
@@ -1917,22 +1610,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8757822912850486255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4907558342174848206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &5257399561177439398
 GameObject:
   m_ObjectHideFlags: 0
@@ -1944,7 +1621,6 @@ GameObject:
   - component: {fileID: 5696122484417291628}
   - component: {fileID: 1767669654468762164}
   - component: {fileID: 4645149819495812033}
-  - component: {fileID: 8560083550900282278}
   m_Layer: 0
   m_Name: '[2] DOWN LOCK LINK PIN'
   m_TagString: Object
@@ -2015,22 +1691,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8560083550900282278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5257399561177439398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &5992847200687229170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2042,7 +1702,6 @@ GameObject:
   - component: {fileID: 5934958887778616717}
   - component: {fileID: 7155836622409255037}
   - component: {fileID: 1595628884882457760}
-  - component: {fileID: 7908571014749228072}
   m_Layer: 0
   m_Name: '[17] WASHER'
   m_TagString: Object
@@ -2113,22 +1772,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7908571014749228072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5992847200687229170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &6324483428534233203
 GameObject:
   m_ObjectHideFlags: 0
@@ -2140,7 +1783,6 @@ GameObject:
   - component: {fileID: 5677866409711693958}
   - component: {fileID: 4568832545418908753}
   - component: {fileID: 6557514565202959334}
-  - component: {fileID: 842431815064002384}
   m_Layer: 0
   m_Name: '[43] WASHER'
   m_TagString: Object
@@ -2211,22 +1853,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &842431815064002384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6324483428534233203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &6413906970471933419
 GameObject:
   m_ObjectHideFlags: 0
@@ -2238,7 +1864,6 @@ GameObject:
   - component: {fileID: 3883302149917445535}
   - component: {fileID: 6821185814138917016}
   - component: {fileID: 128749979758733119}
-  - component: {fileID: 4616712524921965779}
   m_Layer: 0
   m_Name: '[21] SIDE STRUT WASHER'
   m_TagString: Object
@@ -2309,22 +1934,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4616712524921965779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6413906970471933419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &6545802076327124566
 GameObject:
   m_ObjectHideFlags: 0
@@ -2336,7 +1945,6 @@ GameObject:
   - component: {fileID: 868521137057335481}
   - component: {fileID: 4498421049602916137}
   - component: {fileID: 508633952809401082}
-  - component: {fileID: 804949146227451109}
   m_Layer: 0
   m_Name: '[3] UPPER SIDE STRUT'
   m_TagString: Object
@@ -2408,22 +2016,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &804949146227451109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6545802076327124566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &6649815247665253945
 GameObject:
   m_ObjectHideFlags: 0
@@ -2435,7 +2027,6 @@ GameObject:
   - component: {fileID: 1418468396865819743}
   - component: {fileID: 4827957657982248502}
   - component: {fileID: 7071991306429451880}
-  - component: {fileID: 2224117980934857663}
   m_Layer: 0
   m_Name: '[51] SHOCK STRUT MAIN LANDING GEAR'
   m_TagString: Figure
@@ -2517,22 +2108,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2224117980934857663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6649815247665253945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &6721310159537028794
 GameObject:
   m_ObjectHideFlags: 0
@@ -2544,7 +2119,6 @@ GameObject:
   - component: {fileID: 187989243062548107}
   - component: {fileID: 2046061984611624912}
   - component: {fileID: 687502981942037957}
-  - component: {fileID: 6342374290156707924}
   m_Layer: 0
   m_Name: '[42] NUT'
   m_TagString: Object
@@ -2615,22 +2189,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6342374290156707924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6721310159537028794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &6768057223703925661
 GameObject:
   m_ObjectHideFlags: 0
@@ -2642,7 +2200,6 @@ GameObject:
   - component: {fileID: 5566852054661685894}
   - component: {fileID: 4167183433498975389}
   - component: {fileID: 5615312996678145282}
-  - component: {fileID: 3443361795561258562}
   m_Layer: 0
   m_Name: '[46] BOLT'
   m_TagString: Object
@@ -2713,22 +2270,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3443361795561258562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6768057223703925661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &7653840652646373808
 GameObject:
   m_ObjectHideFlags: 0
@@ -2740,7 +2281,6 @@ GameObject:
   - component: {fileID: 6666429234872957136}
   - component: {fileID: 8448586353179499592}
   - component: {fileID: 5830683037186177697}
-  - component: {fileID: 7931979848026209811}
   m_Layer: 0
   m_Name: '[12] WASHER'
   m_TagString: Object
@@ -2811,22 +2351,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7931979848026209811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7653840652646373808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &7691582077937585151
 GameObject:
   m_ObjectHideFlags: 0
@@ -2838,7 +2362,6 @@ GameObject:
   - component: {fileID: 7038424556979919270}
   - component: {fileID: 7817410523291291632}
   - component: {fileID: 6125755430912085172}
-  - component: {fileID: 4721937553626703755}
   m_Layer: 0
   m_Name: '[44] WASHER'
   m_TagString: Object
@@ -2909,22 +2432,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4721937553626703755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7691582077937585151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &8512420063853950082
 GameObject:
   m_ObjectHideFlags: 0
@@ -2936,7 +2443,6 @@ GameObject:
   - component: {fileID: 1748338798849738938}
   - component: {fileID: 4303988133354515894}
   - component: {fileID: 6633946337710161195}
-  - component: {fileID: 4752405485469350404}
   m_Layer: 0
   m_Name: '[7] SIDE STRUT PIN'
   m_TagString: Object
@@ -3007,22 +2513,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4752405485469350404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8512420063853950082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &8519408566779387274
 GameObject:
   m_ObjectHideFlags: 0
@@ -3034,7 +2524,6 @@ GameObject:
   - component: {fileID: 5381678064066062527}
   - component: {fileID: 3898362366045993710}
   - component: {fileID: 6271266376995170117}
-  - component: {fileID: 7206060624804783121}
   m_Layer: 0
   m_Name: '[19] COTTER PIN'
   m_TagString: Object
@@ -3105,22 +2594,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7206060624804783121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8519408566779387274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &8542421159985882724
 GameObject:
   m_ObjectHideFlags: 0
@@ -3132,7 +2605,6 @@ GameObject:
   - component: {fileID: 2929924231541217247}
   - component: {fileID: 4573676323906873839}
   - component: {fileID: 4443101555641308438}
-  - component: {fileID: 6088638743610013131}
   m_Layer: 0
   m_Name: '[5] NUT'
   m_TagString: Object
@@ -3203,22 +2675,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6088638743610013131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8542421159985882724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &8927083113428222269
 GameObject:
   m_ObjectHideFlags: 0
@@ -3230,7 +2686,6 @@ GameObject:
   - component: {fileID: 8623944329645705595}
   - component: {fileID: 8805339769002553676}
   - component: {fileID: 437954923237466374}
-  - component: {fileID: 2454532209385278199}
   m_Layer: 0
   m_Name: '[19] SIDE STRUT WASHER'
   m_TagString: Object
@@ -3301,22 +2756,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2454532209385278199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8927083113428222269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &9106172108973743152
 GameObject:
   m_ObjectHideFlags: 0
@@ -3328,7 +2767,6 @@ GameObject:
   - component: {fileID: 1515003579020445627}
   - component: {fileID: 8273951697060129741}
   - component: {fileID: 1719840664063741159}
-  - component: {fileID: 3557947826107532140}
   m_Layer: 0
   m_Name: '[54] SIDE STRUT NUT'
   m_TagString: Object
@@ -3399,22 +2837,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3557947826107532140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9106172108973743152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &9130071723952450041
 GameObject:
   m_ObjectHideFlags: 0
@@ -3426,7 +2848,6 @@ GameObject:
   - component: {fileID: 2273954854958619523}
   - component: {fileID: 6901105188508341626}
   - component: {fileID: 2084814645021386370}
-  - component: {fileID: 6750924778445750525}
   m_Layer: 0
   m_Name: '[6] PIN'
   m_TagString: Object
@@ -3497,22 +2918,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6750924778445750525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9130071723952450041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &9180699200572323258
 GameObject:
   m_ObjectHideFlags: 0
@@ -3524,7 +2929,6 @@ GameObject:
   - component: {fileID: 15564269243340777}
   - component: {fileID: 8002451143217425428}
   - component: {fileID: 4698788563241270237}
-  - component: {fileID: 8977636794118057099}
   m_Layer: 0
   m_Name: '[15] REACTION LINK ASSEMBLY'
   m_TagString: Figure
@@ -3596,22 +3000,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8977636794118057099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9180699200572323258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
 --- !u!1 &9217559796325334246
 GameObject:
   m_ObjectHideFlags: 0
@@ -3623,7 +3011,6 @@ GameObject:
   - component: {fileID: 1555153180896787150}
   - component: {fileID: 3723321229378481649}
   - component: {fileID: 6985730078903019300}
-  - component: {fileID: 4812158317283628954}
   m_Layer: 0
   m_Name: '[20] SIDE STRUT NUT'
   m_TagString: Object
@@ -3694,19 +3081,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4812158317283628954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9217559796325334246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0

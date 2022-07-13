@@ -14,8 +14,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 	public List<Task> Tasks = new List<Task>();
 	public List<Query> Queries = new List<Query>();
 
-	[HideInInspector]
-	public bool isExecutingSubtask;
+	[HideInInspector] public bool isExecutingSubtask;
 
 	public void ReadKnowledgeAndSetUp()
 	{
@@ -218,7 +217,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 						virtualCamera.GetComponent<CinemachineFollowZoom>().m_MinFOV = volume > 0.0001 ? 30 : 20;
 					}));
 
-					primitives.Add(PrimitiveManager.MakeObjectInProgress(attachingObj));
+					primitives.Add(PrimitiveManager.ChangeObjectMaterialToInProgress(attachingObj));
 					primitives.Add(Robot.Instance.Wait(2f));
 
 					var rotationAxis = objectMeta.attachRotationAxis;
@@ -237,19 +236,19 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					switch (objectMeta.attachType)
 					{
 						case ObjectMeta.AttachTypes.SmoothInstall:
-							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+							primitives.AddRange(PrimitiveManager.SmoothUninstall(attachingObj, referenceObj));
 							break;
 						case ObjectMeta.AttachTypes.StepInstall:
-							primitives.AddRange(PrimitiveManager.StepInstall(attachingObj, referenceObj));
+							primitives.AddRange(PrimitiveManager.StepUninstall(attachingObj, referenceObj));
 							break;
 						case ObjectMeta.AttachTypes.SmoothScrew:
-							primitives.AddRange(PrimitiveManager.SmoothScrew(attachingObj, referenceObj, attachRotationVector));
+							primitives.AddRange(PrimitiveManager.SmoothUnscrew(attachingObj, referenceObj, attachRotationVector));
 							break;
 						case ObjectMeta.AttachTypes.StepScrew:
-							primitives.AddRange(PrimitiveManager.StepScrew(attachingObj, referenceObj, attachRotationVector));
+							primitives.AddRange(PrimitiveManager.StepUnscrew(attachingObj, referenceObj, attachRotationVector));
 							break;
 						default:
-							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+							primitives.AddRange(PrimitiveManager.SmoothUninstall(attachingObj, referenceObj));
 							break;
 					}
 
@@ -258,9 +257,87 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					// primitives.AddRange(PrimitiveManager.CreateRfmToScatteredMovePrimitives(attachingObj));
 					// primitives.AddRange(PrimitiveManager.CreateRotatePrimitives(attachingObj));
 				}
+
+				if (action.Operation == "attach")
+				{
+					var attachingObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[0] + "]");
+					var referenceObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[1] + "]");
+
+					var objectMeta = attachingObj.GetComponent<ObjectMeta>();
+
+					var text = "";
+					const string delimiter = " and ";
+
+					text += objectMeta.attachType switch
+					{
+						ObjectMeta.AttachTypes.SmoothInstall => "Smooth Install ",
+						ObjectMeta.AttachTypes.StepInstall => "Step Install ",
+						ObjectMeta.AttachTypes.SmoothScrew => "Smooth Screw ",
+						ObjectMeta.AttachTypes.StepScrew => "Step Screw ",
+						_ => "Smooth Install "
+					};
+
+					text += attachingObj.name + delimiter + referenceObj.name;
+					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateActionsList("- " + text); }));
+					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
+
+					primitives.Add(PrimitiveManager.SimplePrimitive(() =>
+					{
+						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
+
+						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = attachingObj.transform;
+						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = attachingObj.transform;
+
+						var volume = MeshVolume.Calculate(attachingObj.GetComponent<MeshFilter>().mesh);
+
+						virtualCamera.GetComponent<CinemachineFollowZoom>().m_MinFOV = volume > 0.0001 ? 50 : 20;
+					}));
+
+					primitives.Add(PrimitiveManager.ChangeObjectMaterialToInProgress(attachingObj));
+					primitives.Add(Robot.Instance.Wait(2f));
+
+					primitives.AddRange(PrimitiveManager.CreateRotatePrimitives(attachingObj));
+					primitives.AddRange(PrimitiveManager.CreateFromScatteredToRfmPrimitives(attachingObj, referenceObj));
+					primitives.Add(Robot.Instance.Wait(1.0f));
+					
+					var rotationAxis = objectMeta.attachRotationAxis;
+
+					var attachRotationVector = rotationAxis switch
+					{
+						ObjectMeta.RotationAxisEnum.X => Vector3.right,
+						ObjectMeta.RotationAxisEnum.NegX => Vector3.left,
+						ObjectMeta.RotationAxisEnum.Y => Vector3.up,
+						ObjectMeta.RotationAxisEnum.NegY => Vector3.down,
+						ObjectMeta.RotationAxisEnum.Z => Vector3.forward,
+						ObjectMeta.RotationAxisEnum.NegZ => Vector3.back,
+						_ => Vector3.forward
+					};
+
+					// switch (objectMeta.attachType)
+					// {
+					// 	case ObjectMeta.AttachTypes.SmoothInstall:
+					// 		primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+					// 		break;
+					// 	case ObjectMeta.AttachTypes.StepInstall:
+					// 		primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+					// 		break;
+					// 	case ObjectMeta.AttachTypes.SmoothScrew:
+					// 		primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+					// 		break;
+					// 	case ObjectMeta.AttachTypes.StepScrew:
+					// 		primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+					// 		break;
+					// 	default:
+					// 		primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+					// 		break;
+					// }
+				}
 			}
 
-			primitives.Add(Robot.Instance.Wait(0.5f));
+			if (actions.Count == 0)
+			{
+				primitives.Add(Robot.Instance.Wait(1.0f));
+			}
 		}
 
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => Instance.SetCurrentSubtaskCompleted()));

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Custom;
 using Instances;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class ContextManager : Singleton<ContextManager>
 	public Subtask CurrentSubtask;
 	public Instruction CurrentInstruction;
 	public Query CurrentQuery;
+
+	public Dictionary<string, Vector3> latestGameObjectPositions = new Dictionary<string, Vector3>();
 
 	public void SetCurrentTask(Task task)
 	{

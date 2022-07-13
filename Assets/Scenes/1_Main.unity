@@ -2107,7 +2107,7 @@ GameObject:
   - component: {fileID: 1322036035}
   m_Layer: 5
   m_Name: PlayButton
-  m_TagString: Untagged
+  m_TagString: QueryPlayButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2609,7 +2609,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -3.9947, y: 0.00085349864}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 683.8696, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1417908300
 MonoBehaviour:

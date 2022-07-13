@@ -54,15 +54,15 @@ public class Robot : Singleton<Robot>
 	public IEnumerator Move(GameObject sourceObject, Vector3 finalPosition)
 	{
 		var initialPosition = sourceObject.transform.position;
-
+		
 		var delta = 0f;
 		while (delta < GetMoveDuration())
 		{
 			delta += Time.fixedDeltaTime;
-			sourceObject.transform.position = Vector3.Lerp(initialPosition, finalPosition, delta / GetMoveDuration());
+			sourceObject.transform.position = Vector3.Lerp(initialPosition, ContextManager.Instance.latestGameObjectPositions[sourceObject.name], delta / GetMoveDuration());
 			yield return null;
 		}
-
+		
 		yield return null;
 	}
 
