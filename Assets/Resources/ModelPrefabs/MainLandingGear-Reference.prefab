@@ -99,6 +99,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &3805641686639171011
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -211,6 +213,8 @@ MonoBehaviour:
   dettachRotationAxis: 3
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &7730679192716515599
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -323,6 +327,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &4152688605775479022
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -400,6 +406,7 @@ Transform:
   - {fileID: 6292359895871393216}
   - {fileID: 1552473067852593646}
   - {fileID: 2185715068907529184}
+  - {fileID: 6856491994950987162}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -502,6 +509,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 1
   detachType: 1
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &485507258610261152
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -616,6 +625,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &1941474176121553280
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -728,6 +739,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &3236032838875794406
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -840,6 +853,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &7617462759961038829
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -952,6 +967,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &7042787166105359678
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1064,6 +1081,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &7692725734349542409
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1176,6 +1195,8 @@ MonoBehaviour:
   dettachRotationAxis: 3
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &8256382476525941104
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1288,6 +1309,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 3
   detachType: 3
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &6764029004589560202
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1400,6 +1423,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &3220458207400873326
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1514,6 +1539,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &3035831867228072972
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1626,6 +1653,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 1
   detachType: 1
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &5111952358360527653
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1738,6 +1767,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &5641308845067216283
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1751,6 +1782,55 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.021962652, y: 0.0005006095, z: 0.021980649}
   m_Center: {x: -0.0000000121071935, y: -0.0000000026338967, z: -9.313226e-10}
+--- !u!1 &3807119254385905600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6856491994950987162}
+  - component: {fileID: 8955170440979984022}
+  m_Layer: 0
+  m_Name: Core
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6856491994950987162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3807119254385905600}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.9718, y: 1.4448, z: -1.9853}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7796777963051480535}
+  m_RootOrder: 37
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8955170440979984022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3807119254385905600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attachRotationAxis: 0
+  dettachRotationAxis: 0
+  attachType: 0
+  detachType: 0
+  status: 0
+  isCoreInFigure: 1
 --- !u!1 &4169779390069620522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1850,6 +1930,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 1
   detachType: 1
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &2452482248246792207
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1962,6 +2044,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &4974342507068777355
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2074,6 +2158,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &6758461093455450456
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2186,6 +2272,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &3228284688211018249
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2298,6 +2386,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &7203510277793137928
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2410,6 +2500,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &5695996805041025601
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2533,6 +2625,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 1
+  isCoreInFigure: 1
 --- !u!65 &2503435632536270744
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2646,6 +2740,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &759120046948004408
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2758,6 +2854,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &6326274108060630194
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2870,6 +2968,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &6382342818278473715
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2982,6 +3082,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &1680273948263469389
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3094,6 +3196,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &2164744017820386044
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3207,6 +3311,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &7282793371727532608
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3319,6 +3425,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &3083620759282631871
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3432,6 +3540,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 1
+  isCoreInFigure: 0
 --- !u!65 &1610805816756551661
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3544,6 +3654,8 @@ MonoBehaviour:
   dettachRotationAxis: 3
   attachType: 1
   detachType: 1
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &6556514889864354012
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3656,6 +3768,8 @@ MonoBehaviour:
   dettachRotationAxis: 3
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &5979518611051193215
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3769,6 +3883,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &6978618708132339307
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3881,6 +3997,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &7588983757627125231
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3993,6 +4111,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &6350492803469521569
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4105,6 +4225,8 @@ MonoBehaviour:
   dettachRotationAxis: 4
   attachType: 2
   detachType: 2
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &769438889346641078
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4217,6 +4339,8 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 3
   detachType: 3
+  status: 0
+  isCoreInFigure: 0
 --- !u!65 &7132114398719836539
 BoxCollider:
   m_ObjectHideFlags: 0

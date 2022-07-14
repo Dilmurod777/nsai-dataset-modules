@@ -41,13 +41,13 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 
 		if (type == "attach")
 		{
-			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
-			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
+			referenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
+			referenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
 		}
 		else
 		{
-			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
+			referenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
+			referenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
 		}
 
 		var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
@@ -62,13 +62,13 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 
 		if (type == "attach")
 		{
-			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
-			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
+			referenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
+			referenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
 		}
 		else
 		{
-			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
+			referenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
+			referenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
 		}
 
 		var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
@@ -83,13 +83,13 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 
 		if (type == "attach")
 		{
-			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
-			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
+			referenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
+			referenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
 		}
 		else
 		{
-			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
+			referenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
+			referenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
 		}
 
 		var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
@@ -108,18 +108,18 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 
 		if (type == "attach")
 		{
-			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
-			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
+			referenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
+			referenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
 		}
 		else
 		{
-			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
+			referenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
+			referenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
 		}
-		
+
 		var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
 		var delta = objB.transform.position + rfmDiff - objA.transform.position;
-		
+
 		for (var i = 0; i < steps; i++)
 		{
 			yield return StartCoroutine(Robot.Instance.MoveWithRotation(objA, objA.transform.position + (i + 1) * delta / steps, direction));
@@ -142,7 +142,7 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		yield return null;
 	}
 
-	public static IEnumerator MakeObjectTransparent(GameObject obj, float finalAlpha = 0.0f, float seconds = 1.0f)
+	public IEnumerator MakeObjectTransparent(GameObject obj, float finalAlpha = 0.0f, float seconds = 1.0f)
 	{
 		var delta = 0.0f;
 
@@ -170,6 +170,23 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 
 			yield return null;
 		}
+
+		yield return null;
+	}
+
+	public IEnumerator ResetObjectMaterial(GameObject obj)
+	{
+		var referenceObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Reference, obj.name);
+
+		var referenceMaterials = referenceObj.GetComponent<MeshRenderer>().materials;
+		var materials = obj.GetComponent<MeshRenderer>().materials;
+
+		for (var i = 0; i < referenceMaterials.Length; i++)
+		{
+			materials[i] = referenceMaterials[i];
+		}
+
+		obj.GetComponent<MeshRenderer>().materials = materials;
 
 		yield return null;
 	}

@@ -24,15 +24,15 @@ public class SceneManager : Singleton<SceneManager>
 		switch (scene.name)
 		{
 			case MenuSceneName:
-				AssetManager.Instance.HideFigure();
+				AssetManager.Instance.HideAllFigures();
 				KnowledgeManager.Instance.ReadKnowledgeAndSetUp();
 				KnowledgeManager.Instance.ReadQueriesAndSetUp();
 				UIManager.Instance.SetUpMenus();
 				break;
 			case MainSceneName:
-				AssetManager.Instance.ShowFigure();
 				UIManager.Instance.UpdateUI();
 				AssetManager.Instance.UpdateAssets();
+				AssetManager.Instance.ShowCurrentFigure();
 				break;
 		}
 	}

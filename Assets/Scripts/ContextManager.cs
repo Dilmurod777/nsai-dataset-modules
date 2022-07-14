@@ -11,6 +11,13 @@ public class ContextManager : Singleton<ContextManager>
 	public Instruction CurrentInstruction;
 	public Query CurrentQuery;
 
+	public enum TaskType
+	{
+		Installation,
+		Removal,
+		Other
+	}
+
 
 	public void SetCurrentTask(Task task)
 	{
@@ -68,5 +75,20 @@ public class ContextManager : Singleton<ContextManager>
 		CurrentSubtask = null;
 		CurrentInstruction = null;
 		CurrentQuery = null;
+	}
+
+	public static TaskType GetTaskType(Task task)
+	{
+		if (task.Title.ToLower().Contains("install"))
+		{
+			return TaskType.Installation;
+		}
+
+		if (task.Title.ToLower().Contains("remov"))
+		{
+			return TaskType.Removal;
+		}
+
+		return TaskType.Other;
 	}
 }

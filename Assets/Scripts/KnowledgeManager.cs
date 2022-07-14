@@ -194,7 +194,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 						primitives.Add(Robot.Instance.Wait(1.0f));
 						continue;
 					}
-					
+
 					var text = "";
 					const string delimiter = " and ";
 
@@ -211,7 +211,8 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateActionsList("- " + text); }));
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
 
-					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTarget(attachingObj));
+					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj));
+					primitives.Add(Robot.Instance.Wait(0.5f));
 
 					primitives.Add(PrimitiveManager.Instance.ChangeObjectMaterialToInProgress(attachingObj));
 					primitives.Add(Robot.Instance.Wait(2f));
@@ -249,7 +250,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					}
 
 					primitives.Add(Robot.Instance.Wait(0.5f));
-					primitives.Add(PrimitiveManager.MakeObjectTransparent(attachingObj));
+					primitives.Add(PrimitiveManager.Instance.MakeObjectTransparent(attachingObj));
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Dettached; }));
 				}
 
@@ -265,6 +266,8 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 						primitives.Add(Robot.Instance.Wait(1.0f));
 						continue;
 					}
+
+					primitives.Add(PrimitiveManager.SimplePrimitive(() => { attachingObj.GetComponent<MeshRenderer>().enabled = true; }));
 
 					var text = "";
 					const string delimiter = " and ";
@@ -282,14 +285,17 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateActionsList("- " + text); }));
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
 
-					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTarget(attachingObj));
+					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj));
+					primitives.Add(Robot.Instance.Wait(0.5f));
 
 					primitives.Add(PrimitiveManager.Instance.ChangeObjectMaterialToInProgress(attachingObj));
 					primitives.Add(Robot.Instance.Wait(2f));
 
 					primitives.Add(PrimitiveManager.Instance.CreateRotatePrimitives(attachingObj));
+					primitives.Add(Robot.Instance.Wait(1.0f));
 					primitives.Add(PrimitiveManager.Instance.CreateFromScatteredToRfmPrimitives(attachingObj, referenceObj));
 					primitives.Add(Robot.Instance.Wait(1.0f));
+					primitives.Add(CameraManager.Instance.GetCameraCloser());
 
 					var rotationAxis = objectMeta.attachRotationAxis;
 
@@ -322,9 +328,11 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 							primitives.Add(PrimitiveManager.Instance.SmoothInstall(attachingObj, referenceObj, action.Operation));
 							break;
 					}
-
+					
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Attached; }));
-					primitives.Add(Robot.Instance.Wait(1.0f));
+					primitives.Add(Robot.Instance.Wait(0.5f));
+					primitives.Add(PrimitiveManager.Instance.ResetObjectMaterial(attachingObj));
+					primitives.Add(Robot.Instance.Wait(2f));
 				}
 			}
 
@@ -415,7 +423,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 							return true;
 						}
 
-						return i != 0;
+						// return i != 0;
 					}
 
 		return false;
@@ -438,7 +446,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 							return true;
 						}
 
-						return i != tasks.Count - 1;
+						// return i != tasks.Count - 1;
 					}
 			}
 

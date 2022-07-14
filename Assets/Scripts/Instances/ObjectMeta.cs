@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Instances
 {
@@ -34,5 +35,6 @@ namespace Instances
 		public AttachTypes attachType;
 		public AttachTypes detachType;
 		public Status status = Status.Initial;
+		public bool isCoreInFigure;
 	}
 }

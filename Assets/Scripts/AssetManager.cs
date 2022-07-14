@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Custom;
 using Instances;
 using UnityEngine;
@@ -54,15 +55,11 @@ public class AssetManager : Singleton<AssetManager>
 			if (subtask.Figure == null) return;
 
 			var plainFigureName = GetPlainFigureName(subtask.SubtaskId);
-			GameObject figurePrefab = null;
-			if (task.Title.ToLower().Contains("installation"))
-			{
-				figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-Scattered");
-			}
-			else if (task.Title.ToLower().Contains("removal"))
-			{
-				figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-IFM");
-			}
+			GameObject figurePrefabInstallation = null;
+			GameObject figurePrefabRemoval = null;
+
+			figurePrefabInstallation = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-Scattered");
+			figurePrefabRemoval = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-IFM");
 
 			var ifmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-IFM");
 			var rfmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-RFM");
@@ -80,11 +77,11 @@ public class AssetManager : Singleton<AssetManager>
 				foreach (var meshRenderer in instantiatedReference.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
 			}
 
-			if (figurePrefab != null)
+			if (figurePrefabInstallation != null)
 			{
-				var instantiatedFigure = Instantiate(figurePrefab);
+				var instantiatedFigure = Instantiate(figurePrefabInstallation);
 				instantiatedFigure.tag = "Figure";
-				instantiatedFigure.name = "CurrentFigure";
+				instantiatedFigure.name = "CurrentFigureInstallation";
 				instantiatedFigure.transform.rotation = Quaternion.identity;
 				instantiatedFigure.transform.position = Vector3.zero;
 				instantiatedFigure.AddComponent<CustomDontDestroyOnLoad>();
@@ -93,40 +90,112 @@ public class AssetManager : Singleton<AssetManager>
 				{
 					if (child.name == instantiatedFigure.name) continue;
 
+					var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
+					if (meshRenderer != null)
+					{
+						meshRenderer.enabled = false;
+					}
+
 					var referenceChild = FindObjectInFigure(FigureType.Reference, child.name);
 
-					if (child.GetComponent<ObjectMeta>() == null)
+					if (referenceChild != null)
 					{
-						if (referenceChild != null)
+						var childObjectMeta = child.GetComponent<ObjectMeta>();
+
+						if (childObjectMeta == null)
 						{
 							var referenceObjectMeta = referenceChild.GetComponent<ObjectMeta>();
 							if (referenceObjectMeta != null)
 							{
-								var childObjectMeta = child.gameObject.AddComponent<ObjectMeta>();
+								childObjectMeta = child.gameObject.AddComponent<ObjectMeta>();
 								childObjectMeta.attachType = referenceObjectMeta.attachType;
 								childObjectMeta.detachType = referenceObjectMeta.detachType;
 								childObjectMeta.attachRotationAxis = referenceObjectMeta.attachRotationAxis;
 								childObjectMeta.dettachRotationAxis = referenceObjectMeta.dettachRotationAxis;
+								childObjectMeta.status = referenceObjectMeta.status;
+								childObjectMeta.isCoreInFigure = referenceObjectMeta.isCoreInFigure;
 							}
 							else
 							{
 								Debug.LogError("Reference " + referenceChild.name + " object has no ObjectMeta script");
 							}
 						}
+
+						var boxCollider = child.GetComponent<BoxCollider>();
+						if (boxCollider == null)
+						{
+							boxCollider = child.gameObject.AddComponent<BoxCollider>();
+
+							var referenceBoxCollider = referenceChild.GetComponent<BoxCollider>();
+
+							if (referenceBoxCollider != null)
+							{
+								boxCollider.isTrigger = referenceBoxCollider.isTrigger;
+								boxCollider.center = referenceBoxCollider.center;
+								boxCollider.size = referenceBoxCollider.size;
+							}
+						}
+					}
+				}
+			}
+
+			if (figurePrefabRemoval != null)
+			{
+				var instantiatedFigure = Instantiate(figurePrefabRemoval);
+				instantiatedFigure.tag = "Figure";
+				instantiatedFigure.name = "CurrentFigureRemoval";
+				instantiatedFigure.transform.rotation = Quaternion.identity;
+				instantiatedFigure.transform.position = Vector3.zero;
+				instantiatedFigure.AddComponent<CustomDontDestroyOnLoad>();
+
+				foreach (var child in instantiatedFigure.GetComponentsInChildren<Transform>())
+				{
+					if (child.name == instantiatedFigure.name) continue;
+
+					var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
+					if (meshRenderer != null)
+					{
+						meshRenderer.enabled = false;
 					}
 
-					var boxCollider = child.GetComponent<BoxCollider>();
-					if (boxCollider == null)
+
+					var referenceChild = FindObjectInFigure(FigureType.Reference, child.name);
+
+					if (referenceChild != null)
 					{
-						boxCollider = child.gameObject.AddComponent<BoxCollider>();
-
-						var referenceBoxCollider = referenceChild.GetComponent<BoxCollider>();
-
-						if (referenceBoxCollider != null)
+						var childObjectMeta = child.GetComponent<ObjectMeta>();
+						if (childObjectMeta == null)
 						{
-							boxCollider.isTrigger = referenceBoxCollider.isTrigger;
-							boxCollider.center = referenceBoxCollider.center;
-							boxCollider.size = referenceBoxCollider.size;
+							var referenceObjectMeta = referenceChild.GetComponent<ObjectMeta>();
+							if (referenceObjectMeta != null)
+							{
+								childObjectMeta = child.gameObject.AddComponent<ObjectMeta>();
+								childObjectMeta.attachType = referenceObjectMeta.attachType;
+								childObjectMeta.detachType = referenceObjectMeta.detachType;
+								childObjectMeta.attachRotationAxis = referenceObjectMeta.attachRotationAxis;
+								childObjectMeta.dettachRotationAxis = referenceObjectMeta.dettachRotationAxis;
+								childObjectMeta.status = referenceObjectMeta.status;
+								childObjectMeta.isCoreInFigure = referenceObjectMeta.isCoreInFigure;
+							}
+							else
+							{
+								Debug.LogError("Reference " + referenceChild.name + " object has no ObjectMeta script");
+							}
+						}
+
+						var boxCollider = child.GetComponent<BoxCollider>();
+						if (boxCollider == null)
+						{
+							boxCollider = child.gameObject.AddComponent<BoxCollider>();
+
+							var referenceBoxCollider = referenceChild.GetComponent<BoxCollider>();
+
+							if (referenceBoxCollider != null)
+							{
+								boxCollider.isTrigger = referenceBoxCollider.isTrigger;
+								boxCollider.center = referenceBoxCollider.center;
+								boxCollider.size = referenceBoxCollider.size;
+							}
 						}
 					}
 				}
@@ -161,17 +230,24 @@ public class AssetManager : Singleton<AssetManager>
 	public void ResetCurrentFigure()
 	{
 		var figure = GameObject.FindWithTag("Figure");
-
-		if (figure != null)
-		{
-			Destroy(figure);
-		}
-
+		var referenceFigure = GameObject.FindGameObjectsWithTag("ReferenceObject").First(obj => obj.name == "CurrentFigureReference");
+		
+		var task = ContextManager.Instance.CurrentTask;
 		var subtask = ContextManager.Instance.CurrentSubtask;
+		var taskType = ContextManager.GetTaskType(task);
 
 		if (subtask != null)
 		{
-			var figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.SubtaskId) + "-Initial");
+			GameObject figurePrefab;
+
+			if (taskType == ContextManager.TaskType.Installation)
+			{
+				figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.SubtaskId) + "-Scattered");
+			}
+			else
+			{
+				figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.SubtaskId) + "-IFM");
+			}
 
 			if (figurePrefab != null)
 			{
@@ -185,10 +261,14 @@ public class AssetManager : Singleton<AssetManager>
 
 	public GameObject FindObjectInFigure(FigureType type, string objName)
 	{
-		var subtaskId = ContextManager.Instance.CurrentSubtask.SubtaskId;
+		var task = ContextManager.Instance.CurrentTask;
+		var taskType = ContextManager.GetTaskType(task);
+
 		var figure = type switch
 		{
-			FigureType.Current => GameObject.Find("CurrentFigure"),
+			FigureType.Current => taskType == ContextManager.TaskType.Installation
+				? GameObject.Find("CurrentFigureInstallation")
+				: GameObject.Find("CurrentFigureRemoval"),
 			FigureType.IFM => GameObject.Find("CurrentFigureIFM"),
 			FigureType.RFM => GameObject.Find("CurrentFigureRFM"),
 			FigureType.Reference => GameObject.Find("CurrentFigureReference"),
@@ -202,17 +282,71 @@ public class AssetManager : Singleton<AssetManager>
 		return null;
 	}
 
-	public void ShowFigure()
+	public void ShowCurrentFigure()
 	{
-		var figureInScene = GameObject.FindWithTag("Figure");
-		foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;
+		var currentTask = ContextManager.Instance.CurrentTask;
+		var taskType = ContextManager.GetTaskType(currentTask);
+
+		var figuresInScene = GameObject.FindGameObjectsWithTag("Figure");
+		foreach (var figureInScene in figuresInScene)
+		{
+			if (taskType == ContextManager.TaskType.Installation)
+			{
+				if (figureInScene.name == "CurrentFigureInstallation")
+				{
+					for (var i = 0; i < figureInScene.transform.childCount; i++)
+					{
+						var objectMeta = figureInScene.transform.GetChild(i).gameObject.GetComponent<ObjectMeta>();
+
+						if (objectMeta.isCoreInFigure)
+						{
+							CameraManager.Instance.FocusOnFigure(figureInScene.transform.GetChild(i).gameObject);
+						}
+
+						var meshRenderer = figureInScene.transform.GetChild(i).GetComponent<MeshRenderer>();
+						if (meshRenderer != null)
+						{
+							meshRenderer.enabled = objectMeta.status == ObjectMeta.Status.Attached;
+						}
+					}
+
+					break;
+				}
+			}
+
+			if (taskType == ContextManager.TaskType.Removal)
+			{
+				if (figureInScene.name == "CurrentFigureRemoval")
+				{
+					for (var i = 0; i < figureInScene.transform.childCount; i++)
+					{
+						var objectMeta = figureInScene.transform.GetChild(i).gameObject.GetComponent<ObjectMeta>();
+
+						if (objectMeta.isCoreInFigure)
+						{
+							CameraManager.Instance.FocusOnFigure(figureInScene.transform.GetChild(i).gameObject);
+						}
+
+						var meshRenderer = figureInScene.transform.GetChild(i).GetComponent<MeshRenderer>();
+						if (meshRenderer)
+						{
+							meshRenderer.enabled = true;
+						}
+					}
+
+					break;
+				}
+			}
+		}
 	}
 
-	public void HideFigure()
+	public void HideAllFigures()
 	{
-		var figureInScene = GameObject.FindWithTag("Figure");
-		if (figureInScene != null)
+		var figuresInScene = GameObject.FindGameObjectsWithTag("Figure");
+		foreach (var figureInScene in figuresInScene)
+		{
 			foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>())
 				meshRenderer.enabled = false;
+		}
 	}
 }

@@ -129,36 +129,44 @@ public class UIManager : Singleton<UIManager>
 		}
 
 		var knowledgeInstructionUI = GameObject.FindWithTag("KnowledgeInstructionUI");
-		knowledgeInstructionUI!.GetComponent<Image>().enabled = ContextManager.Instance.CurrentInstruction != null;
-		knowledgeInstructionUI!.transform.GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentInstruction != null
-			? ContextManager.Instance.CurrentInstruction.Content
-			: "";
+		if (knowledgeInstructionUI != null)
+		{
+			knowledgeInstructionUI!.GetComponent<Image>().enabled = ContextManager.Instance.CurrentInstruction != null;
+			knowledgeInstructionUI!.transform.GetChild(0).GetComponent<Text>().text = ContextManager.Instance.CurrentInstruction != null
+				? ContextManager.Instance.CurrentInstruction.Content
+				: "";
+			knowledgeInstructionUI.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 1);
+		}
 
 		var knowledgeActionsUI = GameObject.FindWithTag("KnowledgeActionsUI");
-		knowledgeActionsUI!.transform.GetChild(0).GetChild(0).GetComponent<Text>().enabled =
-			ContextManager.Instance.CurrentInstruction != null;
-		knowledgeActionsUI!.transform.GetChild(0).GetComponent<Image>().enabled = ContextManager.Instance.CurrentInstruction != null;
-		var actions = ContextManager.Instance.CurrentInstruction != null
-			? ContextManager.Instance.CurrentInstruction.Actions
-			: null;
-
-
-		var contentScrollList = knowledgeActionsUI.transform.GetChild(1).GetChild(0);
-		if (actions != null)
+		if (knowledgeActionsUI != null)
 		{
-			for (var i = 0; i < contentScrollList.childCount; i++) Destroy(contentScrollList.GetChild(i).gameObject);
+			knowledgeActionsUI!.transform.GetChild(0).GetChild(0).GetComponent<Text>().enabled =
+				ContextManager.Instance.CurrentInstruction != null && ContextManager.Instance.CurrentInstruction.Actions.Count > 0;
+			knowledgeActionsUI!.transform.GetChild(0).GetComponent<Image>().enabled = ContextManager.Instance.CurrentInstruction != null &&
+			                                                                          ContextManager.Instance.CurrentInstruction.Actions.Count > 0;
+			var actions = ContextManager.Instance.CurrentInstruction != null
+				? ContextManager.Instance.CurrentInstruction.Actions
+				: null;
 
-			foreach (var action in actions)
+			var contentScrollList = knowledgeActionsUI.transform.GetChild(1).GetChild(0);
+			if (actions != null)
 			{
-				var newUIAction = Instantiate(uiAction, contentScrollList.transform, false);
-				var capitalizedOperation = action.Operation.Substring(0, 1).ToUpper() + action.Operation.Substring(1);
+				for (var i = 0; i < contentScrollList.childCount; i++) Destroy(contentScrollList.GetChild(i).gameObject);
 
-				newUIAction.transform.GetChild(0).GetComponent<Text>().text = capitalizedOperation + " " + action.Components[0] + "," + action.Components[1];
+				foreach (var action in actions)
+				{
+					var newUIAction = Instantiate(uiAction, contentScrollList.transform, false);
+					var capitalizedOperation = action.Operation.Substring(0, 1).ToUpper() + action.Operation.Substring(1);
+
+					newUIAction.transform.GetChild(0).GetComponent<Text>().text =
+						capitalizedOperation + " " + action.Components[0] + "," + action.Components[1];
+				}
 			}
-		}
-		else
-		{
-			for (var i = 0; i < contentScrollList.childCount; i++) Destroy(contentScrollList.transform.GetChild(i).gameObject);
+			else
+			{
+				for (var i = 0; i < contentScrollList.childCount; i++) Destroy(contentScrollList.transform.GetChild(i).gameObject);
+			}
 		}
 	}
 
