@@ -189,6 +189,12 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 
 					var objectMeta = attachingObj.GetComponent<ObjectMeta>();
 
+					if (objectMeta.status == ObjectMeta.Status.Dettached)
+					{
+						primitives.Add(Robot.Instance.Wait(1.0f));
+						continue;
+					}
+					
 					var text = "";
 					const string delimiter = " and ";
 
@@ -205,19 +211,9 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateActionsList("- " + text); }));
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
 
-					primitives.Add(PrimitiveManager.SimplePrimitive(() =>
-					{
-						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
+					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTarget(attachingObj));
 
-						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = attachingObj.transform;
-						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = attachingObj.transform;
-
-						var volume = MeshVolume.Calculate(attachingObj.GetComponent<MeshFilter>().mesh);
-
-						virtualCamera.GetComponent<CinemachineFollowZoom>().m_MinFOV = volume > 0.0001 ? 30 : 20;
-					}));
-
-					primitives.Add(PrimitiveManager.ChangeObjectMaterialToInProgress(attachingObj));
+					primitives.Add(PrimitiveManager.Instance.ChangeObjectMaterialToInProgress(attachingObj));
 					primitives.Add(Robot.Instance.Wait(2f));
 
 					var rotationAxis = objectMeta.attachRotationAxis;
@@ -236,26 +232,25 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					switch (objectMeta.attachType)
 					{
 						case ObjectMeta.AttachTypes.SmoothInstall:
-							primitives.AddRange(PrimitiveManager.SmoothUninstall(attachingObj, referenceObj));
+							primitives.Add(PrimitiveManager.Instance.SmoothInstall(attachingObj, referenceObj, action.Operation));
 							break;
 						case ObjectMeta.AttachTypes.StepInstall:
-							primitives.AddRange(PrimitiveManager.StepUninstall(attachingObj, referenceObj));
+							primitives.Add(PrimitiveManager.Instance.StepInstall(attachingObj, referenceObj, action.Operation));
 							break;
 						case ObjectMeta.AttachTypes.SmoothScrew:
-							primitives.AddRange(PrimitiveManager.SmoothUnscrew(attachingObj, referenceObj, attachRotationVector));
+							primitives.Add(PrimitiveManager.Instance.SmoothScrew(attachingObj, referenceObj, attachRotationVector, action.Operation));
 							break;
 						case ObjectMeta.AttachTypes.StepScrew:
-							primitives.AddRange(PrimitiveManager.StepUnscrew(attachingObj, referenceObj, attachRotationVector));
+							primitives.Add(PrimitiveManager.Instance.StepScrew(attachingObj, referenceObj, attachRotationVector, action.Operation));
 							break;
 						default:
-							primitives.AddRange(PrimitiveManager.SmoothUninstall(attachingObj, referenceObj));
+							primitives.Add(PrimitiveManager.Instance.SmoothInstall(attachingObj, referenceObj, action.Operation));
 							break;
 					}
 
 					primitives.Add(Robot.Instance.Wait(0.5f));
 					primitives.Add(PrimitiveManager.MakeObjectTransparent(attachingObj));
-					// primitives.AddRange(PrimitiveManager.CreateRfmToScatteredMovePrimitives(attachingObj));
-					// primitives.AddRange(PrimitiveManager.CreateRotatePrimitives(attachingObj));
+					primitives.Add(PrimitiveManager.SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Dettached; }));
 				}
 
 				if (action.Operation == "attach")
@@ -264,6 +259,12 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					var referenceObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[1] + "]");
 
 					var objectMeta = attachingObj.GetComponent<ObjectMeta>();
+
+					if (objectMeta.status == ObjectMeta.Status.Attached)
+					{
+						primitives.Add(Robot.Instance.Wait(1.0f));
+						continue;
+					}
 
 					var text = "";
 					const string delimiter = " and ";
@@ -281,36 +282,13 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateActionsList("- " + text); }));
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
 
-					primitives.Add(PrimitiveManager.SimplePrimitive(() =>
-					{
-						var virtualCamera = GameObject.FindWithTag("VirtualCamera");
+					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTarget(attachingObj));
 
-						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = attachingObj.transform;
-						virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = attachingObj.transform;
-
-						var volume = MeshVolume.Calculate(attachingObj.GetComponent<MeshFilter>().mesh);
-
-						if (volume > 0.000001)
-						{
-							virtualCamera.GetComponent<CinemachineFollowZoom>().m_MinFOV = 30;
-						}
-
-						if (volume > 0.00001)
-						{
-							virtualCamera.GetComponent<CinemachineFollowZoom>().m_MinFOV = 40;
-						}
-
-						if (volume > 0.0001)
-						{
-							virtualCamera.GetComponent<CinemachineFollowZoom>().m_MinFOV = 50;
-						}
-					}));
-
-					primitives.Add(PrimitiveManager.ChangeObjectMaterialToInProgress(attachingObj));
+					primitives.Add(PrimitiveManager.Instance.ChangeObjectMaterialToInProgress(attachingObj));
 					primitives.Add(Robot.Instance.Wait(2f));
 
-					primitives.AddRange(PrimitiveManager.CreateRotatePrimitives(attachingObj));
-					primitives.AddRange(PrimitiveManager.CreateFromScatteredToRfmPrimitives(attachingObj, referenceObj));
+					primitives.Add(PrimitiveManager.Instance.CreateRotatePrimitives(attachingObj));
+					primitives.Add(PrimitiveManager.Instance.CreateFromScatteredToRfmPrimitives(attachingObj, referenceObj));
 					primitives.Add(Robot.Instance.Wait(1.0f));
 
 					var rotationAxis = objectMeta.attachRotationAxis;
@@ -329,22 +307,23 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					switch (objectMeta.attachType)
 					{
 						case ObjectMeta.AttachTypes.SmoothInstall:
-							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+							primitives.Add(PrimitiveManager.Instance.SmoothInstall(attachingObj, referenceObj, action.Operation));
 							break;
 						case ObjectMeta.AttachTypes.StepInstall:
-							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+							primitives.Add(PrimitiveManager.Instance.StepInstall(attachingObj, referenceObj, action.Operation));
 							break;
 						case ObjectMeta.AttachTypes.SmoothScrew:
-							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+							primitives.Add(PrimitiveManager.Instance.SmoothScrew(attachingObj, referenceObj, attachRotationVector, action.Operation));
 							break;
 						case ObjectMeta.AttachTypes.StepScrew:
-							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+							primitives.Add(PrimitiveManager.Instance.StepScrew(attachingObj, referenceObj, attachRotationVector, action.Operation));
 							break;
 						default:
-							primitives.AddRange(PrimitiveManager.SmoothInstall(attachingObj, referenceObj));
+							primitives.Add(PrimitiveManager.Instance.SmoothInstall(attachingObj, referenceObj, action.Operation));
 							break;
 					}
 
+					primitives.Add(PrimitiveManager.SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Attached; }));
 					primitives.Add(Robot.Instance.Wait(1.0f));
 				}
 			}

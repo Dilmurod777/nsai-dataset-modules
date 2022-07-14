@@ -22,9 +22,17 @@ namespace Instances
 			NegZ
 		}
 
+		public enum Status
+		{
+			Initial,
+			Attached,
+			Dettached
+		}
+
 		public RotationAxisEnum attachRotationAxis;
 		public RotationAxisEnum dettachRotationAxis;
 		public AttachTypes attachType;
 		public AttachTypes detachType;
+		public Status status = Status.Initial;
 	}
 }

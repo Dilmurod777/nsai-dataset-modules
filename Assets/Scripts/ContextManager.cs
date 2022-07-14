@@ -11,7 +11,6 @@ public class ContextManager : Singleton<ContextManager>
 	public Instruction CurrentInstruction;
 	public Query CurrentQuery;
 
-	public Dictionary<string, Vector3> latestGameObjectPositions = new Dictionary<string, Vector3>();
 
 	public void SetCurrentTask(Task task)
 	{

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Custom;
 using UnityEditor.VersionControl;
 using UnityEngine;
 
-public static class PrimitiveManager
+public class PrimitiveManager : Singleton<PrimitiveManager>
 {
 	public delegate void FunctionDelegate();
 
@@ -13,140 +14,120 @@ public static class PrimitiveManager
 		yield return null;
 	}
 
-	public static List<IEnumerator> CreateRotatePrimitives(GameObject objA)
+	public IEnumerator CreateRotatePrimitives(GameObject objA)
 	{
-		var primitives = new List<IEnumerator>();
-
 		var referenceObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
 		var finalRotation = referenceObj.transform.rotation.eulerAngles;
 
-		primitives.Add(Robot.Instance.SetRotateDuration(0.5f));
-		primitives.Add(Robot.Instance.Rotate(objA, finalRotation));
-		primitives.Add(Robot.Instance.ResetRotateDuration());
-
-		return primitives;
+		yield return StartCoroutine(Robot.Instance.SetRotateDuration(0.5f));
+		yield return StartCoroutine(Robot.Instance.Rotate(objA, finalRotation));
+		yield return StartCoroutine(Robot.Instance.ResetRotateDuration());
 	}
 
-	public static List<IEnumerator> CreateFromScatteredToRfmPrimitives(GameObject objA, GameObject objB)
+	public IEnumerator CreateFromScatteredToRfmPrimitives(GameObject objA, GameObject objB)
 	{
-		var primitives = new List<IEnumerator>();
+		var rfmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
+		var rfmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
 
-		primitives.Add(SimplePrimitive(() =>
+		var rfmDiff = rfmReferenceObjA.transform.position - rfmReferenceObjB.transform.position;
+		var finalPosition = objB.transform.position + rfmDiff;
+
+		yield return StartCoroutine(Robot.Instance.Move(objA, finalPosition));
+	}
+
+	public IEnumerator SmoothInstall(GameObject objA, GameObject objB, string type)
+	{
+		GameObject referenceObjA, referenceObjB;
+
+		if (type == "attach")
 		{
-			var rfmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-			var rfmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
-
-			var rfmDiff = rfmReferenceObjA.transform.position - rfmReferenceObjB.transform.position;
-
-			ContextManager.Instance.latestGameObjectPositions[objA.name] = ContextManager.Instance.latestGameObjectPositions[objB.name] + rfmDiff;
-		}));
-		primitives.Add(Robot.Instance.Move(objA));
-
-		return primitives;
-	}
-
-	public static List<IEnumerator> SmoothUninstall(GameObject objA, GameObject objB)
-	{
-		var primitives = new List<IEnumerator>();
-
-		var rfmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-		var rfmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
-
-		var previousParent = rfmReferenceObjA.transform.parent;
-		rfmReferenceObjA.transform.SetParent(rfmReferenceObjB.transform);
-		var rfmDiff = rfmReferenceObjA.transform.localPosition;
-		var rfmFinalPosition = objB.transform.TransformPoint(rfmDiff);
-		rfmReferenceObjA.transform.SetParent(previousParent);
-
-		primitives.Add(Robot.Instance.Move(objA, rfmFinalPosition));
-
-		return primitives;
-	}
-
-	public static List<IEnumerator> SmoothUnscrew(GameObject objA, GameObject objB, Vector3 direction = default)
-	{
-		var primitives = new List<IEnumerator>();
-
-		var rfmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-		var rfmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
-
-		var previousParent = rfmReferenceObjA.transform.parent;
-		rfmReferenceObjA.transform.SetParent(rfmReferenceObjB.transform);
-		var rfmDiff = rfmReferenceObjA.transform.localPosition;
-		var rfmFinalPosition = objB.transform.TransformPoint(rfmDiff);
-		rfmReferenceObjA.transform.SetParent(previousParent);
-
-		primitives.Add(Robot.Instance.MoveWithRotation(objA, rfmFinalPosition, direction));
-
-		return primitives;
-	}
-
-	public static List<IEnumerator> StepUninstall(GameObject objA, GameObject objB, int steps = 3)
-	{
-		var primitives = new List<IEnumerator>();
-
-		var rfmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-		var rfmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
-
-		var previousParent = rfmReferenceObjA.transform.parent;
-		rfmReferenceObjA.transform.SetParent(rfmReferenceObjB.transform);
-		var rfmDiff = rfmReferenceObjA.transform.localPosition;
-		var rfmFinalPosition = objB.transform.TransformPoint(rfmDiff);
-		rfmReferenceObjA.transform.SetParent(previousParent);
-
-		var delta = rfmFinalPosition - objA.transform.position;
-		for (var i = 0; i < steps; i++)
+			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
+			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
+		}
+		else
 		{
-			primitives.Add(Robot.Instance.Move(objA, objA.transform.position + (i + 1) * delta / steps));
-			primitives.Add(Robot.Instance.Wait(0.25f));
+			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
+			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
 		}
 
-		return primitives;
+		var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
+		var finalPosition = objB.transform.position + rfmDiff;
+
+		yield return StartCoroutine(Robot.Instance.Move(objA, finalPosition));
 	}
 
-	public static List<IEnumerator> StepUnscrew(GameObject objA, GameObject objB, Vector3 direction = default, int steps = 3)
+	public IEnumerator SmoothScrew(GameObject objA, GameObject objB, Vector3 direction, string type)
 	{
-		var primitives = new List<IEnumerator>();
+		GameObject referenceObjA, referenceObjB;
 
-		var rfmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
-		var rfmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
-
-		var previousParent = rfmReferenceObjA.transform.parent;
-		rfmReferenceObjA.transform.SetParent(rfmReferenceObjB.transform);
-		var rfmDiff = rfmReferenceObjA.transform.localPosition;
-		var rfmFinalPosition = objB.transform.TransformPoint(rfmDiff);
-		rfmReferenceObjA.transform.SetParent(previousParent);
-
-
-		var delta = rfmFinalPosition - objA.transform.position;
-		for (var i = 0; i < steps; i++)
+		if (type == "attach")
 		{
-			primitives.Add(Robot.Instance.MoveWithRotation(objA, objA.transform.position + (i + 1) * delta / steps, direction));
-			primitives.Add(Robot.Instance.Wait(0.25f));
+			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
+			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
+		}
+		else
+		{
+			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
+			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
 		}
 
-		return primitives;
+		var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
+		var finalPosition = objB.transform.position + rfmDiff;
+
+		yield return StartCoroutine(Robot.Instance.MoveWithRotation(objA, finalPosition, direction));
 	}
 
-	public static List<IEnumerator> SmoothInstall(GameObject objA, GameObject objB)
+	public IEnumerator StepInstall(GameObject objA, GameObject objB, string type, int steps = 3)
 	{
-		var primitives = new List<IEnumerator>();
+		GameObject referenceObjA, referenceObjB;
 
-		primitives.Add(SimplePrimitive(() =>
+		if (type == "attach")
 		{
-			var ifmReferenceObjA = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
-			var ifmReferenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
+			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
+			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
+		}
+		else
+		{
+			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
+			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
+		}
 
-			var rfmDiff = ifmReferenceObjA.transform.position - ifmReferenceObjB.transform.position;
+		var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
+		var delta = objB.transform.position + rfmDiff - objA.transform.position;
 
-			ContextManager.Instance.latestGameObjectPositions[objA.name] = ContextManager.Instance.latestGameObjectPositions[objB.name] - rfmDiff;
-		}));
-		primitives.Add(Robot.Instance.Move(objA));
-
-		return primitives;
+		for (var i = 0; i < steps; i++)
+		{
+			yield return StartCoroutine(Robot.Instance.Move(objA, objA.transform.position + (i + 1) * delta / steps));
+			yield return StartCoroutine(Robot.Instance.Wait(0.25f));
+		}
 	}
 
-	public static IEnumerator ChangeObjectMaterialToInProgress(GameObject obj)
+	public IEnumerator StepScrew(GameObject objA, GameObject objB, Vector3 direction, string type, int steps = 3)
+	{
+		GameObject referenceObjA, referenceObjB;
+
+		if (type == "attach")
+		{
+			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objA.name);
+			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.IFM, objB.name);
+		}
+		else
+		{
+			referenceObjA =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);
+			referenceObjB =  AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
+		}
+		
+		var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
+		var delta = objB.transform.position + rfmDiff - objA.transform.position;
+		
+		for (var i = 0; i < steps; i++)
+		{
+			yield return StartCoroutine(Robot.Instance.MoveWithRotation(objA, objA.transform.position + (i + 1) * delta / steps, direction));
+			yield return StartCoroutine(Robot.Instance.Wait(0.25f));
+		}
+	}
+
+	public IEnumerator ChangeObjectMaterialToInProgress(GameObject obj)
 	{
 		var oldMaterials = obj.GetComponent<MeshRenderer>().materials;
 		var newMaterials = new Material[oldMaterials.Length];

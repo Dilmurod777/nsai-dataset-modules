@@ -55,15 +55,15 @@ public class Robot : Singleton<Robot>
 	{
 		var initialPosition = sourceObject.transform.position;
 
-		sourceObject.transform.position = ContextManager.Instance.latestGameObjectPositions[sourceObject.name];
 
 		var delta = 0f;
-		// while (delta < GetMoveDuration())
-		// {
-		// 	delta += Time.fixedDeltaTime;
-		// 	sourceObject.transform.position = Vector3.Lerp(initialPosition, ContextManager.Instance.latestGameObjectPositions[sourceObject.name], delta / GetMoveDuration());
-		// 	yield return null;
-		// }
+		while (delta < GetMoveDuration())
+		{
+			delta += Time.fixedDeltaTime;
+			// sourceObject.transform.position = Vector3.Lerp(initialPosition, ContextManager.Instance.latestGameObjectPositions[sourceObject.name], delta / GetMoveDuration());
+			sourceObject.transform.position = Vector3.Lerp(initialPosition, finalPosition, delta / GetMoveDuration());
+			yield return null;
+		}
 
 		yield return null;
 	}

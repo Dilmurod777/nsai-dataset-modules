@@ -208,9 +208,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  dettachRotationAxis: 3
+  attachType: 2
+  detachType: 2
 --- !u!65 &7730679192716515599
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -542,13 +542,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1437365600674595152}
-  m_LocalRotation: {x: -0.6889837, y: 0.1590644, z: 0.1590644, w: 0.6889837}
-  m_LocalPosition: {x: 4.025113, y: 1.4125618, z: -1.9637426}
+  m_LocalRotation: {x: -0.6837965, y: 0.15454112, z: 0.15229532, w: 0.6966675}
+  m_LocalPosition: {x: 4.024704, y: 1.4120523, z: -1.9635525}
   m_LocalScale: {x: 0.2025893, y: 0.20258941, z: 0.20258945}
   m_Children: []
   m_Father: {fileID: 7796777963051480535}
   m_RootOrder: 34
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -88.941, y: 22.429, z: 2.634}
 --- !u!33 &3405333794817405042
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -612,10 +612,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
+  attachType: 2
+  detachType: 2
 --- !u!65 &1941474176121553280
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -851,8 +851,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.0006187439, y: 0.013980038, z: 0.0030660261}
-  m_Center: {x: 4.947651e-10, y: -0.00000016693957, z: -0.000037605234}
+  m_Size: {x: 0.0021925613, y: 0.0025094803, z: 0.0030660261}
+  m_Center: {x: -0.00021074608, y: -0.0036406212, z: -0.000037605296}
 --- !u!1 &2374892895614335305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1299,8 +1299,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.047666334, y: 0.105651036, z: 0.04840041}
-  m_Center: {x: 0.0000019073486, y: -0.0000009443611, z: 0.00000047683716}
+  m_Size: {x: 0.047666334, y: 0.028388137, z: 0.04840041}
+  m_Center: {x: 0.0000019265133, y: 0.038630534, z: 0.0000004756459}
 --- !u!1 &3469709960532553056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,10 +1622,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
+  attachType: 1
+  detachType: 1
 --- !u!65 &5111952358360527653
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3330,8 +3330,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.026156653, y: 0.1491715, z: 0.028981674}
-  m_Center: {x: -0.0000019213185, y: -0.000009868294, z: -0.00049727457}
+  m_Size: {x: 0.017205736, y: 0.021180969, z: 0.015504997}
+  m_Center: {x: -0.0005585413, y: -0.0653317, z: -0.0029446501}
 --- !u!1 &7040482213520063091
 GameObject:
   m_ObjectHideFlags: 0
@@ -3344,7 +3344,7 @@ GameObject:
   - component: {fileID: 3175618353682556354}
   - component: {fileID: 2374275146563939646}
   - component: {fileID: 8485773906581455737}
-  - component: {fileID: 895887013838469864}
+  - component: {fileID: 1610805816756551661}
   m_Layer: 0
   m_Name: '[15] REACTION LINK ASSEMBLY'
   m_TagString: ReferenceObject
@@ -3432,7 +3432,7 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
---- !u!65 &895887013838469864
+--- !u!65 &1610805816756551661
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3443,8 +3443,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0602366, y: 0.107511654, z: 0.14}
-  m_Center: {x: 0.4697948, y: 0.00045284815, z: -0.03}
+  m_Size: {x: 0.37535092, y: 0.08930775, z: 0.11055155}
+  m_Center: {x: 0.12735099, y: 0.009554235, z: 0.0128135625}
 --- !u!1 &7179090487558693466
 GameObject:
   m_ObjectHideFlags: 0
@@ -3541,9 +3541,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  dettachRotationAxis: 3
+  attachType: 1
+  detachType: 1
 --- !u!65 &6556514889864354012
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3681,7 +3681,7 @@ GameObject:
   - component: {fileID: 9092862158555314890}
   - component: {fileID: 5891886332031886911}
   - component: {fileID: 4919114997958737114}
-  - component: {fileID: 6496802137808508926}
+  - component: {fileID: 6978618708132339307}
   m_Layer: 0
   m_Name: '[8] LOWER SIDE STRUT'
   m_TagString: ReferenceObject
@@ -3769,7 +3769,7 @@ MonoBehaviour:
   dettachRotationAxis: 0
   attachType: 0
   detachType: 0
---- !u!65 &6496802137808508926
+--- !u!65 &6978618708132339307
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3877,10 +3877,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 0
-  dettachRotationAxis: 0
-  attachType: 0
-  detachType: 0
+  attachRotationAxis: 1
+  dettachRotationAxis: 4
+  attachType: 2
+  detachType: 2
 --- !u!65 &7588983757627125231
 BoxCollider:
   m_ObjectHideFlags: 0

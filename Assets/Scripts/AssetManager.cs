@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Cinemachine;
 using Custom;
 using Instances;
 using UnityEngine;
@@ -95,10 +93,10 @@ public class AssetManager : Singleton<AssetManager>
 				{
 					if (child.name == instantiatedFigure.name) continue;
 
+					var referenceChild = FindObjectInFigure(FigureType.Reference, child.name);
+
 					if (child.GetComponent<ObjectMeta>() == null)
 					{
-						var referenceChild = FindObjectInFigure(FigureType.Reference, child.name);
-
 						if (referenceChild != null)
 						{
 							var referenceObjectMeta = referenceChild.GetComponent<ObjectMeta>();
@@ -117,18 +115,19 @@ public class AssetManager : Singleton<AssetManager>
 						}
 					}
 
-					if (child.GetComponent<BoxCollider>() == null)
+					var boxCollider = child.GetComponent<BoxCollider>();
+					if (boxCollider == null)
 					{
-						child.gameObject.AddComponent<BoxCollider>();
-					}
+						boxCollider = child.gameObject.AddComponent<BoxCollider>();
 
-					if (ContextManager.Instance.latestGameObjectPositions.ContainsKey(child.name))
-					{
-						ContextManager.Instance.latestGameObjectPositions[child.name] = child.position;
-					}
-					else
-					{
-						ContextManager.Instance.latestGameObjectPositions.Add(child.name, child.position);
+						var referenceBoxCollider = referenceChild.GetComponent<BoxCollider>();
+
+						if (referenceBoxCollider != null)
+						{
+							boxCollider.isTrigger = referenceBoxCollider.isTrigger;
+							boxCollider.center = referenceBoxCollider.center;
+							boxCollider.size = referenceBoxCollider.size;
+						}
 					}
 				}
 			}
@@ -192,7 +191,8 @@ public class AssetManager : Singleton<AssetManager>
 			FigureType.Current => GameObject.Find("CurrentFigure"),
 			FigureType.IFM => GameObject.Find("CurrentFigureIFM"),
 			FigureType.RFM => GameObject.Find("CurrentFigureRFM"),
-			FigureType.Reference => GameObject.Find("CurrentFigureReference")
+			FigureType.Reference => GameObject.Find("CurrentFigureReference"),
+			_ => GameObject.Find("CurrentFigure")
 		};
 
 		foreach (var child in figure.GetComponentsInChildren<Transform>())
