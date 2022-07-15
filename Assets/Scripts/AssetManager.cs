@@ -23,7 +23,8 @@ public class AssetManager : Singleton<AssetManager>
 	{
 		var subtaskIdsToFigurePrefab = new Dictionary<string, string>
 		{
-			{"32-11-61", "MainLandingGear"}
+			{"32-11-61", "MainLandingGear"},
+			{"32-45-11", "WheelAndTire"}
 		};
 
 		var prefabName = "";
@@ -108,10 +109,6 @@ public class AssetManager : Singleton<AssetManager>
 								childObjectMeta.status = referenceObjectMeta.status;
 								childObjectMeta.isCoreInFigure = referenceObjectMeta.isCoreInFigure;
 							}
-							else
-							{
-								Debug.LogError("Reference " + referenceChild.name + " object has no ObjectMeta script");
-							}
 						}
 
 						var boxCollider = child.GetComponent<BoxCollider>();
@@ -166,10 +163,6 @@ public class AssetManager : Singleton<AssetManager>
 								childObjectMeta.dettachRotationAxis = referenceObjectMeta.dettachRotationAxis;
 								childObjectMeta.status = referenceObjectMeta.status;
 								childObjectMeta.isCoreInFigure = referenceObjectMeta.isCoreInFigure;
-							}
-							else
-							{
-								Debug.LogError("Reference " + referenceChild.name + " object has no ObjectMeta script");
 							}
 						}
 
@@ -288,8 +281,10 @@ public class AssetManager : Singleton<AssetManager>
 		};
 
 		foreach (var child in figure.GetComponentsInChildren<Transform>())
+		{
 			if (child.name.Contains(objName))
 				return child.gameObject;
+		}
 
 		return null;
 	}
@@ -321,13 +316,13 @@ public class AssetManager : Singleton<AssetManager>
 			if (taskType == ContextManager.TaskType.Removal)
 				if (figureInScene.name == "CurrentFigureRemoval")
 				{
-					for (var i = 0; i < figureInScene.transform.childCount; i++)
+					foreach (var child in figureInScene.GetComponentsInChildren<Transform>())
 					{
-						var objectMeta = figureInScene.transform.GetChild(i).gameObject.GetComponent<ObjectMeta>();
+						var objectMeta = child.gameObject.GetComponent<ObjectMeta>();
 
-						if (objectMeta.isCoreInFigure) CameraManager.Instance.FocusOnFigure(figureInScene.transform.GetChild(i).gameObject);
+						if (objectMeta && objectMeta.isCoreInFigure) CameraManager.Instance.FocusOnFigure(child.gameObject);
 
-						var meshRenderer = figureInScene.transform.GetChild(i).GetComponent<MeshRenderer>();
+						var meshRenderer = child.GetComponent<MeshRenderer>();
 						if (meshRenderer) meshRenderer.enabled = true;
 					}
 

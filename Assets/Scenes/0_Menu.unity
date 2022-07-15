@@ -1543,7 +1543,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   IgnoreTag: 
-  CameraRadius: 0.001
+  CameraRadius: 1
 --- !u!1 &1469183341
 GameObject:
   m_ObjectHideFlags: 0
@@ -2078,7 +2078,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Width: 0
   m_Damping: 0
-  m_MinFOV: 100
+  m_MinFOV: 8
   m_MaxFOV: 179
 --- !u!114 &1837083066
 MonoBehaviour:

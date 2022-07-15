@@ -153,10 +153,13 @@ public class UIManager : Singleton<UIManager>
 
 				foreach (var action in actions)
 				{
-					var newUIAction = Instantiate(uiAction, contentScrollList.transform, false);
-
 					var obj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, action.Components[0]);
-					var objectMeta = obj.GetComponent<ObjectMeta>();
+
+					var finalObj = obj.transform.childCount > 1 ? obj.transform.GetChild(0).gameObject : obj;
+
+					var objectMeta = finalObj.GetComponent<ObjectMeta>();
+
+					var newUIAction = Instantiate(uiAction, contentScrollList.transform, false);
 
 					newUIAction.transform.GetChild(0).GetComponent<Text>().text =
 						objectMeta.attachType + " " + action.Components[0] + "," + action.Components[1];
