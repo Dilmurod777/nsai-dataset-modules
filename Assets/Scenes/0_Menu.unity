@@ -1951,6 +1951,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiOption: {fileID: 2416597981577184746, guid: 8b1baf04e8baf7b44858179aef2c0101, type: 3}
   uiAction: {fileID: 3777529428084588350, guid: 143854e60d502bd4a862549754dd9131, type: 3}
+  uiBasicOperation: {fileID: 2416597981577184746, guid: 71d79b4f9f5be7a4f9fbc0026b45b1e6, type: 3}
 --- !u!1 &1970911720
 GameObject:
   m_ObjectHideFlags: 0

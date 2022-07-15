@@ -14,6 +14,11 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		yield return null;
 	}
 
+	public static IEnumerator DelayPrimitive(float seconds)
+	{
+		yield return new WaitForSeconds(seconds);
+	}
+
 	public IEnumerator CreateRotatePrimitives(GameObject objA)
 	{
 		var referenceObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objA.name);

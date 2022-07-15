@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Custom;
 using Instances;
@@ -8,15 +7,16 @@ using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
-	public GameObject uiOption;
-	public GameObject uiAction;
-
 	public enum UIOptionType
 	{
 		Task,
 		Subtask,
 		Query
 	}
+
+	public GameObject uiOption;
+	public GameObject uiAction;
+	public GameObject uiBasicOperation;
 
 	public void SetUpMenus()
 	{
@@ -74,7 +74,7 @@ public class UIManager : Singleton<UIManager>
 			resetButton.GetComponent<Button>().onClick.RemoveAllListeners();
 			resetButton.GetComponent<Button>().onClick.AddListener(() =>
 			{
-				AssetManager.Instance.ResetCurrentFigure();
+				AssetManager.Instance.ResetFigures();
 				KnowledgeManager.Instance.ResetTasks();
 				SceneManager.Instance.LoadScene(SceneManager.MenuSceneNameGlobal);
 			});
@@ -82,10 +82,7 @@ public class UIManager : Singleton<UIManager>
 		}
 
 		var queryPlayButton = GameObject.FindWithTag("QueryPlayButton");
-		if (queryPlayButton)
-		{
-			queryPlayButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecutingSubtask;
-		}
+		if (queryPlayButton) queryPlayButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecutingSubtask;
 
 		var query = ContextManager.Instance.CurrentQuery;
 		if (query != null)
@@ -157,10 +154,12 @@ public class UIManager : Singleton<UIManager>
 				foreach (var action in actions)
 				{
 					var newUIAction = Instantiate(uiAction, contentScrollList.transform, false);
-					var capitalizedOperation = action.Operation.Substring(0, 1).ToUpper() + action.Operation.Substring(1);
+
+					var obj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, action.Components[0]);
+					var objectMeta = obj.GetComponent<ObjectMeta>();
 
 					newUIAction.transform.GetChild(0).GetComponent<Text>().text =
-						capitalizedOperation + " " + action.Components[0] + "," + action.Components[1];
+						objectMeta.attachType + " " + action.Components[0] + "," + action.Components[1];
 				}
 			}
 			else
@@ -170,17 +169,34 @@ public class UIManager : Singleton<UIManager>
 		}
 	}
 
-	public void UpdateActionsList(string text)
+	public void UpdateBasicOperationsList(string text)
 	{
-		var actionsList = GameObject.FindWithTag("ActionsListUI");
+		var basicOperationsList = GameObject.FindWithTag("BasicOperationsUI");
 
-		if (actionsList)
+		if (basicOperationsList)
 		{
-			var textComponent = actionsList.transform.GetChild(1).GetChild(0).GetComponent<Text>();
-			if (textComponent != null) textComponent.text += textComponent.text == "" ? text : "\n" + text;
+			basicOperationsList.transform.GetChild(0).GetComponent<Text>().enabled = true;
 
-			var scrollRectComponent = actionsList.transform.GetChild(1).GetComponent<ScrollRect>();
-			if (scrollRectComponent != null) scrollRectComponent.normalizedPosition = new Vector2(0, 0);
+			var content = basicOperationsList.transform.GetChild(1).GetChild(0);
+
+			var newBasicOperationUI = Instantiate(uiBasicOperation, content.transform, false);
+			newBasicOperationUI.transform.GetChild(0).GetComponent<Text>().text = text;
+
+			content.transform.parent.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 1);
+		}
+	}
+
+	public void ResetBasicOperationsList()
+	{
+		var basicOperationsList = GameObject.FindWithTag("BasicOperationsUI");
+
+		if (basicOperationsList)
+		{
+			basicOperationsList.transform.GetChild(0).GetComponent<Text>().enabled = false;
+
+			var content = basicOperationsList.transform.GetChild(1).GetChild(0);
+
+			for (var i = content.childCount - 1; i >= 0; i--) Destroy(content.GetChild(i).gameObject);
 		}
 	}
 
@@ -206,10 +222,7 @@ public class UIManager : Singleton<UIManager>
 	{
 		var knowledgeContent = GameObject.FindWithTag("KnowledgeContent");
 
-		for (var i = 0; i < knowledgeContent.transform.childCount; i++)
-		{
-			Destroy(knowledgeContent.transform.transform.GetChild(i).gameObject);
-		}
+		for (var i = 0; i < knowledgeContent.transform.childCount; i++) Destroy(knowledgeContent.transform.transform.GetChild(i).gameObject);
 
 		for (var i = 0; i < tasks.Count; i++)
 		{

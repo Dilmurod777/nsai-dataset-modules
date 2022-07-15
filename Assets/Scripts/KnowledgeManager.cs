@@ -170,6 +170,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		var instructions = ContextManager.Instance.CurrentSubtask.Instructions;
 		var primitives = new List<IEnumerator>();
 
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.ResetBasicOperationsList(); }));
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => { Instance.isExecutingSubtask = true; }));
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.DisableAllButtons(); }));
 
@@ -191,7 +192,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 
 					if (objectMeta.status == ObjectMeta.Status.Dettached)
 					{
-						primitives.Add(Robot.Instance.Wait(1.0f));
+						primitives.Add(PrimitiveManager.DelayPrimitive(1.0f));
 						continue;
 					}
 
@@ -208,14 +209,13 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					};
 
 					text += attachingObj.name + delimiter + referenceObj.name;
-					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateActionsList("- " + text); }));
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
 
 					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj));
-					primitives.Add(Robot.Instance.Wait(0.5f));
+					primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
 
 					primitives.Add(PrimitiveManager.Instance.ChangeObjectMaterialToInProgress(attachingObj));
-					primitives.Add(Robot.Instance.Wait(2f));
+					primitives.Add(PrimitiveManager.DelayPrimitive(2f));
 
 					var rotationAxis = objectMeta.attachRotationAxis;
 
@@ -249,7 +249,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 							break;
 					}
 
-					primitives.Add(Robot.Instance.Wait(0.5f));
+					primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
 					primitives.Add(PrimitiveManager.Instance.MakeObjectTransparent(attachingObj));
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Dettached; }));
 				}
@@ -263,7 +263,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 
 					if (objectMeta.status == ObjectMeta.Status.Attached)
 					{
-						primitives.Add(Robot.Instance.Wait(1.0f));
+						primitives.Add(PrimitiveManager.DelayPrimitive(1.0f));
 						continue;
 					}
 
@@ -282,19 +282,18 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					};
 
 					text += attachingObj.name + delimiter + referenceObj.name;
-					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateActionsList("- " + text); }));
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
 
 					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj));
-					primitives.Add(Robot.Instance.Wait(0.5f));
+					primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
 
 					primitives.Add(PrimitiveManager.Instance.ChangeObjectMaterialToInProgress(attachingObj));
-					primitives.Add(Robot.Instance.Wait(2f));
+					primitives.Add(PrimitiveManager.DelayPrimitive(2f));
 
 					primitives.Add(PrimitiveManager.Instance.CreateRotatePrimitives(attachingObj));
-					primitives.Add(Robot.Instance.Wait(1.0f));
+					primitives.Add(PrimitiveManager.DelayPrimitive(1.0f));
 					primitives.Add(PrimitiveManager.Instance.CreateFromScatteredToRfmPrimitives(attachingObj, referenceObj));
-					primitives.Add(Robot.Instance.Wait(1.0f));
+					primitives.Add(PrimitiveManager.DelayPrimitive(1.0f));
 					primitives.Add(CameraManager.Instance.GetCameraCloser());
 
 					var rotationAxis = objectMeta.attachRotationAxis;
@@ -328,17 +327,17 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 							primitives.Add(PrimitiveManager.Instance.SmoothInstall(attachingObj, referenceObj, action.Operation));
 							break;
 					}
-					
+
 					primitives.Add(PrimitiveManager.SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Attached; }));
-					primitives.Add(Robot.Instance.Wait(0.5f));
+					primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
 					primitives.Add(PrimitiveManager.Instance.ResetObjectMaterial(attachingObj));
-					primitives.Add(Robot.Instance.Wait(2f));
+					primitives.Add(PrimitiveManager.DelayPrimitive(2f));
 				}
 			}
 
 			if (actions.Count == 0)
 			{
-				primitives.Add(Robot.Instance.Wait(1.0f));
+				primitives.Add(PrimitiveManager.DelayPrimitive(1.0f));
 			}
 		}
 

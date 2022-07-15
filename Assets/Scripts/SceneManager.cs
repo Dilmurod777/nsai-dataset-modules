@@ -9,14 +9,14 @@ public class SceneManager : Singleton<SceneManager>
 	public static string MenuSceneNameGlobal = MenuSceneName;
 	public static string MainSceneNameGlobal = MainSceneName;
 
-	public void LoadScene(string sceneName)
-	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
-	}
-
 	private void OnEnable()
 	{
 		UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	public void LoadScene(string sceneName)
+	{
+		UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
 	}
 
 	private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -30,6 +30,7 @@ public class SceneManager : Singleton<SceneManager>
 				UIManager.Instance.SetUpMenus();
 				break;
 			case MainSceneName:
+				UIManager.Instance.ResetBasicOperationsList();
 				UIManager.Instance.UpdateUI();
 				AssetManager.Instance.UpdateAssets();
 				AssetManager.Instance.ShowCurrentFigure();

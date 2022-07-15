@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Custom;
 using Instances;
 using UnityEngine;
@@ -12,13 +10,14 @@ public class AssetManager : Singleton<AssetManager>
 		Current,
 		IFM,
 		RFM,
-		Reference
+		Reference,
+		Scattered
 	}
 
 	public Material inProgressMaterial;
 	public Material tempMaterial;
 
-	private Vector3 offset = new Vector3(-60.7f, -20.4f, 36.9f);
+	private readonly Vector3 _offset = new Vector3(-60.7f, -20.4f, 36.9f);
 
 	private string GetPlainFigureName(string subtaskId)
 	{
@@ -27,17 +26,13 @@ public class AssetManager : Singleton<AssetManager>
 			{"32-11-61", "MainLandingGear"}
 		};
 
-		string prefabName = "";
+		var prefabName = "";
 
 		foreach (var key in subtaskIdsToFigurePrefab.Keys)
-		{
 			if (subtaskId.StartsWith(key))
-			{
 				prefabName = subtaskIdsToFigurePrefab[key];
-			}
-		}
 
-		var needsToReplace = new List<string> {"-IFM", "-RFM", "-Reference"};
+		var needsToReplace = new List<string> {"-IFM", "-RFM", "-Reference", "-Scattered"};
 
 		foreach (var word in needsToReplace) prefabName = prefabName.Replace(word, "");
 
@@ -58,17 +53,18 @@ public class AssetManager : Singleton<AssetManager>
 			GameObject figurePrefabInstallation = null;
 			GameObject figurePrefabRemoval = null;
 
-			figurePrefabInstallation = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-Scattered");
-			figurePrefabRemoval = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-IFM");
+			figurePrefabInstallation = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/Scattered");
+			figurePrefabRemoval = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/IFM");
 
-			var ifmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-IFM");
-			var rfmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-RFM");
-			var referencePrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "-Reference");
+			var ifmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/IFM");
+			var rfmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/RFM");
+			var referencePrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/Reference");
+			var scatteredPrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/Scattered");
 
 			if (referencePrefab != null)
 			{
 				var instantiatedReference = Instantiate(referencePrefab);
-				instantiatedReference.transform.position = offset + new Vector3(0, 0, 100f);
+				instantiatedReference.transform.position = _offset + new Vector3(0, 0, 100f);
 				instantiatedReference.tag = "ReferenceObject";
 				instantiatedReference.name = "CurrentFigureReference";
 				instantiatedReference.transform.rotation = Quaternion.identity;
@@ -91,10 +87,7 @@ public class AssetManager : Singleton<AssetManager>
 					if (child.name == instantiatedFigure.name) continue;
 
 					var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
-					if (meshRenderer != null)
-					{
-						meshRenderer.enabled = false;
-					}
+					if (meshRenderer != null) meshRenderer.enabled = false;
 
 					var referenceChild = FindObjectInFigure(FigureType.Reference, child.name);
 
@@ -153,10 +146,7 @@ public class AssetManager : Singleton<AssetManager>
 					if (child.name == instantiatedFigure.name) continue;
 
 					var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
-					if (meshRenderer != null)
-					{
-						meshRenderer.enabled = false;
-					}
+					if (meshRenderer != null) meshRenderer.enabled = false;
 
 
 					var referenceChild = FindObjectInFigure(FigureType.Reference, child.name);
@@ -224,37 +214,58 @@ public class AssetManager : Singleton<AssetManager>
 
 				foreach (var meshRenderer in instantiatedRfm.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
 			}
+
+			if (scatteredPrefab != null)
+			{
+				var instantiatedScattered = Instantiate(scatteredPrefab);
+				instantiatedScattered.tag = "ReferenceObject";
+				instantiatedScattered.name = "CurrentFigureScattered";
+				instantiatedScattered.transform.rotation = Quaternion.identity;
+				instantiatedScattered.transform.position = Vector3.zero;
+				instantiatedScattered.AddComponent<CustomDontDestroyOnLoad>();
+
+				foreach (var meshRenderer in instantiatedScattered.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
+			}
 		}
 	}
 
-	public void ResetCurrentFigure()
+	public void ResetFigures()
 	{
-		var figure = GameObject.FindWithTag("Figure");
-		var referenceFigure = GameObject.FindGameObjectsWithTag("ReferenceObject").First(obj => obj.name == "CurrentFigureReference");
-		
-		var task = ContextManager.Instance.CurrentTask;
-		var subtask = ContextManager.Instance.CurrentSubtask;
-		var taskType = ContextManager.GetTaskType(task);
+		var figures = GameObject.FindGameObjectsWithTag("Figure");
 
-		if (subtask != null)
+
+		foreach (var figure in figures)
+		foreach (var child in figure.GetComponentsInChildren<Transform>())
 		{
-			GameObject figurePrefab;
+			if (child.name == figure.name) continue;
 
-			if (taskType == ContextManager.TaskType.Installation)
-			{
-				figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.SubtaskId) + "-Scattered");
-			}
-			else
-			{
-				figurePrefab = Resources.Load<GameObject>("ModelPrefabs/" + GetPlainFigureName(subtask.SubtaskId) + "-IFM");
-			}
+			var objectMeta = child.GetComponent<ObjectMeta>();
+			if (objectMeta.isCoreInFigure) continue;
 
-			if (figurePrefab != null)
+			var referenceChild = Instance.FindObjectInFigure(FigureType.Reference, child.name);
+			var transformReference = Instance.FindObjectInFigure(figure.name == "CurrentFigureInstallation" ? FigureType.Scattered : FigureType.IFM, child.name)
+				.transform;
+
+			child.position = transformReference.position;
+			child.rotation = transformReference.rotation;
+			child.localScale = transformReference.localScale;
+
+			if (referenceChild != null)
 			{
-				var instantiatedFigure = Instantiate(figurePrefab);
-				instantiatedFigure.transform.position = offset;
-				instantiatedFigure.tag = "Figure";
-				instantiatedFigure.AddComponent<CustomDontDestroyOnLoad>();
+				var materials = referenceChild.GetComponent<MeshRenderer>().materials;
+				child.GetComponent<MeshRenderer>().materials = materials;
+
+				if (objectMeta)
+				{
+					var referenceObjectMeta = referenceChild.GetComponent<ObjectMeta>();
+
+					objectMeta.attachType = referenceObjectMeta.attachType;
+					objectMeta.detachType = referenceObjectMeta.detachType;
+					objectMeta.attachRotationAxis = referenceObjectMeta.attachRotationAxis;
+					objectMeta.dettachRotationAxis = referenceObjectMeta.dettachRotationAxis;
+					objectMeta.status = referenceObjectMeta.status;
+					objectMeta.isCoreInFigure = referenceObjectMeta.isCoreInFigure;
+				}
 			}
 		}
 	}
@@ -272,6 +283,7 @@ public class AssetManager : Singleton<AssetManager>
 			FigureType.IFM => GameObject.Find("CurrentFigureIFM"),
 			FigureType.RFM => GameObject.Find("CurrentFigureRFM"),
 			FigureType.Reference => GameObject.Find("CurrentFigureReference"),
+			FigureType.Scattered => GameObject.Find("CurrentFigureScattered"),
 			_ => GameObject.Find("CurrentFigure")
 		};
 
@@ -291,52 +303,36 @@ public class AssetManager : Singleton<AssetManager>
 		foreach (var figureInScene in figuresInScene)
 		{
 			if (taskType == ContextManager.TaskType.Installation)
-			{
 				if (figureInScene.name == "CurrentFigureInstallation")
 				{
 					for (var i = 0; i < figureInScene.transform.childCount; i++)
 					{
 						var objectMeta = figureInScene.transform.GetChild(i).gameObject.GetComponent<ObjectMeta>();
 
-						if (objectMeta.isCoreInFigure)
-						{
-							CameraManager.Instance.FocusOnFigure(figureInScene.transform.GetChild(i).gameObject);
-						}
+						if (objectMeta.isCoreInFigure) CameraManager.Instance.FocusOnFigure(figureInScene.transform.GetChild(i).gameObject);
 
 						var meshRenderer = figureInScene.transform.GetChild(i).GetComponent<MeshRenderer>();
-						if (meshRenderer != null)
-						{
-							meshRenderer.enabled = objectMeta.status == ObjectMeta.Status.Attached;
-						}
+						if (meshRenderer != null) meshRenderer.enabled = objectMeta.status == ObjectMeta.Status.Attached;
 					}
 
 					break;
 				}
-			}
 
 			if (taskType == ContextManager.TaskType.Removal)
-			{
 				if (figureInScene.name == "CurrentFigureRemoval")
 				{
 					for (var i = 0; i < figureInScene.transform.childCount; i++)
 					{
 						var objectMeta = figureInScene.transform.GetChild(i).gameObject.GetComponent<ObjectMeta>();
 
-						if (objectMeta.isCoreInFigure)
-						{
-							CameraManager.Instance.FocusOnFigure(figureInScene.transform.GetChild(i).gameObject);
-						}
+						if (objectMeta.isCoreInFigure) CameraManager.Instance.FocusOnFigure(figureInScene.transform.GetChild(i).gameObject);
 
 						var meshRenderer = figureInScene.transform.GetChild(i).GetComponent<MeshRenderer>();
-						if (meshRenderer)
-						{
-							meshRenderer.enabled = true;
-						}
+						if (meshRenderer) meshRenderer.enabled = true;
 					}
 
 					break;
 				}
-			}
 		}
 	}
 
@@ -344,9 +340,7 @@ public class AssetManager : Singleton<AssetManager>
 	{
 		var figuresInScene = GameObject.FindGameObjectsWithTag("Figure");
 		foreach (var figureInScene in figuresInScene)
-		{
-			foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>())
-				meshRenderer.enabled = false;
-		}
+		foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>())
+			meshRenderer.enabled = false;
 	}
 }

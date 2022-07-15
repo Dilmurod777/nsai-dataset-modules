@@ -15,7 +15,6 @@ TagManager:
   - Figure
   - KnowledgeActionsUI
   - PlayButton
-  - ActionsListUI
   - VirtualCamera
   - Object
   - ReferenceObject
@@ -28,6 +27,7 @@ TagManager:
   - ResetButton
   - QueryPlayButton
   - FigureFocusVirtualCamera
+  - BasicOperationsUI
   layers:
   - Default
   - TransparentFX

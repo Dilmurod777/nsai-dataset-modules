@@ -55,6 +55,7 @@ public class Robot : Singleton<Robot>
 	{
 		var initialPosition = sourceObject.transform.position;
 
+		UIManager.Instance.UpdateBasicOperationsList("Move " + sourceObject.name + " " + initialPosition + ", " + finalPosition);
 
 		var delta = 0f;
 		while (delta < GetMoveDuration())
@@ -72,6 +73,8 @@ public class Robot : Singleton<Robot>
 	{
 		var initialRotation = sourceObject.transform.rotation;
 
+		UIManager.Instance.UpdateBasicOperationsList("Rotate " + sourceObject.name + " " + initialRotation.eulerAngles + ", " + finalRotation);
+
 		var delta = 0f;
 		while (delta < GetRotateDuration())
 		{
@@ -87,6 +90,8 @@ public class Robot : Singleton<Robot>
 	{
 		var initialPosition = sourceObject.transform.position;
 
+		UIManager.Instance.UpdateBasicOperationsList("MoveWithRotation " + sourceObject.name + " " + initialPosition + ", " + finalPosition);
+
 		var delta = 0f;
 		while (delta < GetMoveDuration())
 		{
@@ -101,6 +106,8 @@ public class Robot : Singleton<Robot>
 
 	public IEnumerator Wait(float seconds = 0.0f)
 	{
+		UIManager.Instance.UpdateBasicOperationsList("Wait " + seconds + "sec");
+
 		yield return new WaitForSeconds(seconds);
 	}
 }
