@@ -106,7 +106,7 @@ public class Robot : Singleton<Robot>
 
 	public IEnumerator Wait(float seconds = 0.0f)
 	{
-		UIManager.Instance.UpdateBasicOperationsList("Wait " + seconds + "sec");
+		UIManager.Instance.UpdateBasicOperationsList("Wait " + seconds);
 
 		yield return new WaitForSeconds(seconds);
 	}
