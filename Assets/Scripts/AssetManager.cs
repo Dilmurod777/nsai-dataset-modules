@@ -114,12 +114,11 @@ public class AssetManager : Singleton<AssetManager>
 						var boxCollider = child.GetComponent<BoxCollider>();
 						if (boxCollider == null)
 						{
-							boxCollider = child.gameObject.AddComponent<BoxCollider>();
-
 							var referenceBoxCollider = referenceChild.GetComponent<BoxCollider>();
 
 							if (referenceBoxCollider != null)
 							{
+								boxCollider = child.gameObject.AddComponent<BoxCollider>();
 								boxCollider.isTrigger = referenceBoxCollider.isTrigger;
 								boxCollider.center = referenceBoxCollider.center;
 								boxCollider.size = referenceBoxCollider.size;
@@ -169,12 +168,11 @@ public class AssetManager : Singleton<AssetManager>
 						var boxCollider = child.GetComponent<BoxCollider>();
 						if (boxCollider == null)
 						{
-							boxCollider = child.gameObject.AddComponent<BoxCollider>();
-
 							var referenceBoxCollider = referenceChild.GetComponent<BoxCollider>();
 
 							if (referenceBoxCollider != null)
 							{
+								boxCollider = child.gameObject.AddComponent<BoxCollider>();
 								boxCollider.isTrigger = referenceBoxCollider.isTrigger;
 								boxCollider.center = referenceBoxCollider.center;
 								boxCollider.size = referenceBoxCollider.size;
@@ -233,7 +231,7 @@ public class AssetManager : Singleton<AssetManager>
 			if (child.name == figure.name) continue;
 
 			var objectMeta = child.GetComponent<ObjectMeta>();
-			if (objectMeta.isCoreInFigure) continue;
+			if (objectMeta && objectMeta.isCoreInFigure) continue;
 
 			var referenceChild = Instance.FindObjectInFigure(FigureType.Reference, child.name);
 			var transformReference = Instance.FindObjectInFigure(figure.name == "CurrentFigureInstallation" ? FigureType.Scattered : FigureType.IFM, child.name)
@@ -245,8 +243,12 @@ public class AssetManager : Singleton<AssetManager>
 
 			if (referenceChild != null)
 			{
-				var materials = referenceChild.GetComponent<MeshRenderer>().materials;
-				child.GetComponent<MeshRenderer>().materials = materials;
+				var meshRenderer = referenceChild.GetComponent<MeshRenderer>();
+				if (meshRenderer != null)
+				{
+					var materials = meshRenderer.materials;
+					child.GetComponent<MeshRenderer>().materials = materials;
+				}
 
 				if (objectMeta)
 				{

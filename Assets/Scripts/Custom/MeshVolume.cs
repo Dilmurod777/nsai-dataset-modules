@@ -30,5 +30,15 @@ namespace Custom
 
 			return Mathf.Abs(volume);
 		}
+
+		public static float GetVolume(GameObject obj)
+		{
+			var boxCollider = obj.GetComponent<BoxCollider>();
+
+			if (!boxCollider) return 1;
+
+			var size = boxCollider.size;
+			return size.x * size.y * size.z;
+		}
 	}
 }

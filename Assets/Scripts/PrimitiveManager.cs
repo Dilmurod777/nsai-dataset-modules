@@ -123,17 +123,24 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 			referenceObjB = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.RFM, objB.name);
 		}
 
+		var initialPosition = objA.transform.position;
 		var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
-		var delta = objB.transform.position + rfmDiff - objA.transform.position;
+		var delta = objB.transform.position + rfmDiff - initialPosition;
+		var newPositions = new Vector3[steps];
 
 		for (var i = 0; i < steps; i++)
 		{
-			yield return StartCoroutine(Robot.Instance.MoveWithRotation(objA, objA.transform.position + (i + 1) * delta / steps, direction));
+			newPositions[i] = initialPosition + (i + 1) * delta / steps;
+		}
+
+		for (var i = 0; i < steps; i++)
+		{
+			yield return StartCoroutine(Robot.Instance.MoveWithRotation(objA, newPositions[i], direction));
 			yield return StartCoroutine(Robot.Instance.Wait(0.25f));
 		}
 	}
 
-	public IEnumerator ChangeObjectMaterialToInProgress(GameObject obj)
+	public void ChangeObjectMaterialToInProgress(GameObject obj)
 	{
 		var oldMaterials = obj.GetComponent<MeshRenderer>().materials;
 		var newMaterials = new Material[oldMaterials.Length];
@@ -144,7 +151,11 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		}
 
 		obj.GetComponent<MeshRenderer>().materials = newMaterials;
+	}
 
+	public IEnumerator ChangeObjectMaterialToInProgressCoroutine(GameObject obj)
+	{
+		ChangeObjectMaterialToInProgress(obj);
 		yield return null;
 	}
 
@@ -197,16 +208,14 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		yield return null;
 	}
 
-	public List<IEnumerator> GetDetachPrimitivesWithExtraActions(GameObject attachingObj, GameObject referenceObj)
+	public IEnumerator GetDetachPrimitivesForParent(GameObject attachingObj, GameObject referenceObj)
 	{
-		var primitives = new List<IEnumerator>();
-
 		var objectMeta = attachingObj.GetComponent<ObjectMeta>();
 
 		if (objectMeta.status == ObjectMeta.Status.Dettached)
 		{
-			primitives.Add(DelayPrimitive(1.0f));
-			return primitives;
+			yield return DelayPrimitive(1.0f);
+			yield break;
 		}
 
 		var text = "";
@@ -222,13 +231,13 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		};
 
 		text += attachingObj.name + delimiter + referenceObj.name;
-		primitives.Add(SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
+		yield return SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); });
 
-		primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj));
-		primitives.Add(DelayPrimitive(0.5f));
+		yield return CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj);
+		yield return DelayPrimitive(0.5f);
 
-		primitives.Add(Instance.ChangeObjectMaterialToInProgress(attachingObj));
-		primitives.Add(DelayPrimitive(2f));
+		yield return Instance.ChangeObjectMaterialToInProgressCoroutine(attachingObj);
+		yield return DelayPrimitive(2f);
 
 		var rotationAxis = objectMeta.attachRotationAxis;
 
@@ -246,78 +255,113 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		switch (objectMeta.attachType)
 		{
 			case ObjectMeta.AttachTypes.SmoothInstall:
-				primitives.Add(Instance.SmoothInstall(attachingObj, referenceObj, "detach"));
+				yield return Instance.SmoothInstall(attachingObj, referenceObj, "detach");
 				break;
 			case ObjectMeta.AttachTypes.StepInstall:
-				primitives.Add(Instance.StepInstall(attachingObj, referenceObj, "detach"));
+				yield return Instance.StepInstall(attachingObj, referenceObj, "detach");
 				break;
 			case ObjectMeta.AttachTypes.SmoothScrew:
-				primitives.Add(Instance.SmoothScrew(attachingObj, referenceObj, attachRotationVector, "detach"));
+				yield return Instance.SmoothScrew(attachingObj, referenceObj, attachRotationVector, "detach");
 				break;
 			case ObjectMeta.AttachTypes.StepScrew:
-				primitives.Add(Instance.StepScrew(attachingObj, referenceObj, attachRotationVector, "detach"));
+				yield return Instance.StepScrew(attachingObj, referenceObj, attachRotationVector, "detach");
 				break;
 			default:
-				primitives.Add(Instance.SmoothInstall(attachingObj, referenceObj, "detach"));
+				yield return Instance.SmoothInstall(attachingObj, referenceObj, "detach");
 				break;
 		}
 
-		primitives.Add(DelayPrimitive(0.5f));
-		primitives.Add(Instance.MakeObjectTransparent(attachingObj));
-		primitives.Add(SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Dettached; }));
-
-		return primitives;
+		yield return DelayPrimitive(0.5f);
+		yield return Instance.MakeObjectTransparent(attachingObj);
+		yield return SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Dettached; });
 	}
 
-	public IEnumerator GetDetachPrimitives(GameObject attachingObj, GameObject referenceObj)
+	public IEnumerator GetDetachPrimitivesForChildren(GameObject attachingObj, GameObject referenceObj)
 	{
-		var objectMeta = attachingObj.GetComponent<ObjectMeta>();
-
-		if (objectMeta.status == ObjectMeta.Status.Dettached)
+		yield return SimplePrimitive(() =>
 		{
-			yield return StartCoroutine(DelayPrimitive(1.0f));
-		}
+			for (var i = 0; i < attachingObj.transform.childCount; i++)
+			{
+				var child = attachingObj.transform.GetChild(i).gameObject;
+				var objectMeta = child.GetComponent<ObjectMeta>();
 
-		yield return StartCoroutine(Instance.ChangeObjectMaterialToInProgress(attachingObj));
-		yield return StartCoroutine(DelayPrimitive(2f));
+				if (objectMeta.status == ObjectMeta.Status.Dettached)
+				{
+					continue;
+				}
 
-		var rotationAxis = objectMeta.attachRotationAxis;
+				ChangeObjectMaterialToInProgress(attachingObj.transform.GetChild(i).gameObject);
+			}
+		});
+		yield return StartCoroutine(DelayPrimitive(1.5f));
 
-		var attachRotationVector = rotationAxis switch
+
+		yield return SimplePrimitive(() =>
 		{
-			ObjectMeta.RotationAxisEnum.X => Vector3.right,
-			ObjectMeta.RotationAxisEnum.NegX => Vector3.left,
-			ObjectMeta.RotationAxisEnum.Y => Vector3.up,
-			ObjectMeta.RotationAxisEnum.NegY => Vector3.down,
-			ObjectMeta.RotationAxisEnum.Z => Vector3.forward,
-			ObjectMeta.RotationAxisEnum.NegZ => Vector3.back,
-			_ => Vector3.forward
-		};
+			for (var i = 0; i < attachingObj.transform.childCount; i++)
+			{
+				var child = attachingObj.transform.GetChild(i).gameObject;
+				var objectMeta = child.GetComponent<ObjectMeta>();
 
-		switch (objectMeta.attachType)
+				if (objectMeta.status == ObjectMeta.Status.Dettached)
+				{
+					continue;
+				}
+
+				var rotationAxis = objectMeta.attachRotationAxis;
+
+				var attachRotationVector = rotationAxis switch
+				{
+					ObjectMeta.RotationAxisEnum.X => Vector3.right,
+					ObjectMeta.RotationAxisEnum.NegX => Vector3.left,
+					ObjectMeta.RotationAxisEnum.Y => Vector3.up,
+					ObjectMeta.RotationAxisEnum.NegY => Vector3.down,
+					ObjectMeta.RotationAxisEnum.Z => Vector3.forward,
+					ObjectMeta.RotationAxisEnum.NegZ => Vector3.back,
+					_ => Vector3.forward
+				};
+
+				switch (objectMeta.attachType)
+				{
+					case ObjectMeta.AttachTypes.SmoothInstall:
+						StartCoroutine(Instance.SmoothInstall(child, referenceObj, "detach"));
+						break;
+					case ObjectMeta.AttachTypes.StepInstall:
+						StartCoroutine(Instance.StepInstall(child, referenceObj, "detach"));
+						break;
+					case ObjectMeta.AttachTypes.SmoothScrew:
+						StartCoroutine(Instance.SmoothScrew(child, referenceObj, attachRotationVector, "detach"));
+						break;
+					case ObjectMeta.AttachTypes.StepScrew:
+						StartCoroutine(Instance.StepScrew(child, referenceObj, attachRotationVector, "detach"));
+						break;
+					default:
+						StartCoroutine(Instance.SmoothInstall(child, referenceObj, "detach"));
+						break;
+				}
+			}
+		});
+
+		yield return StartCoroutine(DelayPrimitive(3.0f));
+
+		yield return SimplePrimitive(() =>
 		{
-			case ObjectMeta.AttachTypes.SmoothInstall:
-				yield return StartCoroutine(Instance.SmoothInstall(attachingObj, referenceObj, "detach"));
-				break;
-			case ObjectMeta.AttachTypes.StepInstall:
-				yield return StartCoroutine(Instance.StepInstall(attachingObj, referenceObj, "detach"));
-				break;
-			case ObjectMeta.AttachTypes.SmoothScrew:
-				yield return StartCoroutine(Instance.SmoothScrew(attachingObj, referenceObj, attachRotationVector, "detach"));
-				break;
-			case ObjectMeta.AttachTypes.StepScrew:
-				yield return StartCoroutine(Instance.StepScrew(attachingObj, referenceObj, attachRotationVector, "detach"));
-				break;
-			default:
-				yield return StartCoroutine(Instance.SmoothInstall(attachingObj, referenceObj, "detach"));
-				break;
-		}
+			for (var i = 0; i < attachingObj.transform.childCount; i++)
+			{
+				var child = attachingObj.transform.GetChild(i).gameObject;
+				var objectMeta = child.GetComponent<ObjectMeta>();
+
+				if (objectMeta.status == ObjectMeta.Status.Dettached)
+				{
+					continue;
+				}
+
+				StartCoroutine(Instance.MakeObjectTransparent(child));
+				StartCoroutine(SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Dettached; }));
+			}
+		});
 
 		yield return StartCoroutine(DelayPrimitive(0.5f));
-		yield return StartCoroutine(Instance.MakeObjectTransparent(attachingObj));
-		yield return StartCoroutine(SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Dettached; }));
-		yield return StartCoroutine(DelayPrimitive(0.5f));
-
 		yield return null;
 	}
 }

@@ -1107,8 +1107,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachRotationAxis: 1
   dettachRotationAxis: 4
-  attachType: 1
-  detachType: 1
+  attachType: 2
+  detachType: 2
   status: 0
   isCoreInFigure: 0
 --- !u!65 &3069390044411209393
@@ -1534,8 +1534,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.43674216, y: 1.1797899, z: 1.1817579}
-  m_Center: {x: 0.000000007450581, y: -2.220446e-16, z: -3.370831e-17}
+  m_Size: {x: 0.42793033, y: 0.8683783, z: 0.8450208}
+  m_Center: {x: 0.0044060433, y: 0.026459606, z: 0.04058677}
 --- !u!1 &6080762540892121335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,8 +1659,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.1, z: 0.1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.0386823, y: 7.830321, z: 14.020784}
+  m_Center: {x: -0.20824318, y: -1.0342371, z: 0.40913802}
 --- !u!1 &6182639877391492266
 GameObject:
   m_ObjectHideFlags: 0
@@ -2098,8 +2098,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86071fdf3d9b4026a044f3e12f20b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachRotationAxis: 1
-  dettachRotationAxis: 4
+  attachRotationAxis: 0
+  dettachRotationAxis: 3
   attachType: 2
   detachType: 2
   status: 0
@@ -2328,8 +2328,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachRotationAxis: 1
   dettachRotationAxis: 4
-  attachType: 1
-  detachType: 1
+  attachType: 2
+  detachType: 2
   status: 0
   isCoreInFigure: 0
 --- !u!65 &8218167694982734001

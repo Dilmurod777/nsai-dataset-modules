@@ -17,46 +17,73 @@ public class CameraManager : Singleton<CameraManager>
 
 	public IEnumerator UpdateVirtualCameraTargetCoroutine(GameObject target)
 	{
-		_virtualCamera.GetComponent<CinemachineVirtualCamera>().Priority = 11;
-		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().Priority = 10;
-		_virtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = target.transform;
-		_virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = target.transform;
+		var vcComponent = _virtualCamera.GetComponent<CinemachineVirtualCamera>();
+		var ffvcComponent = _figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>();
 
-		var volume = MeshVolume.Calculate(target.GetComponent<MeshFilter>().mesh);
+		vcComponent.Priority = 11;
+		ffvcComponent.Priority = 10;
+		vcComponent.m_LookAt = target.transform;
+		vcComponent.m_Follow = target.transform;
+
+		// var volume = MeshVolume.Calculate(target.GetComponent<MeshFilter>().mesh);
+		var volume = MeshVolume.GetVolume(target);
 
 		var task = ContextManager.Instance.CurrentTask;
 		var taskType = ContextManager.GetTaskType(task);
-		var scale = taskType == ContextManager.TaskType.Installation ? 2.5f : 1f;
+		var scale = taskType == ContextManager.TaskType.Installation ? 1.5f : 1.2f;
 
-		var minFov = 5 * scale;
+		var minFov = 60 * scale;
+		var newOffsetZ = -0.75f;
+
 		if (volume > 0.000000001)
 		{
-			minFov = 4 * scale;
+			minFov = 15 * scale;
+			newOffsetZ *= 1.15f;
 		}
 
 		if (volume > 0.0000001)
 		{
-			minFov = 8 * scale;
+			minFov = 20 * scale;
+			newOffsetZ *= 1.2f;
 		}
 
 		if (volume > 0.00001)
 		{
-			minFov = 12 * scale;
+			minFov = 30 * scale;
+			newOffsetZ *= 1.25f;
 		}
 
 		if (volume > 0.0001)
 		{
-			minFov = 16 * scale;
+			minFov = 40 * scale;
+			newOffsetZ *= 1.3f;
 		}
 
 		if (volume > 0.001)
 		{
-			minFov = 20 * scale;
+			minFov = 50 * scale;
+			newOffsetZ *= 1.35f;
 		}
 
-		Debug.Log(target.name + " | " + volume + " | " + minFov);
+		if (volume > 0.01)
+		{
+			minFov = 60 * scale;
+			newOffsetZ *= 1.5f;
+		}
+
+		if (volume > 0.1)
+		{
+			minFov = 80 * scale;
+			newOffsetZ *= 1.5f;
+		}
+
+		Debug.Log(target.name + " | " + volume + " | " + minFov + " | " + newOffsetZ);
 
 		_virtualCamera.GetComponent<CinemachineFollowZoom>().m_MinFOV = minFov;
+
+		var oldOffset = vcComponent.GetComponent<CinemachineCameraOffset>().m_Offset;
+		vcComponent.GetComponent<CinemachineCameraOffset>().m_Offset = new Vector3(oldOffset.x, oldOffset.y, newOffsetZ);
+
 		yield return null;
 	}
 

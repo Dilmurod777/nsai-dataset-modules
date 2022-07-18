@@ -196,19 +196,11 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					{
 						primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0).gameObject));
 						primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
-						primitives.Add(PrimitiveManager.SimplePrimitive(() =>
-						{
-							for (var i = 0; i < attachingObj.transform.childCount; i++)
-							{
-								var child = attachingObj.transform.GetChild(i);
-
-								StartCoroutine(PrimitiveManager.Instance.GetDetachPrimitives(child.gameObject, referenceObj));
-							}
-						}));
+						primitives.Add(PrimitiveManager.Instance.GetDetachPrimitivesForChildren(attachingObj, referenceObj));
 					}
 					else
 					{
-						primitives.AddRange(PrimitiveManager.Instance.GetDetachPrimitivesWithExtraActions(attachingObj, referenceObj));
+						primitives.Add(PrimitiveManager.Instance.GetDetachPrimitivesForParent(attachingObj, referenceObj));
 					}
 				}
 
@@ -245,14 +237,14 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj));
 					primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
 
-					primitives.Add(PrimitiveManager.Instance.ChangeObjectMaterialToInProgress(attachingObj));
+					primitives.Add(PrimitiveManager.Instance.ChangeObjectMaterialToInProgressCoroutine(attachingObj));
 					primitives.Add(PrimitiveManager.DelayPrimitive(2f));
 
 					primitives.Add(PrimitiveManager.Instance.CreateRotatePrimitives(attachingObj));
 					primitives.Add(PrimitiveManager.DelayPrimitive(1.0f));
 					primitives.Add(PrimitiveManager.Instance.CreateFromScatteredToRfmPrimitives(attachingObj, referenceObj));
 					primitives.Add(PrimitiveManager.DelayPrimitive(1.0f));
-					primitives.Add(CameraManager.Instance.GetCameraCloser());
+					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj));
 
 					var rotationAxis = objectMeta.attachRotationAxis;
 

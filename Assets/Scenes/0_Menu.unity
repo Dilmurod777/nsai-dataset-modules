@@ -1460,8 +1460,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1266876470}
   - component: {fileID: 1266876471}
-  - component: {fileID: 1266876472}
   - component: {fileID: 1266876473}
+  - component: {fileID: 1266876472}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -1509,7 +1509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
   m_LookaheadTime: 0
-  m_LookaheadSmoothing: 11.5
+  m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
   m_HorizontalDamping: 0.5
   m_VerticalDamping: 0.5
@@ -1543,7 +1543,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   IgnoreTag: 
-  CameraRadius: 1
+  CameraRadius: 0.2
 --- !u!1 &1469183341
 GameObject:
   m_ObjectHideFlags: 0
@@ -2059,9 +2059,9 @@ MonoBehaviour:
   m_MinimumOcclusionTime: 0
   m_CameraRadius: 1
   m_Strategy: 2
-  m_MaximumEffort: 5
-  m_SmoothingTime: 0.15
-  m_Damping: 1
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0.31
+  m_Damping: 1.9
   m_DampingWhenOccluded: 0.2
   m_OptimalTargetDistance: 0
 --- !u!114 &1837083065
@@ -2078,7 +2078,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Width: 0
   m_Damping: 0
-  m_MinFOV: 8
+  m_MinFOV: 24
   m_MaxFOV: 179
 --- !u!114 &1837083066
 MonoBehaviour:
@@ -2104,7 +2104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d70cc20219cd84593f67d248eafe36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Offset: {x: 1.63, y: 1.02, z: -0.28}
+  m_Offset: {x: 2, y: 0.5, z: -0.75}
   m_ApplyAfter: 3
   m_PreserveComposition: 1
 --- !u!1 &1842461721
