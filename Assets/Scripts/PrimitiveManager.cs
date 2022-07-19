@@ -231,7 +231,7 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		};
 
 		text += attachingObj.name + delimiter + referenceObj.name;
-		yield return SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); });
+		yield return SimplePrimitive(() => { UIManager.UpdateReply(text); });
 
 		yield return CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj);
 		yield return DelayPrimitive(0.5f);
@@ -362,6 +362,88 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		});
 
 		yield return StartCoroutine(DelayPrimitive(0.5f));
+		yield return null;
+	}
+
+	public IEnumerator GetAttachPrimitivesForParent(GameObject attachingObj, GameObject referenceObj)
+	{
+		var objectMeta = attachingObj.GetComponent<ObjectMeta>();
+
+		if (objectMeta.status == ObjectMeta.Status.Attached)
+		{
+			yield return DelayPrimitive(1.0f);
+			yield break;
+		}
+
+		yield return SimplePrimitive(() => { attachingObj.GetComponent<MeshRenderer>().enabled = true; });
+
+		var text = "";
+		const string delimiter = " and ";
+
+		text += objectMeta.attachType switch
+		{
+			ObjectMeta.AttachTypes.SmoothInstall => "Smooth Install ",
+			ObjectMeta.AttachTypes.StepInstall => "Step Install ",
+			ObjectMeta.AttachTypes.SmoothScrew => "Smooth Screw ",
+			ObjectMeta.AttachTypes.StepScrew => "Step Screw ",
+			_ => "Smooth Install "
+		};
+
+		text += attachingObj.name + delimiter + referenceObj.name;
+		yield return SimplePrimitive(() => { UIManager.UpdateReply(text); });
+
+		yield return CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj);
+		yield return DelayPrimitive(0.5f);
+
+		yield return Instance.ChangeObjectMaterialToInProgressCoroutine(attachingObj);
+		yield return DelayPrimitive(2f);
+
+		yield return Instance.CreateRotatePrimitives(attachingObj);
+		yield return DelayPrimitive(1.0f);
+		yield return Instance.CreateFromScatteredToRfmPrimitives(attachingObj, referenceObj);
+		yield return DelayPrimitive(1.0f);
+		yield return CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj);
+
+		var rotationAxis = objectMeta.attachRotationAxis;
+
+		var attachRotationVector = rotationAxis switch
+		{
+			ObjectMeta.RotationAxisEnum.X => Vector3.right,
+			ObjectMeta.RotationAxisEnum.NegX => Vector3.left,
+			ObjectMeta.RotationAxisEnum.Y => Vector3.up,
+			ObjectMeta.RotationAxisEnum.NegY => Vector3.down,
+			ObjectMeta.RotationAxisEnum.Z => Vector3.forward,
+			ObjectMeta.RotationAxisEnum.NegZ => Vector3.back,
+			_ => Vector3.forward
+		};
+
+		switch (objectMeta.attachType)
+		{
+			case ObjectMeta.AttachTypes.SmoothInstall:
+				yield return Instance.SmoothInstall(attachingObj, referenceObj, "attach");
+				break;
+			case ObjectMeta.AttachTypes.StepInstall:
+				yield return Instance.StepInstall(attachingObj, referenceObj, "attach");
+				break;
+			case ObjectMeta.AttachTypes.SmoothScrew:
+				yield return Instance.SmoothScrew(attachingObj, referenceObj, attachRotationVector, "attach");
+				break;
+			case ObjectMeta.AttachTypes.StepScrew:
+				yield return Instance.StepScrew(attachingObj, referenceObj, attachRotationVector, "attach");
+				break;
+			default:
+				yield return Instance.SmoothInstall(attachingObj, referenceObj, "attach");
+				break;
+		}
+
+		yield return SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Attached; });
+		yield return DelayPrimitive(0.5f);
+		yield return Instance.ResetObjectMaterial(attachingObj);
+		yield return DelayPrimitive(2f);
+	}
+
+	public IEnumerator GetAttachPrimitivesForChildren(GameObject attachingObj, GameObject referenceObj)
+	{
 		yield return null;
 	}
 }

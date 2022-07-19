@@ -185,36 +185,38 @@ public class UIManager : Singleton<UIManager>
 			var newBasicOperationUI = Instantiate(uiBasicOperation, content.transform, false);
 			newBasicOperationUI.transform.GetChild(0).GetComponent<Text>().text = text;
 
-			content.transform.parent.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 1);
+			Invoke(nameof(ScrollBasicOperationsListToBottom), 0.25f);
 		}
 	}
 
-	public void ResetBasicOperationsList()
+	private void ScrollBasicOperationsListToBottom()
 	{
 		var basicOperationsList = GameObject.FindWithTag("BasicOperationsUI");
-
-		if (basicOperationsList)
-		{
-			basicOperationsList.transform.GetChild(0).GetComponent<Text>().enabled = false;
-
-			var content = basicOperationsList.transform.GetChild(1).GetChild(0);
-
-			for (var i = content.childCount - 1; i >= 0; i--) Destroy(content.GetChild(i).gameObject);
-		}
+		basicOperationsList.transform.GetChild(1).GetComponent<ScrollRect>().verticalNormalizedPosition = 0;
 	}
 
-	public void UpdateReply(string text)
+	public static void ResetBasicOperationsList()
+	{
+		var basicOperationsList = GameObject.FindWithTag("BasicOperationsUI");
+		if (!basicOperationsList) return;
+
+		basicOperationsList.transform.GetChild(0).GetComponent<Text>().enabled = false;
+
+		var content = basicOperationsList.transform.GetChild(1).GetChild(0);
+
+		for (var i = content.childCount - 1; i >= 0; i--) Destroy(content.GetChild(i).gameObject);
+	}
+
+	public static void UpdateReply(string text)
 	{
 		var reply = GameObject.FindWithTag("ReplyUI");
+		if (!reply) return;
 
-		if (reply)
-		{
-			var textComponent = reply.GetComponent<Text>();
-			if (textComponent != null) textComponent.text = text;
-		}
+		var textComponent = reply.GetComponent<Text>();
+		if (textComponent != null) textComponent.text = text;
 	}
 
-	public void DisableAllButtons()
+	public static void DisableAllButtons()
 	{
 		var buttons = FindObjectsOfType<Button>();
 
@@ -227,9 +229,8 @@ public class UIManager : Singleton<UIManager>
 
 		for (var i = 0; i < knowledgeContent.transform.childCount; i++) Destroy(knowledgeContent.transform.transform.GetChild(i).gameObject);
 
-		for (var i = 0; i < tasks.Count; i++)
+		foreach (var task in tasks)
 		{
-			var task = tasks[i];
 			var newTaskOption = Instantiate(uiOption, knowledgeContent.transform, false);
 			newTaskOption.name = task.TaskId;
 			newTaskOption.tag = "TaskOptionUI";
@@ -267,26 +268,25 @@ public class UIManager : Singleton<UIManager>
 
 			listContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-			for (var j = 0; j < task.Subtasks.Count; j++)
+			foreach (var subtask in task.Subtasks)
 			{
-				var subtask = task.Subtasks[j];
 				var newSubtaskOption = Instantiate(uiOption, list.transform, false);
 				newSubtaskOption.name = subtask.SubtaskId;
 				newSubtaskOption.tag = "SubtaskOptionUI";
 				var newSubtaskOptionButtonComponent = newSubtaskOption.GetComponent<Button>();
-				newSubtaskOptionButtonComponent.onClick.AddListener(() => { UIOptionClick(UIOptionType.Subtask, new dynamic[] {task, subtask}); });
+				var task1 = task;
+				newSubtaskOptionButtonComponent.onClick.AddListener(() => { UIOptionClick(UIOptionType.Subtask, new dynamic[] {task1, subtask}); });
 
 				var newSubtaskOptionTextComponent = newSubtaskOption.transform.GetChild(0).GetComponent<Text>();
-				newSubtaskOptionTextComponent.text = "Subtask " + task.Subtasks[j].SubtaskId;
+				newSubtaskOptionTextComponent.text = "Subtask " + subtask.SubtaskId;
 
-				if (subtask.isCompleted)
-				{
-					var newColorBlock = newSubtaskOptionButtonComponent.colors;
-					newColorBlock.normalColor = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
-					newSubtaskOptionButtonComponent.colors = newColorBlock;
+				if (!subtask.isCompleted) continue;
 
-					newSubtaskOptionTextComponent.color = Color.white;
-				}
+				var newColorBlock = newSubtaskOptionButtonComponent.colors;
+				newColorBlock.normalColor = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
+				newSubtaskOptionButtonComponent.colors = newColorBlock;
+
+				newSubtaskOptionTextComponent.color = Color.white;
 			}
 		}
 

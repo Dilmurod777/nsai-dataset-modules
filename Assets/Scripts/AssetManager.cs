@@ -19,8 +19,11 @@ public class AssetManager : Singleton<AssetManager>
 
 	private readonly Vector3 _offset = new Vector3(-60.7f, -20.4f, 36.9f);
 
-	private string GetPlainFigureName(string subtaskId)
+	private string GetCurrentFigurePlainName()
 	{
+		var subtask = ContextManager.Instance.CurrentSubtask;
+		var subtaskId = subtask.SubtaskId;
+
 		var subtaskIdsToFigurePrefab = new Dictionary<string, string>
 		{
 			{"32-11-61", "MainLandingGear"},
@@ -50,12 +53,10 @@ public class AssetManager : Singleton<AssetManager>
 		{
 			if (subtask.Figure == null) return;
 
-			var plainFigureName = GetPlainFigureName(subtask.SubtaskId);
-			GameObject figurePrefabInstallation = null;
-			GameObject figurePrefabRemoval = null;
+			var plainFigureName = GetCurrentFigurePlainName();
 
-			figurePrefabInstallation = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/Scattered");
-			figurePrefabRemoval = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/IFM");
+			var figurePrefabInstallation = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/Scattered");
+			var figurePrefabRemoval = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/IFM");
 
 			var ifmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/IFM");
 			var rfmPrefab = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/RFM");
@@ -67,7 +68,7 @@ public class AssetManager : Singleton<AssetManager>
 				var instantiatedReference = Instantiate(referencePrefab);
 				instantiatedReference.transform.position = _offset + new Vector3(0, 0, 100f);
 				instantiatedReference.tag = "ReferenceObject";
-				instantiatedReference.name = "CurrentFigureReference";
+				instantiatedReference.name = plainFigureName + "-Reference";
 				instantiatedReference.transform.rotation = Quaternion.identity;
 				instantiatedReference.AddComponent<CustomDontDestroyOnLoad>();
 
@@ -78,7 +79,7 @@ public class AssetManager : Singleton<AssetManager>
 			{
 				var instantiatedFigure = Instantiate(figurePrefabInstallation);
 				instantiatedFigure.tag = "Figure";
-				instantiatedFigure.name = "CurrentFigureInstallation";
+				instantiatedFigure.name = plainFigureName + "-Installation";
 				instantiatedFigure.transform.rotation = Quaternion.identity;
 				instantiatedFigure.transform.position = Vector3.zero;
 				instantiatedFigure.AddComponent<CustomDontDestroyOnLoad>();
@@ -132,7 +133,7 @@ public class AssetManager : Singleton<AssetManager>
 			{
 				var instantiatedFigure = Instantiate(figurePrefabRemoval);
 				instantiatedFigure.tag = "Figure";
-				instantiatedFigure.name = "CurrentFigureRemoval";
+				instantiatedFigure.name = plainFigureName + "-Removal";
 				instantiatedFigure.transform.rotation = Quaternion.identity;
 				instantiatedFigure.transform.position = Vector3.zero;
 				instantiatedFigure.AddComponent<CustomDontDestroyOnLoad>();
@@ -186,7 +187,7 @@ public class AssetManager : Singleton<AssetManager>
 			{
 				var instantiatedIfm = Instantiate(ifmPrefab);
 				instantiatedIfm.tag = "ReferenceObject";
-				instantiatedIfm.name = "CurrentFigureIFM";
+				instantiatedIfm.name = plainFigureName + "-IFM";
 				instantiatedIfm.transform.rotation = Quaternion.identity;
 				instantiatedIfm.transform.position = Vector3.zero;
 				instantiatedIfm.AddComponent<CustomDontDestroyOnLoad>();
@@ -198,7 +199,7 @@ public class AssetManager : Singleton<AssetManager>
 			{
 				var instantiatedRfm = Instantiate(rfmPrefab);
 				instantiatedRfm.tag = "ReferenceObject";
-				instantiatedRfm.name = "CurrentFigureRFM";
+				instantiatedRfm.name = plainFigureName + "-RFM";
 				instantiatedRfm.transform.rotation = Quaternion.identity;
 				instantiatedRfm.transform.position = Vector3.zero;
 				instantiatedRfm.AddComponent<CustomDontDestroyOnLoad>();
@@ -210,7 +211,7 @@ public class AssetManager : Singleton<AssetManager>
 			{
 				var instantiatedScattered = Instantiate(scatteredPrefab);
 				instantiatedScattered.tag = "ReferenceObject";
-				instantiatedScattered.name = "CurrentFigureScattered";
+				instantiatedScattered.name = plainFigureName + "-Scattered";
 				instantiatedScattered.transform.rotation = Quaternion.identity;
 				instantiatedScattered.transform.position = Vector3.zero;
 				instantiatedScattered.AddComponent<CustomDontDestroyOnLoad>();
@@ -224,7 +225,6 @@ public class AssetManager : Singleton<AssetManager>
 	{
 		var figures = GameObject.FindGameObjectsWithTag("Figure");
 
-
 		foreach (var figure in figures)
 		foreach (var child in figure.GetComponentsInChildren<Transform>())
 		{
@@ -233,8 +233,10 @@ public class AssetManager : Singleton<AssetManager>
 			var objectMeta = child.GetComponent<ObjectMeta>();
 			if (objectMeta && objectMeta.isCoreInFigure) continue;
 
+			var plainFigureName = GetCurrentFigurePlainName();
+
 			var referenceChild = Instance.FindObjectInFigure(FigureType.Reference, child.name);
-			var transformReference = Instance.FindObjectInFigure(figure.name == "CurrentFigureInstallation" ? FigureType.Scattered : FigureType.IFM, child.name)
+			var transformReference = Instance.FindObjectInFigure(figure.name == plainFigureName + "-Installation" ? FigureType.Scattered : FigureType.IFM, child.name)
 				.transform;
 
 			child.position = transformReference.position;
@@ -270,16 +272,18 @@ public class AssetManager : Singleton<AssetManager>
 		var task = ContextManager.Instance.CurrentTask;
 		var taskType = ContextManager.GetTaskType(task);
 
+		var plainFigureName = GetCurrentFigurePlainName();
+
 		var figure = type switch
 		{
 			FigureType.Current => taskType == ContextManager.TaskType.Installation
-				? GameObject.Find("CurrentFigureInstallation")
-				: GameObject.Find("CurrentFigureRemoval"),
-			FigureType.IFM => GameObject.Find("CurrentFigureIFM"),
-			FigureType.RFM => GameObject.Find("CurrentFigureRFM"),
-			FigureType.Reference => GameObject.Find("CurrentFigureReference"),
-			FigureType.Scattered => GameObject.Find("CurrentFigureScattered"),
-			_ => GameObject.Find("CurrentFigure")
+				? GameObject.Find(plainFigureName + "-Installation")
+				: GameObject.Find(plainFigureName + "-Removal"),
+			FigureType.IFM => GameObject.Find(plainFigureName + "-IFM"),
+			FigureType.RFM => GameObject.Find(plainFigureName + "-RFM"),
+			FigureType.Reference => GameObject.Find(plainFigureName + "-Reference"),
+			FigureType.Scattered => GameObject.Find(plainFigureName + "-Scattered"),
+			_ => GameObject.Find(plainFigureName + "-Installation")
 		};
 
 		foreach (var child in figure.GetComponentsInChildren<Transform>())
@@ -295,12 +299,13 @@ public class AssetManager : Singleton<AssetManager>
 	{
 		var currentTask = ContextManager.Instance.CurrentTask;
 		var taskType = ContextManager.GetTaskType(currentTask);
+		var plainFigureName = GetCurrentFigurePlainName();
 
 		var figuresInScene = GameObject.FindGameObjectsWithTag("Figure");
 		foreach (var figureInScene in figuresInScene)
 		{
 			if (taskType == ContextManager.TaskType.Installation)
-				if (figureInScene.name == "CurrentFigureInstallation")
+				if (figureInScene.name == plainFigureName + "-Installation")
 				{
 					for (var i = 0; i < figureInScene.transform.childCount; i++)
 					{
@@ -316,7 +321,7 @@ public class AssetManager : Singleton<AssetManager>
 				}
 
 			if (taskType == ContextManager.TaskType.Removal)
-				if (figureInScene.name == "CurrentFigureRemoval")
+				if (figureInScene.name == plainFigureName + "-Removal")
 				{
 					foreach (var child in figureInScene.GetComponentsInChildren<Transform>())
 					{

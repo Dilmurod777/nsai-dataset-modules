@@ -174,9 +174,9 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		var instructions = ContextManager.Instance.CurrentSubtask.Instructions;
 		var primitives = new List<IEnumerator>();
 
-		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.ResetBasicOperationsList(); }));
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.ResetBasicOperationsList(); }));
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => { Instance.isExecutingSubtask = true; }));
-		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.DisableAllButtons(); }));
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.DisableAllButtons(); }));
 
 		foreach (var instruction in instructions)
 		{
@@ -209,79 +209,16 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 					var attachingObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[0] + "]");
 					var referenceObj = AssetManager.Instance.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[1] + "]");
 
-					var objectMeta = attachingObj.GetComponent<ObjectMeta>();
-
-					if (objectMeta.status == ObjectMeta.Status.Attached)
+					if (attachingObj.transform.childCount > 0)
 					{
-						primitives.Add(PrimitiveManager.DelayPrimitive(1.0f));
-						continue;
+						primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0).gameObject));
+						primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
+						primitives.Add(PrimitiveManager.Instance.GetAttachPrimitivesForChildren(attachingObj, referenceObj));
 					}
-
-					primitives.Add(PrimitiveManager.SimplePrimitive(() => { attachingObj.GetComponent<MeshRenderer>().enabled = true; }));
-
-					var text = "";
-					const string delimiter = " and ";
-
-					text += objectMeta.attachType switch
+					else
 					{
-						ObjectMeta.AttachTypes.SmoothInstall => "Smooth Install ",
-						ObjectMeta.AttachTypes.StepInstall => "Step Install ",
-						ObjectMeta.AttachTypes.SmoothScrew => "Smooth Screw ",
-						ObjectMeta.AttachTypes.StepScrew => "Step Screw ",
-						_ => "Smooth Install "
-					};
-
-					text += attachingObj.name + delimiter + referenceObj.name;
-					primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateReply(text); }));
-
-					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj));
-					primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
-
-					primitives.Add(PrimitiveManager.Instance.ChangeObjectMaterialToInProgressCoroutine(attachingObj));
-					primitives.Add(PrimitiveManager.DelayPrimitive(2f));
-
-					primitives.Add(PrimitiveManager.Instance.CreateRotatePrimitives(attachingObj));
-					primitives.Add(PrimitiveManager.DelayPrimitive(1.0f));
-					primitives.Add(PrimitiveManager.Instance.CreateFromScatteredToRfmPrimitives(attachingObj, referenceObj));
-					primitives.Add(PrimitiveManager.DelayPrimitive(1.0f));
-					primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj));
-
-					var rotationAxis = objectMeta.attachRotationAxis;
-
-					var attachRotationVector = rotationAxis switch
-					{
-						ObjectMeta.RotationAxisEnum.X => Vector3.right,
-						ObjectMeta.RotationAxisEnum.NegX => Vector3.left,
-						ObjectMeta.RotationAxisEnum.Y => Vector3.up,
-						ObjectMeta.RotationAxisEnum.NegY => Vector3.down,
-						ObjectMeta.RotationAxisEnum.Z => Vector3.forward,
-						ObjectMeta.RotationAxisEnum.NegZ => Vector3.back,
-						_ => Vector3.forward
-					};
-
-					switch (objectMeta.attachType)
-					{
-						case ObjectMeta.AttachTypes.SmoothInstall:
-							primitives.Add(PrimitiveManager.Instance.SmoothInstall(attachingObj, referenceObj, action.Operation));
-							break;
-						case ObjectMeta.AttachTypes.StepInstall:
-							primitives.Add(PrimitiveManager.Instance.StepInstall(attachingObj, referenceObj, action.Operation));
-							break;
-						case ObjectMeta.AttachTypes.SmoothScrew:
-							primitives.Add(PrimitiveManager.Instance.SmoothScrew(attachingObj, referenceObj, attachRotationVector, action.Operation));
-							break;
-						case ObjectMeta.AttachTypes.StepScrew:
-							primitives.Add(PrimitiveManager.Instance.StepScrew(attachingObj, referenceObj, attachRotationVector, action.Operation));
-							break;
-						default:
-							primitives.Add(PrimitiveManager.Instance.SmoothInstall(attachingObj, referenceObj, action.Operation));
-							break;
+						primitives.Add(PrimitiveManager.Instance.GetAttachPrimitivesForParent(attachingObj, referenceObj));
 					}
-
-					primitives.Add(PrimitiveManager.SimplePrimitive(() => { objectMeta.status = ObjectMeta.Status.Attached; }));
-					primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
-					primitives.Add(PrimitiveManager.Instance.ResetObjectMaterial(attachingObj));
-					primitives.Add(PrimitiveManager.DelayPrimitive(2f));
 				}
 			}
 

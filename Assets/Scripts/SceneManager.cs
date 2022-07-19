@@ -30,7 +30,7 @@ public class SceneManager : Singleton<SceneManager>
 				UIManager.Instance.SetUpMenus();
 				break;
 			case MainSceneName:
-				UIManager.Instance.ResetBasicOperationsList();
+				UIManager.ResetBasicOperationsList();
 				UIManager.Instance.UpdateUI();
 				AssetManager.Instance.UpdateAssets();
 				AssetManager.Instance.ShowCurrentFigure();
