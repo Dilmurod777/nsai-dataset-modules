@@ -10,10 +10,10 @@
     "Unique prev",
     "Rotate prev var1"
   ],
-  "reply": "402-32-11-61*-990-802-A",
+  "reply": "402-32-11-61-990-802-A",
   "context": {
     "taskId": "32-11-61-000-801",
     "subtaskId": "32-11-61-020-002",
-    "instructionOrder": "3"
+    "instructionOrder": "1"
   }
 }

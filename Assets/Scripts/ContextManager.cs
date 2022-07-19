@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Custom;
 using Instances;
-using UnityEngine;
 
 public class ContextManager : Singleton<ContextManager>
 {
@@ -11,6 +9,11 @@ public class ContextManager : Singleton<ContextManager>
 	public Instruction CurrentInstruction;
 	public Query CurrentQuery;
 
+	public dynamic Prev;
+	public object Var1;
+	public object Var2;
+	public string[] Programs;
+
 	public enum TaskType
 	{
 		Installation,
@@ -18,6 +21,29 @@ public class ContextManager : Singleton<ContextManager>
 		Other
 	}
 
+	public dynamic GetAttribute(string name)
+	{
+		return name switch
+		{
+			"query" => Instance.CurrentQuery,
+			"programs" => Instance.Programs,
+			"var1" => Instance.Var1,
+			"var2" => Instance.Var2,
+			"prev" => Instance.Prev,
+			"root" => KnowledgeManager.Instance.Tasks,
+			"CurrentTaskID" => Instance.CurrentTask.TaskId,
+			"CurrentSubtaskID" => Instance.CurrentSubtask.SubtaskId,
+			"CurrentInstructionOrder" => Instance.CurrentInstruction.Order,
+			_ => null
+		};
+	}
+
+	public bool HasAttribute(string name)
+	{
+		var attributes = new[] {"var1", "var2", "prev", "root", "query", "programs"};
+
+		return attributes.Contains(name);
+	}
 
 	public void SetCurrentTask(Task task)
 	{
@@ -60,6 +86,9 @@ public class ContextManager : Singleton<ContextManager>
 	public void SetCurrentQuery(Query query)
 	{
 		CurrentQuery = query;
+		SetCurrentTask(query.TaskId);
+		SetCurrentSubtask(query.SubtaskId);
+		SetCurrentInstruction(query.InstructionOrder);
 	}
 
 	public void ResetCurrentTask()

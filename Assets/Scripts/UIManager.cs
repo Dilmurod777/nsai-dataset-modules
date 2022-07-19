@@ -82,7 +82,12 @@ public class UIManager : Singleton<UIManager>
 		}
 
 		var queryPlayButton = GameObject.FindWithTag("QueryPlayButton");
-		if (queryPlayButton) queryPlayButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecutingSubtask;
+		if (queryPlayButton != null)
+		{
+			queryPlayButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			queryPlayButton.GetComponent<Button>().onClick.AddListener(() => { QueryExecutor.Instance.ExecuteQuery(); });
+			queryPlayButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecutingSubtask && ContextManager.Instance.CurrentQuery != null;
+		}
 
 		var query = ContextManager.Instance.CurrentQuery;
 		if (query != null)
