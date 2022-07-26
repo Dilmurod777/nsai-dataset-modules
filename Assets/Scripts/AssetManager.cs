@@ -203,6 +203,13 @@ public class AssetManager : Singleton<AssetManager>
 		var figures = GameObject.FindGameObjectsWithTag("Figure");
 
 		foreach (var figure in figures)
+		{
+			ResetFigure(figure);
+		}
+	}
+
+	public void ResetFigure(GameObject figure)
+	{
 		foreach (var child in figure.GetComponentsInChildren<Transform>())
 		{
 			if (child.name == figure.name) continue;

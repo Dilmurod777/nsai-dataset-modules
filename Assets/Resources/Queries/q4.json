@@ -1,5 +1,5 @@
 ﻿{
-  "query": "Show left side of figure 402-32-45-11-000-801-A",
+  "query": "Show right side of figure 402-32-45-11-000-801-A",
   "programs": [
     "ExtractNumbers query",
     "SaveVal2Var prev var1",

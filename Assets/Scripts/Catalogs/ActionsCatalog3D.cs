@@ -73,7 +73,7 @@ namespace Catalogs
 					allObjects.AddRange(figures);
 					break;
 				case "type":
-					if (prev == "figure" && parent != null)
+					if ((string) prev == "figure" && parent != null)
 					{
 						var currentTask = ContextManager.Instance.CurrentTask;
 						var taskType = ContextManager.GetTaskType(currentTask);
@@ -197,6 +197,13 @@ namespace Catalogs
 
 		public void Reset(string args)
 		{
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var state = argsList[0];
+
+			var obj = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
+			if (obj == null) return;
+
+			AssetManager.Instance.ResetFigure(obj);
 		}
 
 		public void Highlight(string args)
