@@ -38,4 +38,12 @@ public class QueryExecutor : Singleton<QueryExecutor>
 	{
 		StartCoroutine(callback);
 	}
+
+	public void RunCoroutines(List<IEnumerator> callbacks)
+	{
+		foreach (var callback in callbacks)
+		{
+			StartCoroutine(callback);
+		}
+	}
 }

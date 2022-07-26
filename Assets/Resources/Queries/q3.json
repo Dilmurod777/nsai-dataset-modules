@@ -1,14 +1,14 @@
 ﻿{
-  "query": "Show highlight [41], [46]",
+  "query": "Show highlight [15], [1]",
   "programs": [
     "ExtractNumbers query",
     "SaveVal2Var prev var1",
     "ExtractID object query",
     "SaveVal2Var prev var2",
-    "Filter3DAttr name prev root",
+    "Filter3DAttr name prev root3D",
     "Highlight on prev"
   ],
-  "reply": "[41], [46]",
+  "reply": "[15], [1]",
   "context": {
     "taskId": "32-11-61-000-801",
     "subtaskId": "32-11-61-020-002",

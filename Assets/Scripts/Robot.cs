@@ -6,15 +6,19 @@ public class Robot : Singleton<Robot>
 {
 	private float _moveDuration;
 	private float _rotateDuration;
+	private float _scaleDuration;
 	private float _defaultMoveDuration;
 	private float _defaultRotateDuration;
+	private float _defaultScaleDuration;
 
 	private void Start()
 	{
 		_moveDuration = 1.5f;
 		_rotateDuration = 1.5f;
+		_scaleDuration = 1.5f;
 		_defaultMoveDuration = _moveDuration;
 		_defaultRotateDuration = _rotateDuration;
+		_defaultScaleDuration = _scaleDuration;
 	}
 
 	public IEnumerator SetMoveDuration(float seconds)
@@ -61,7 +65,6 @@ public class Robot : Singleton<Robot>
 		while (delta < GetMoveDuration())
 		{
 			delta += Time.fixedDeltaTime;
-			// sourceObject.transform.position = Vector3.Lerp(initialPosition, ContextManager.Instance.latestGameObjectPositions[sourceObject.name], delta / GetMoveDuration());
 			sourceObject.transform.position = Vector3.Lerp(initialPosition, finalPosition, delta / GetMoveDuration());
 			yield return null;
 		}
@@ -98,6 +101,23 @@ public class Robot : Singleton<Robot>
 			delta += Time.fixedDeltaTime;
 			sourceObject.transform.position = Vector3.Lerp(initialPosition, finalPosition, delta / GetMoveDuration());
 			sourceObject.transform.Rotate(rotationAxis, 2.5f);
+			yield return null;
+		}
+
+		yield return null;
+	}
+
+	public IEnumerator Scale(GameObject sourceObject, Vector3 finalScale = default)
+	{
+		var initialScale = sourceObject.transform.localScale;
+
+		UIManager.Instance.UpdateBasicOperationsList("Scale " + sourceObject.name + " " + initialScale + ", " + finalScale);
+
+		var delta = 0f;
+		while (delta < GetMoveDuration())
+		{
+			delta += Time.fixedDeltaTime;
+			sourceObject.transform.localScale = Vector3.Lerp(initialScale, finalScale, delta / GetMoveDuration());
 			yield return null;
 		}
 

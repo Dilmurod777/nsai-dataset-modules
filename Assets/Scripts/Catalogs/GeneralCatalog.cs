@@ -56,7 +56,6 @@ namespace Catalogs
 		{
 			Debug.Log("Unique: " + args);
 			var argsList = args.Split(Constants.ArgsSeparator);
-			var attributeType = ContextManager.Instance.GetAttributeType(argsList[0]);
 			var objs = ContextManager.Instance.GetAttribute<System.Object>(argsList[0]);
 
 			if (objs == null) return null;
@@ -147,11 +146,12 @@ namespace Catalogs
 
 		public string Same(string args)
 		{
+			Debug.Log("Same: " + args);
 			var argsList = args.Split(Constants.ArgsSeparator);
 			var var1 = ContextManager.Instance.GetAttribute<string>(argsList[0]);
 			var var2 = ContextManager.Instance.GetAttribute<string>(argsList[1]);
 
-			return var1 == "402-32-11-61-990-802-A" ? var1 : "402-32-11-61-990-802-A";
+			return var1;
 		}
 	}
 }

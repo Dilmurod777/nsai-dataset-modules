@@ -50,7 +50,7 @@ namespace Catalogs
 			Debug.Log("Filter3DAttr: " + args);
 			var argsList = args.Split(Constants.ArgsSeparator);
 			var attrName = argsList[0];
-			var prev = ContextManager.Instance.HasAttribute(argsList[1]) ? ContextManager.Instance.GetAttribute<string>(argsList[1]) : argsList[1];
+			var prev = ContextManager.Instance.HasAttribute(argsList[1]) ? ContextManager.Instance.GetAttribute<System.Object>(argsList[1]) : argsList[1];
 			var parent = new List<GameObject>();
 			if (argsList[2] != "root3D")
 			{
@@ -61,8 +61,13 @@ namespace Catalogs
 			switch (attrName)
 			{
 				case "name":
-					var objects = FindObjectsWithIds(new List<string> {prev}, parent);
-					var figures = FindFigureWithId(new List<string> {prev}, parent);
+					var ids = new List<string>();
+
+					if (prev is string) ids.Add((string) prev);
+					if (prev is IList) ids.AddRange((IList<string>) prev);
+
+					var objects = FindObjectsWithIds(ids, parent);
+					var figures = FindFigureWithId(ids, parent);
 
 					allObjects.AddRange(objects);
 					allObjects.AddRange(figures);
@@ -99,11 +104,16 @@ namespace Catalogs
 				allObjects = GameObject.FindGameObjectsWithTag("Object").ToList();
 			}
 
+			var currentTask = ContextManager.Instance.CurrentTask;
+			var taskType = ContextManager.GetTaskType(currentTask);
+			var plainFigureName = Helpers.GetCurrentFigurePlainName();
+			var figureName = taskType == ContextManager.TaskType.Installation ? plainFigureName + "-Installation" : plainFigureName + "-Removal";
+
 			var foundObs = new List<GameObject>();
 
 			foreach (var id in ids)
 			foreach (var obj in allObjects)
-				if (obj.name.Contains(id))
+				if (obj.name.Contains(id) && obj.transform.parent.name.Equals(figureName))
 					foundObs.Add(obj);
 
 			return foundObs;
@@ -156,7 +166,6 @@ namespace Catalogs
 
 				var newRotation = rotation * Quaternion.Euler(rotationX, rotationY, rotationZ);
 				QueryExecutor.Instance.RunCoroutine(Robot.Instance.Rotate(obj, newRotation.eulerAngles));
-				// StartCoroutine(RotateObjectCoroutine(obj, newRotation, 1.0f));
 			}
 		}
 
@@ -183,7 +192,7 @@ namespace Catalogs
 			var finalScale = new Vector3(currentLocalScaleX * change, currentLocalScaleY * change,
 				currentLocalScaleZ * change);
 
-			// StartCoroutine(ScaleObjectCoroutine(obj, finalScale, 1.0f));
+			QueryExecutor.Instance.StartCoroutine(Robot.Instance.Scale(obj, finalScale));
 		}
 
 		public void Reset(string args)
@@ -206,9 +215,9 @@ namespace Catalogs
 				switch (state)
 				{
 					case "on":
-						// outlineComponent.OutlineMode = Outline.Mode.OutlineAll;
-						// outlineComponent.OutlineWidth = 5.0f;
-						// outlineComponent.OutlineColor = Color.blue;
+						outlineComponent.OutlineMode = Outline.Mode.OutlineAll;
+						outlineComponent.OutlineWidth = 5.0f;
+						outlineComponent.OutlineColor = Color.blue;
 
 						outlineComponent.enabled = true;
 						break;
@@ -217,8 +226,6 @@ namespace Catalogs
 						break;
 				}
 			}
-
-			var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
 		public void ShowSide(string args)
@@ -240,10 +247,12 @@ namespace Catalogs
 				_ => Quaternion.Euler(0, 0, 0)
 			};
 
-			var coroutines = new List<IEnumerator>
-			{
-				RotateObjectCoroutine(obj, sideRotation, 1.0f)
-			};
+			// var coroutines = new List<IEnumerator>
+			// {
+			// RotateObjectCoroutine(obj, sideRotation, 1.0f)
+			// };
+
+			QueryExecutor.Instance.RunCoroutine(Robot.Instance.Rotate(obj, sideRotation.eulerAngles));
 
 			// StartCoroutine(Sequence(coroutines));
 		}

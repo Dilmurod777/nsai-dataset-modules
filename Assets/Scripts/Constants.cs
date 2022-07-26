@@ -3,7 +3,7 @@
 	public const char ArgsSeparator = '#';
 	public const string FigureRegex = @"(\d+-)+[A-Z]{1}";
 	public const string ObjectRegex = @"\[\d*\]";
-	public const string NumberRegex = @"[0-9]*";
+	public const string NumberRegex = @"(([0-9]*[.])?[0-9]+)";
 
 	public delegate void FunctionDelegate();
 }
