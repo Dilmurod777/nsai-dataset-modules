@@ -102,7 +102,7 @@ namespace Catalogs
 			return _generalCatalog.Exist(objects);
 		}
 
-		public object Unique(string args)
+		public System.Object Unique(string args)
 		{
 			return _generalCatalog.Unique(args);
 		}
@@ -116,6 +116,7 @@ namespace Catalogs
 		{
 			return _generalCatalog.ExtractID(args);
 		}
+
 //
 		public string Same(string args)
 		{
@@ -126,17 +127,17 @@ namespace Catalogs
 		{
 			return _knowledgeCatalog.FilterAttr(args);
 		}
-		
+
 		public List<JSONNode> FilterType(string args)
 		{
 			return _knowledgeCatalog.FilterType(args);
 		}
-		
+
 		public string QueryAttr(string args)
 		{
 			return _knowledgeCatalog.QueryAttr(args);
 		}
-		
+
 		public string ShowInfo(List<JSONNode> dataObjects)
 		{
 			return _knowledgeCatalog.ShowInfo(dataObjects);

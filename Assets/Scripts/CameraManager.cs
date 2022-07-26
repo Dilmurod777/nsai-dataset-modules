@@ -110,5 +110,13 @@ public class CameraManager : Singleton<CameraManager>
 
 		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().Priority = 11;
 		_virtualCamera.GetComponent<CinemachineVirtualCamera>().Priority = 10;
+
+		Invoke("ResetFocusOnFigure", 2.0f);
+	}
+
+	public void ResetFocusOnFigure()
+	{
+		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = null;
+		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = null;
 	}
 }

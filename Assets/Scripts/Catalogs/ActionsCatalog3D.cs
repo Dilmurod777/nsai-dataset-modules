@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -28,7 +27,7 @@ namespace Catalogs
 		string CheckActionsValidity(string args);
 	}
 
-	public class ActionsCatalog3D: IActionsCatalog3DInterface
+	public class ActionsCatalog3D : IActionsCatalog3DInterface
 	{
 		// private IEnumerator Sequence(List<IEnumerator> coroutines, float delay = 0.0f)
 		// {
@@ -51,35 +50,40 @@ namespace Catalogs
 			Debug.Log("Filter3DAttr: " + args);
 			var argsList = args.Split(Constants.ArgsSeparator);
 			var attrName = argsList[0];
-			var prev = ContextManager.Instance.HasAttribute(argsList[1]) ? ContextManager.Instance.GetAttribute(argsList[1]) as string : argsList[1];
+			var prev = ContextManager.Instance.HasAttribute(argsList[1]) ? ContextManager.Instance.GetAttribute<string>(argsList[1]) : argsList[1];
 			var parent = new List<GameObject>();
 			if (argsList[2] != "root3D")
 			{
-				parent = ContextManager.Instance.GetAttribute(argsList[2]) as List<GameObject>;
+				parent = ContextManager.Instance.GetAttribute<List<GameObject>>(argsList[2]);
 			}
 
 			var allObjects = new List<GameObject>();
 			switch (attrName)
 			{
 				case "name":
-					var objects = FindObjectsWithIds(new List<string>{prev}, parent);
-					var figures = FindFigureWithId(new List<string>{prev}, parent);
-			
+					var objects = FindObjectsWithIds(new List<string> {prev}, parent);
+					var figures = FindFigureWithId(new List<string> {prev}, parent);
+
 					allObjects.AddRange(objects);
 					allObjects.AddRange(figures);
 					break;
 				case "type":
 					if (prev == "figure" && parent != null)
 					{
+						var currentTask = ContextManager.Instance.CurrentTask;
+						var taskType = ContextManager.GetTaskType(currentTask);
+						var plainFigureName = Helpers.GetCurrentFigurePlainName();
+						var figureName = taskType == ContextManager.TaskType.Installation ? plainFigureName + "-Installation" : plainFigureName + "-Removal";
+
 						foreach (var obj in parent)
 						{
-							if (obj.CompareTag("Figure"))
+							if (obj.CompareTag("Figure") && obj.name == figureName)
 							{
 								allObjects.Add(obj);
 							}
 						}
 					}
-			
+
 					break;
 			}
 
@@ -99,7 +103,7 @@ namespace Catalogs
 
 			foreach (var id in ids)
 			foreach (var obj in allObjects)
-				if (obj.name.Contains($"{id}"))
+				if (obj.name.Contains(id))
 					foundObs.Add(obj);
 
 			return foundObs;
@@ -115,10 +119,18 @@ namespace Catalogs
 
 			var foundFigs = new List<GameObject>();
 
+			var currentTask = ContextManager.Instance.CurrentTask;
+			var taskType = ContextManager.GetTaskType(currentTask);
+
 			foreach (var fig in allFigures)
 			foreach (var id in ids)
-				if (fig.name.Equals(id))
+			{
+				var plainFigureName = Helpers.GetFigurePlainName(id);
+				var figureName = taskType == ContextManager.TaskType.Installation ? plainFigureName + "-Installation" : plainFigureName + "-Removal";
+
+				if (fig.name == figureName)
 					foundFigs.Add(fig);
+			}
 
 			return foundFigs;
 		}
@@ -127,22 +139,23 @@ namespace Catalogs
 		{
 			Debug.Log("Rotate: " + args);
 			var argsList = args.Split(Constants.ArgsSeparator);
-			var obj = ContextManager.Instance.GetAttribute(argsList[0]) as GameObject;
+			var obj = ContextManager.Instance.GetAttribute<GameObject>(argsList[0]);
 			if (obj == null) return;
-			
-			var restArgs = ContextManager.Instance.GetAttribute(argsList[1]) as List<string>;
+
+			var restArgs = ContextManager.Instance.GetAttribute<List<string>>(argsList[1]);
 			if (restArgs != null)
 			{
 				var degree = float.Parse(restArgs[0]);
 				var axisRegex = Regex.Match(ContextManager.Instance.CurrentQuery.Title, @"[XYZ] axis").Value;
-			
+
 				var rotation = obj.transform.rotation;
 				var axis = axisRegex.Split(' ')[0];
 				var rotationX = axis == "X" ? degree : 0;
 				var rotationY = axis == "Y" ? degree : 0;
 				var rotationZ = axis == "Z" ? degree : 0;
-			
+
 				var newRotation = rotation * Quaternion.Euler(rotationX, rotationY, rotationZ);
+				QueryExecutor.Instance.RunCoroutine(Robot.Instance.Rotate(obj, newRotation.eulerAngles));
 				// StartCoroutine(RotateObjectCoroutine(obj, newRotation, 1.0f));
 			}
 		}
@@ -150,13 +163,13 @@ namespace Catalogs
 		public void Scale(string args)
 		{
 			var argsList = args.Split(Constants.ArgsSeparator);
-			var obj = ContextManager.Instance.GetAttribute(argsList[1]) as GameObject;
+			var obj = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
 			if (obj == null) return;
-			
-			var restArgs = ContextManager.Instance.GetAttribute(argsList[2]) as List<string>;
+
+			var restArgs = ContextManager.Instance.GetAttribute<List<string>>(argsList[2]);
 			var state = argsList[0];
 			var scaleRatio = float.Parse(restArgs[0]);
-			
+
 			var currentLocalScale = obj.transform.localScale;
 			var currentLocalScaleX = currentLocalScale.x;
 			var currentLocalScaleY = currentLocalScale.y;
@@ -166,38 +179,37 @@ namespace Catalogs
 				: state == "up"
 					? scaleRatio
 					: Mathf.Round(100f / scaleRatio) / 100f;
-			
+
 			var finalScale = new Vector3(currentLocalScaleX * change, currentLocalScaleY * change,
 				currentLocalScaleZ * change);
-			
+
 			// StartCoroutine(ScaleObjectCoroutine(obj, finalScale, 1.0f));
 		}
 
 		public void Reset(string args)
 		{
-			
 		}
 
 		public void Highlight(string args)
 		{
 			var argsList = args.Split(Constants.ArgsSeparator);
 			var state = argsList[0];
-			
-			var objs = ContextManager.Instance.GetAttribute(argsList[1]) as List<GameObject>;
+
+			var objs = ContextManager.Instance.GetAttribute<List<GameObject>>(argsList[1]);
 			if (objs == null || objs.Count == 0) return;
-			
+
 			foreach (var obj in objs)
 			{
 				var outlineComponent = obj.GetComponent<Outline>();
 				if (outlineComponent == null) outlineComponent = obj.AddComponent<Outline>();
-			
+
 				switch (state)
 				{
 					case "on":
 						// outlineComponent.OutlineMode = Outline.Mode.OutlineAll;
 						// outlineComponent.OutlineWidth = 5.0f;
 						// outlineComponent.OutlineColor = Color.blue;
-			
+
 						outlineComponent.enabled = true;
 						break;
 					case "off":
@@ -205,18 +217,18 @@ namespace Catalogs
 						break;
 				}
 			}
-			
+
 			var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
 		public void ShowSide(string args)
 		{
 			var argsList = args.Split(Constants.ArgsSeparator);
-			var obj = ContextManager.Instance.GetAttribute(argsList[1]) as GameObject;
+			var obj = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
 			if (obj == null) return;
-			
+
 			var figureSide = argsList[0];
-			
+
 			var sideRotation = figureSide switch
 			{
 				"front" => Quaternion.Euler(0, -90, -45),
@@ -227,49 +239,49 @@ namespace Catalogs
 				"bottom" => Quaternion.Euler(135, 0, 0),
 				_ => Quaternion.Euler(0, 0, 0)
 			};
-			
+
 			var coroutines = new List<IEnumerator>
 			{
 				RotateObjectCoroutine(obj, sideRotation, 1.0f)
 			};
-			
+
 			// StartCoroutine(Sequence(coroutines));
 		}
 
 		public void SideBySideLook(string args)
 		{
 			var argsList = args.Split(' ');
-			var fig = ContextManager.Instance.GetAttribute(argsList[0]) as GameObject;
+			var fig = ContextManager.Instance.GetAttribute<GameObject>(argsList[0]);
 			if (fig == null) return;
-			
+
 			var objs = new List<GameObject>();
 			for (var i = 0; i < fig.transform.childCount; i++)
 			{
 				objs.Add(fig.transform.GetChild(i).gameObject);
 			}
-			
+
 			CloseLookFunctionality(objs);
-			
+
 			var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
 		public void CloseLook(string args)
 		{
 			var argsList = args.Split(Constants.ArgsSeparator);
-			var objs = ContextManager.Instance.GetAttribute(argsList[0]) as List<GameObject>;
+			var objs = ContextManager.Instance.GetAttribute<List<GameObject>>(argsList[0]);
 			if (objs == null || objs.Count == 0) return;
-			
+
 			CloseLookFunctionality(objs);
-			
+
 			var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
 		public void Animate(string args)
 		{
 			var argsList = args.Split(Constants.ArgsSeparator);
-			var fig = ContextManager.Instance.GetAttribute(argsList[1]) as GameObject;
+			var fig = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
 			if (fig == null) return;
-			
+
 			var state = argsList[0];
 			// Attributes attributes = Context.Instance.InitialAttributes[fig.name];
 			//
@@ -293,7 +305,7 @@ namespace Catalogs
 			//
 			// 	StartCoroutine(ResetObjectCoroutine(fig, attributes, 1.0f));
 			// }
-			
+
 			// var infiniteRotationComponent = fig.GetComponent<InfiniteRotation>();
 			// if (infiniteRotationComponent == null && state == "on")
 			// {
@@ -308,16 +320,16 @@ namespace Catalogs
 		public void Visibility(string args)
 		{
 			var argsList = args.Split(Constants.ArgsSeparator);
-			var objs = ContextManager.Instance.GetAttribute(argsList[1]) as List<GameObject>;
+			var objs = ContextManager.Instance.GetAttribute<List<GameObject>>(argsList[1]);
 			if (objs == null || objs.Count == 0) return;
-			
+
 			var state = argsList[0];
-			
+
 			foreach (var obj in objs)
 			{
 				obj.GetComponent<MeshRenderer>().enabled = state == "on";
 			}
-			
+
 			var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
@@ -326,24 +338,24 @@ namespace Catalogs
 			var argsList = args.Split(Constants.ArgsSeparator);
 			var actionType = argsList[0];
 			var refSpecified = argsList[1]; // always true for now
-			var idList = ContextManager.Instance.GetAttribute(argsList[2]) as List<string>;
-			
-			
+			var idList = ContextManager.Instance.GetAttribute<List<string>>(argsList[2]);
+
+
 			var actionsList = new List<Action>();
 			if (idList == null) return;
-			
+
 			if (refSpecified == "yes")
 			{
 				var referenceId = idList[idList.Count - 1];
 
-			// for (var i = 0; i < idList.Count - 1; i++)
-			// {
-			// actionsList.Add(new Action
-			// {
-			// 	"attach",
-			// 	new List<string>{idList[i], referenceId}
-			// });
-			// }
+				// for (var i = 0; i < idList.Count - 1; i++)
+				// {
+				// actionsList.Add(new Action
+				// {
+				// 	"attach",
+				// 	new List<string>{idList[i], referenceId}
+				// });
+				// }
 			}
 		}
 

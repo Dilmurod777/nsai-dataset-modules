@@ -19,31 +19,6 @@ public class AssetManager : Singleton<AssetManager>
 
 	private readonly Vector3 _offset = new Vector3(-60.7f, -20.4f, 36.9f);
 
-	private string GetCurrentFigurePlainName()
-	{
-		var subtask = ContextManager.Instance.CurrentSubtask;
-		var subtaskId = subtask.SubtaskId;
-
-		var subtaskIdsToFigurePrefab = new Dictionary<string, string>
-		{
-			{"32-11-61", "MainLandingGear"},
-			{"32-45-11", "WheelAndTire"}
-		};
-
-		var prefabName = "";
-
-		foreach (var key in subtaskIdsToFigurePrefab.Keys)
-			if (subtaskId.StartsWith(key))
-				prefabName = subtaskIdsToFigurePrefab[key];
-
-		var needsToReplace = new List<string> {"-IFM", "-RFM", "-Reference", "-Scattered"};
-
-		foreach (var word in needsToReplace) prefabName = prefabName.Replace(word, "");
-
-		return prefabName;
-	}
-
-
 	public void UpdateAssets()
 	{
 		var task = ContextManager.Instance.CurrentTask;
@@ -53,7 +28,7 @@ public class AssetManager : Singleton<AssetManager>
 		{
 			if (subtask.Figure == null) return;
 
-			var plainFigureName = GetCurrentFigurePlainName();
+			var plainFigureName = Helpers.GetCurrentFigurePlainName();
 
 			var figurePrefabInstallation = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/Scattered");
 			var figurePrefabRemoval = Resources.Load<GameObject>("ModelPrefabs/" + plainFigureName + "/IFM");
@@ -88,10 +63,11 @@ public class AssetManager : Singleton<AssetManager>
 				{
 					if (child.name == instantiatedFigure.name) continue;
 
+					child.tag = "Object";
 					var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
 					if (meshRenderer != null) meshRenderer.enabled = false;
 
-					var referenceChild = FindObjectInFigure(FigureType.Reference, child.name);
+					var referenceChild = Helpers.FindObjectInFigure(FigureType.Reference, child.name);
 
 					if (referenceChild != null)
 					{
@@ -142,11 +118,12 @@ public class AssetManager : Singleton<AssetManager>
 				{
 					if (child.name == instantiatedFigure.name) continue;
 
+					child.tag = "Object";
 					var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
 					if (meshRenderer != null) meshRenderer.enabled = false;
 
 
-					var referenceChild = FindObjectInFigure(FigureType.Reference, child.name);
+					var referenceChild = Helpers.FindObjectInFigure(FigureType.Reference, child.name);
 
 					if (referenceChild != null)
 					{
@@ -233,10 +210,10 @@ public class AssetManager : Singleton<AssetManager>
 			var objectMeta = child.GetComponent<ObjectMeta>();
 			if (objectMeta && objectMeta.isCoreInFigure) continue;
 
-			var plainFigureName = GetCurrentFigurePlainName();
+			var plainFigureName = Helpers.GetCurrentFigurePlainName();
 
-			var referenceChild = Instance.FindObjectInFigure(FigureType.Reference, child.name);
-			var transformReference = Instance.FindObjectInFigure(figure.name == plainFigureName + "-Installation" ? FigureType.Scattered : FigureType.IFM, child.name)
+			var referenceChild = Helpers.FindObjectInFigure(FigureType.Reference, child.name);
+			var transformReference = Helpers.FindObjectInFigure(figure.name == plainFigureName + "-Installation" ? FigureType.Scattered : FigureType.IFM, child.name)
 				.transform;
 
 			child.position = transformReference.position;
@@ -267,39 +244,11 @@ public class AssetManager : Singleton<AssetManager>
 		}
 	}
 
-	public GameObject FindObjectInFigure(FigureType type, string objName)
-	{
-		var task = ContextManager.Instance.CurrentTask;
-		var taskType = ContextManager.GetTaskType(task);
-
-		var plainFigureName = GetCurrentFigurePlainName();
-
-		var figure = type switch
-		{
-			FigureType.Current => taskType == ContextManager.TaskType.Installation
-				? GameObject.Find(plainFigureName + "-Installation")
-				: GameObject.Find(plainFigureName + "-Removal"),
-			FigureType.IFM => GameObject.Find(plainFigureName + "-IFM"),
-			FigureType.RFM => GameObject.Find(plainFigureName + "-RFM"),
-			FigureType.Reference => GameObject.Find(plainFigureName + "-Reference"),
-			FigureType.Scattered => GameObject.Find(plainFigureName + "-Scattered"),
-			_ => GameObject.Find(plainFigureName + "-Installation")
-		};
-
-		foreach (var child in figure.GetComponentsInChildren<Transform>())
-		{
-			if (child.name.Contains(objName))
-				return child.gameObject;
-		}
-
-		return null;
-	}
-
 	public void ShowCurrentFigure()
 	{
 		var currentTask = ContextManager.Instance.CurrentTask;
 		var taskType = ContextManager.GetTaskType(currentTask);
-		var plainFigureName = GetCurrentFigurePlainName();
+		var plainFigureName = Helpers.GetCurrentFigurePlainName();
 
 		var figuresInScene = GameObject.FindGameObjectsWithTag("Figure");
 		foreach (var figureInScene in figuresInScene)

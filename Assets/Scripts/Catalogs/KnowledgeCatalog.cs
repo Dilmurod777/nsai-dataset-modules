@@ -19,12 +19,12 @@ namespace Catalogs
 		{
 			var argsList = args.Split(ArgsSeparator);
 			var attr = argsList[0];
-			var attrValue = ContextManager.Instance.GetAttribute(argsList[1]).ToString();
-			var dataObjects = ContextManager.Instance.GetAttribute(argsList[2]) as List<JSONNode>;
-			
+			var attrValue = ContextManager.Instance.GetAttribute<string>(argsList[1]);
+			var dataObjects = ContextManager.Instance.GetAttribute<List<JSONNode>>(argsList[2]);
+
 			var resultObjects = new List<JSONNode>();
 			if (dataObjects == null) return resultObjects;
-			
+
 			for (var i = 0; i < dataObjects.Count; i++)
 			{
 				if (dataObjects[i][attr] == attrValue)
@@ -40,11 +40,11 @@ namespace Catalogs
 		{
 			var argsList = args.Split(ArgsSeparator);
 			var type = argsList[0];
-			var dataObjects = ContextManager.Instance.GetAttribute(argsList[1]) as List<JSONNode>;
-			
+			var dataObjects = ContextManager.Instance.GetAttribute<List<JSONNode>>(argsList[1]);
+
 			var resultObjects = new List<JSONNode>();
 			if (dataObjects == null) return resultObjects;
-			
+
 			foreach (var dataObject in dataObjects)
 			{
 				foreach (var item in dataObject[type])
@@ -60,10 +60,10 @@ namespace Catalogs
 		{
 			var argsList = args.Split(ArgsSeparator);
 			var attr = argsList[0];
-			var dataObject = ContextManager.Instance.GetAttribute(argsList[1]) as JSONNode;
+			var dataObject = ContextManager.Instance.GetAttribute<JSONNode>(argsList[1]);
 
 			if (dataObject == null) return "";
-			
+
 			string result = dataObject[attr];
 			return result;
 		}
