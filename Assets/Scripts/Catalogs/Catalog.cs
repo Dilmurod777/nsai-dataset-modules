@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Constants;
 using Custom;
 using UnityEngine;
 using Action = Instances.Action;
@@ -7,7 +6,7 @@ using Action = Instances.Action;
 namespace Catalogs
 {
 	// public class Catalog : IGeneralCatalogInterface, IActionsCatalog3DInterface, IKnowledgeCatalogInterface
-	public class Catalog
+	public class Catalog : IGeneralCatalogInterface, IKnowledgeCatalogInterface, IActionsCatalog3DInterface
 	{
 		private static Catalog _instance;
 		private readonly ActionsCatalog3D _actionsCatalog3D;
@@ -16,71 +15,67 @@ namespace Catalogs
 
 		private Catalog()
 		{
-			// var gameObject = Object.FindObjectOfType<ScriptExecutor>().gameObject;
-
-			// _generalCatalog = new GeneralCatalog();
-			// _actionsCatalog3D = gameObject.GetComponent<ActionsCatalog3D>()
-			// 	? gameObject.GetComponent<ActionsCatalog3D>()
-			// 	: gameObject.AddComponent<ActionsCatalog3D>();
-			// _knowledgeCatalog = new KnowledgeCatalog();
+			_generalCatalog = new GeneralCatalog();
+			_actionsCatalog3D = new ActionsCatalog3D();
+			_knowledgeCatalog = new KnowledgeCatalog();
 		}
 
 		public static Catalog Instance => _instance ??= new Catalog();
 
-		public Response Reset(string args)
+		public void Reset(string args)
 		{
-			return _actionsCatalog3D.Reset(args);
+			_actionsCatalog3D.Reset(args);
 		}
 
-		public Response Highlight(string args)
+		public void Highlight(string args)
 		{
-			return _actionsCatalog3D.Highlight(args);
+			_actionsCatalog3D.Highlight(args);
 		}
 
-		public Response Rotate(string args)
+		public void Rotate(string args)
 		{
-			return _actionsCatalog3D.Rotate(args);
+			_actionsCatalog3D.Rotate(args);
 		}
 
-		public Response Scale(string args)
+		public void Scale(string args)
 		{
-			return _actionsCatalog3D.Scale(args);
+			_actionsCatalog3D.Scale(args);
 		}
 
-		public Response ShowSide(string args)
+		public void ShowSide(string args)
 		{
-			return _actionsCatalog3D.ShowSide(args);
+			_actionsCatalog3D.ShowSide(args);
 		}
 
-		public Response SideBySideLook(string args)
+		public void SideBySideLook(string args)
 		{
-			return _actionsCatalog3D.SideBySideLook(args);
+			_actionsCatalog3D.SideBySideLook(args);
 		}
 
-		public Response CloseLook(string args)
+		public void CloseLook(string args)
 		{
-			return _actionsCatalog3D.CloseLook(args);
+			_actionsCatalog3D.CloseLook(args);
 		}
 
-		public Response Animate(string args)
+		public void Animate(string args)
 		{
-			return _actionsCatalog3D.Animate(args);
+			_actionsCatalog3D.Animate(args);
 		}
 
-		public Response Visibility(string args)
+		public void Visibility(string args)
 		{
-			return _actionsCatalog3D.Visibility(args);
+			_actionsCatalog3D.Visibility(args);
 		}
 
-		public Response Attach(string args)
+		public void Attach(string args)
 		{
-			return _actionsCatalog3D.Attach(args);
+			_actionsCatalog3D.Attach(args);
 		}
 
-		// public List<Action> CreateActions(string args)
-		// {
-		// 	return _actionsCatalog3D.CreateActions(args);
-		// }
+		public void CreateActions(string args)
+		{
+			_actionsCatalog3D.CreateActions(args);
+		}
 
 		public string CheckActionsValidity(string args)
 		{
@@ -121,7 +116,7 @@ namespace Catalogs
 		{
 			return _generalCatalog.ExtractID(args);
 		}
-
+//
 		public string Same(string args)
 		{
 			return _generalCatalog.Same(args);
@@ -131,17 +126,17 @@ namespace Catalogs
 		{
 			return _knowledgeCatalog.FilterAttr(args);
 		}
-
+		
 		public List<JSONNode> FilterType(string args)
 		{
 			return _knowledgeCatalog.FilterType(args);
 		}
-
+		
 		public string QueryAttr(string args)
 		{
 			return _knowledgeCatalog.QueryAttr(args);
 		}
-
+		
 		public string ShowInfo(List<JSONNode> dataObjects)
 		{
 			return _knowledgeCatalog.ShowInfo(dataObjects);

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using Constants;
 using Custom;
+using UnityEngine;
+using static Constants;
 
 namespace Catalogs
 {
@@ -16,61 +17,55 @@ namespace Catalogs
 	{
 		public List<JSONNode> FilterAttr(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// var attr = argsList[0];
-			// var attrValue = ContextManager.Instance.GetAttribute(argsList[1]).ToString();
-			// List<JSONNode> dataObjects = ContextManager.Instance.GetAttribute(argsList[2]);
-			//
-			// var resultObjects = new List<JSONNode>();
-			// for (var i = 0; i < dataObjects.Count; i++)
-			// {
-			// 	if (dataObjects[i][attr] == attrValue)
-			// 	{
-			// 		resultObjects.Add(dataObjects[i]);
-			// ScriptExecutor.SetKnowledgeText(HelperFunctions.GetValueFromJSONNodeByKey("content", dataObjects[i]));
-			// ScriptExecutor.SetKnowledgeInfo();
+			var argsList = args.Split(ArgsSeparator);
+			var attr = argsList[0];
+			var attrValue = ContextManager.Instance.GetAttribute(argsList[1]).ToString();
+			var dataObjects = ContextManager.Instance.GetAttribute(argsList[2]) as List<JSONNode>;
+			
+			var resultObjects = new List<JSONNode>();
+			if (dataObjects == null) return resultObjects;
+			
+			for (var i = 0; i < dataObjects.Count; i++)
+			{
+				if (dataObjects[i][attr] == attrValue)
+				{
+					resultObjects.Add(dataObjects[i]);
+				}
+			}
 
-
-			// if (attr == "order")
-			// {
-			// 	Context.Instance.CurrentInstructionOrder += 1;
-			// }
-			// 	}
-			// }
-			//
-			// return resultObjects;
-			return new List<JSONNode>();
+			return resultObjects;
 		}
 
 		public List<JSONNode> FilterType(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// var type = argsList[0];
-			// List<JSONNode> dataObjects = ContextManager.Instance.GetAttribute(argsList[1]);
-			//
-			// var resultObjects = new List<JSONNode>();
-			// foreach (var dataObject in dataObjects)
-			// {
-			// 	foreach (var item in dataObject[type])
-			// 	{
-			// 		resultObjects.Add(item);
-			// 	}
-			// }
-			//
-			// return resultObjects;
-			return new List<JSONNode>();
+			var argsList = args.Split(ArgsSeparator);
+			var type = argsList[0];
+			var dataObjects = ContextManager.Instance.GetAttribute(argsList[1]) as List<JSONNode>;
+			
+			var resultObjects = new List<JSONNode>();
+			if (dataObjects == null) return resultObjects;
+			
+			foreach (var dataObject in dataObjects)
+			{
+				foreach (var item in dataObject[type])
+				{
+					resultObjects.Add(item);
+				}
+			}
+
+			return resultObjects;
 		}
 
 		public string QueryAttr(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// var attr = argsList[0];
-			// JSONNode dataObject = ContextManager.Instance.GetAttribute(argsList[1]);
-			//
-			// string result = dataObject[attr];
-			// return result;
+			var argsList = args.Split(ArgsSeparator);
+			var attr = argsList[0];
+			var dataObject = ContextManager.Instance.GetAttribute(argsList[1]) as JSONNode;
 
-			return "";
+			if (dataObject == null) return "";
+			
+			string result = dataObject[attr];
+			return result;
 		}
 
 		public string ShowInfo(List<JSONNode> dataObjects)

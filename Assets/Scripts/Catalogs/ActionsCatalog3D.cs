@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Constants;
 using Custom;
 using Instances;
 using UnityEngine;
@@ -15,81 +14,76 @@ namespace Catalogs
 	public interface IActionsCatalog3DInterface
 	{
 		List<GameObject> Filter3DAttr(string args);
-		Response Reset(string args);
-		Response Highlight(string args);
-		Response Rotate(string args);
-		Response Scale(string args);
-		Response ShowSide(string args);
-		Response SideBySideLook(string args);
-		Response CloseLook(string args);
-		Response Animate(string args);
-		Response Visibility(string args);
-		Response Attach(string args);
-		List<Action> CreateActions(string args);
+		void Reset(string args);
+		void Highlight(string args);
+		void Rotate(string args);
+		void Scale(string args);
+		void ShowSide(string args);
+		void SideBySideLook(string args);
+		void CloseLook(string args);
+		void Animate(string args);
+		void Visibility(string args);
+		void Attach(string args);
+		void CreateActions(string args);
 		string CheckActionsValidity(string args);
 	}
 
-	public class ActionsCatalog3D : MonoBehaviour, IActionsCatalog3DInterface
+	public class ActionsCatalog3D: IActionsCatalog3DInterface
 	{
-		private IEnumerator Sequence(List<IEnumerator> coroutines, float delay = 0.0f)
-		{
-			yield return new WaitForSeconds(delay);
-			foreach (var c in coroutines) yield return StartCoroutine(c);
-		}
-
-		private static void DestroyCloneObjects()
-		{
-			var cloneObjects = GameObject.FindGameObjectsWithTag("CloneObject");
-
-			foreach (var cloneObj in cloneObjects)
-			{
-				Destroy(cloneObj);
-			}
-		}
+		// private IEnumerator Sequence(List<IEnumerator> coroutines, float delay = 0.0f)
+		// {
+		// 	yield return new WaitForSeconds(delay);
+		// 	foreach (var c in coroutines) yield return StartCoroutine(c);
+		// }
+		//
+		// private static void DestroyCloneObjects()
+		// {
+		// 	var cloneObjects = GameObject.FindGameObjectsWithTag("CloneObject");
+		//
+		// 	foreach (var cloneObj in cloneObjects)
+		// 	{
+		// 		Destroy(cloneObj);
+		// 	}
+		// }
 
 		public List<GameObject> Filter3DAttr(string args)
 		{
-			// var argsList = args.Split(Constants.General.ArgsSeparator);
-			// var attrName = argsList[0];
-			// var prev = ContextManager.Instance.HasAttribute(argsList[1]) ? ContextManager.Instance.GetAttribute(argsList[1]) : argsList[1];
-			// var parent = new List<GameObject>();
-			// if (argsList[2] != "root3D")
-			// {
-			// 	parent = ContextManager.Instance.GetAttribute(argsList[2]);
-			// }
-			//
-			// if (prev.GetType() == "string")
-			// {
-			// 	prev = new List<string> {prev};
-			// }
-			//
-			// var allObjects = new List<GameObject>();
-			// switch (attrName)
-			// {
-			// 	case "name":
-			// 		var objects = FindObjectsWithIds(prev, parent);
-			// 		var figures = FindFigureWithId(prev, parent);
-			//
-			// 		allObjects.AddRange(objects);
-			// 		allObjects.AddRange(figures);
-			// 		break;
-			// 	case "type":
-			// 		if (prev == "figure")
-			// 		{
-			// 			foreach (var obj in parent)
-			// 			{
-			// 				if (obj.CompareTag("Figure"))
-			// 				{
-			// 					allObjects.Add(obj);
-			// 				}
-			// 			}
-			// 		}
-			//
-			// 		break;
-			// }
+			Debug.Log("Filter3DAttr: " + args);
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var attrName = argsList[0];
+			var prev = ContextManager.Instance.HasAttribute(argsList[1]) ? ContextManager.Instance.GetAttribute(argsList[1]) as string : argsList[1];
+			var parent = new List<GameObject>();
+			if (argsList[2] != "root3D")
+			{
+				parent = ContextManager.Instance.GetAttribute(argsList[2]) as List<GameObject>;
+			}
 
-			// return allObjects;
-			return new List<GameObject>();
+			var allObjects = new List<GameObject>();
+			switch (attrName)
+			{
+				case "name":
+					var objects = FindObjectsWithIds(new List<string>{prev}, parent);
+					var figures = FindFigureWithId(new List<string>{prev}, parent);
+			
+					allObjects.AddRange(objects);
+					allObjects.AddRange(figures);
+					break;
+				case "type":
+					if (prev == "figure" && parent != null)
+					{
+						foreach (var obj in parent)
+						{
+							if (obj.CompareTag("Figure"))
+							{
+								allObjects.Add(obj);
+							}
+						}
+					}
+			
+					break;
+			}
+
+			return allObjects;
 		}
 
 		// find object with part of name
@@ -129,205 +123,156 @@ namespace Catalogs
 			return foundFigs;
 		}
 
-		public Response Rotate(string args)
+		public void Rotate(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// GameObject obj = ContextManager.Instance.GetAttribute(argsList[0]);
-			// if (obj == null) return null;
-			//
-			// List<string> restArgs = ContextManager.Instance.GetAttribute(argsList[1]);
-			// var degree = float.Parse(restArgs[0]);
-			// var axisRegex = Regex.Match(ContextManager.Instance.CurrentQuery.Title, @"[XYZ] axis").Value;
-			//
-			// var rotation = obj.transform.rotation;
-			// var axis = axisRegex.Split(' ')[0];
-			// var rotationX = axis == "X" ? degree : 0;
-			// var rotationY = axis == "Y" ? degree : 0;
-			// var rotationZ = axis == "Z" ? degree : 0;
-			//
-			// var newRotation = rotation * Quaternion.Euler(rotationX, rotationY, rotationZ);
-			// StartCoroutine(RotateObjectCoroutine(obj, newRotation, 1.0f));
-			//
-			// return new Response(new Dictionary<string, dynamic>
-			// {
-			// 	{"name", "rotate"}
-			// }, new List<string> {obj.name}, new Dictionary<string, dynamic>
-			// {
-			// 	{"degree", degree},
-			// 	{"axis", axis}
-			// });
-			return new Response(new Dictionary<string, dynamic>(), new List<string>(), new Dictionary<string, dynamic>());
+			Debug.Log("Rotate: " + args);
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var obj = ContextManager.Instance.GetAttribute(argsList[0]) as GameObject;
+			if (obj == null) return;
+			
+			var restArgs = ContextManager.Instance.GetAttribute(argsList[1]) as List<string>;
+			if (restArgs != null)
+			{
+				var degree = float.Parse(restArgs[0]);
+				var axisRegex = Regex.Match(ContextManager.Instance.CurrentQuery.Title, @"[XYZ] axis").Value;
+			
+				var rotation = obj.transform.rotation;
+				var axis = axisRegex.Split(' ')[0];
+				var rotationX = axis == "X" ? degree : 0;
+				var rotationY = axis == "Y" ? degree : 0;
+				var rotationZ = axis == "Z" ? degree : 0;
+			
+				var newRotation = rotation * Quaternion.Euler(rotationX, rotationY, rotationZ);
+				// StartCoroutine(RotateObjectCoroutine(obj, newRotation, 1.0f));
+			}
 		}
 
-		public Response Scale(string args)
+		public void Scale(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// GameObject obj = ContextManager.Instance.GetAttribute(argsList[1]);
-			// if (obj == null) return null;
-			//
-			// List<string> restArgs = ContextManager.Instance.GetAttribute(argsList[2]);
-			// var state = argsList[0];
-			// var scaleRatio = float.Parse(restArgs[0]);
-			//
-			// var currentLocalScale = obj.transform.localScale;
-			// var currentLocalScaleX = currentLocalScale.x;
-			// var currentLocalScaleY = currentLocalScale.y;
-			// var currentLocalScaleZ = currentLocalScale.z;
-			// var change = scaleRatio < 1
-			// 	? state == "up" ? 1 + scaleRatio : 1 - scaleRatio
-			// 	: state == "up"
-			// 		? scaleRatio
-			// 		: Mathf.Round(100f / scaleRatio) / 100f;
-			//
-			// var finalScale = new Vector3(currentLocalScaleX * change, currentLocalScaleY * change,
-			// 	currentLocalScaleZ * change);
-			//
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var obj = ContextManager.Instance.GetAttribute(argsList[1]) as GameObject;
+			if (obj == null) return;
+			
+			var restArgs = ContextManager.Instance.GetAttribute(argsList[2]) as List<string>;
+			var state = argsList[0];
+			var scaleRatio = float.Parse(restArgs[0]);
+			
+			var currentLocalScale = obj.transform.localScale;
+			var currentLocalScaleX = currentLocalScale.x;
+			var currentLocalScaleY = currentLocalScale.y;
+			var currentLocalScaleZ = currentLocalScale.z;
+			var change = scaleRatio < 1
+				? state == "up" ? 1 + scaleRatio : 1 - scaleRatio
+				: state == "up"
+					? scaleRatio
+					: Mathf.Round(100f / scaleRatio) / 100f;
+			
+			var finalScale = new Vector3(currentLocalScaleX * change, currentLocalScaleY * change,
+				currentLocalScaleZ * change);
+			
 			// StartCoroutine(ScaleObjectCoroutine(obj, finalScale, 1.0f));
-			//
-			// return new Response(new Dictionary<string, dynamic>
-			// {
-			// 	{"name", "scale"},
-			// 	{"extra", state}
-			// }, new List<string> {obj.name}, new Dictionary<string, dynamic>
-			// {
-			// 	{"scale", scaleRatio}
-			// });
-			return new Response(new Dictionary<string, dynamic>(), new List<string>(), new Dictionary<string, dynamic>());
 		}
 
-		public Response Reset(string args)
+		public void Reset(string args)
 		{
-			return new Response(new Dictionary<string, dynamic>(), new List<string>(), new Dictionary<string, dynamic>());
+			
 		}
 
-		public Response Highlight(string args)
+		public void Highlight(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// var state = argsList[0];
-			//
-			// List<GameObject> objs = ContextManager.Instance.GetAttribute(argsList[1]);
-			// if (objs.Count == 0) return null;
-			//
-			// foreach (var obj in objs)
-			// {
-			// 	var outlineComponent = obj.GetComponent<Outline>();
-			// 	if (outlineComponent == null) outlineComponent = obj.AddComponent<Outline>();
-			//
-			// 	switch (state)
-			// 	{
-			// 		case "on":
-			// 			// outlineComponent.OutlineMode = Outline.Mode.OutlineAll;
-			// 			// outlineComponent.OutlineWidth = 5.0f;
-			// 			// outlineComponent.OutlineColor = Color.blue;
-			//
-			// 			outlineComponent.enabled = true;
-			// 			break;
-			// 		case "off":
-			// 			outlineComponent.enabled = false;
-			// 			break;
-			// 	}
-			// }
-			//
-			// var objNames = objs.Select(obj => obj.name).ToList();
-			//
-			// return new Response(new Dictionary<string, dynamic>
-			// {
-			// 	{"name", "highlight"},
-			// 	{"extra", state}
-			// }, objNames, new Dictionary<string, dynamic>());
-
-			return new Response(new Dictionary<string, dynamic>(), new List<string>(), new Dictionary<string, dynamic>());
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var state = argsList[0];
+			
+			var objs = ContextManager.Instance.GetAttribute(argsList[1]) as List<GameObject>;
+			if (objs == null || objs.Count == 0) return;
+			
+			foreach (var obj in objs)
+			{
+				var outlineComponent = obj.GetComponent<Outline>();
+				if (outlineComponent == null) outlineComponent = obj.AddComponent<Outline>();
+			
+				switch (state)
+				{
+					case "on":
+						// outlineComponent.OutlineMode = Outline.Mode.OutlineAll;
+						// outlineComponent.OutlineWidth = 5.0f;
+						// outlineComponent.OutlineColor = Color.blue;
+			
+						outlineComponent.enabled = true;
+						break;
+					case "off":
+						outlineComponent.enabled = false;
+						break;
+				}
+			}
+			
+			var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
-		public Response ShowSide(string args)
+		public void ShowSide(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// GameObject obj = ContextManager.Instance.GetAttribute(argsList[1]);
-			// if (obj == null) return null;
-			//
-			// var figureSide = argsList[0];
-			//
-			// var sideRotation = figureSide switch
-			// {
-			// 	"front" => Quaternion.Euler(0, -90, -45),
-			// 	"back" => Quaternion.Euler(0, 90, 0),
-			// 	"right" => Quaternion.Euler(0, 0, 0),
-			// 	"left" => Quaternion.Euler(0, 180, 0),
-			// 	"top" => Quaternion.Euler(-45, 0, 0),
-			// 	"bottom" => Quaternion.Euler(135, 0, 0),
-			// 	_ => Quaternion.Euler(0, 0, 0)
-			// };
-			//
-			// var coroutines = new List<IEnumerator>
-			// {
-			// 	RotateObjectCoroutine(obj, sideRotation, 1.0f)
-			// };
-			//
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var obj = ContextManager.Instance.GetAttribute(argsList[1]) as GameObject;
+			if (obj == null) return;
+			
+			var figureSide = argsList[0];
+			
+			var sideRotation = figureSide switch
+			{
+				"front" => Quaternion.Euler(0, -90, -45),
+				"back" => Quaternion.Euler(0, 90, 0),
+				"right" => Quaternion.Euler(0, 0, 0),
+				"left" => Quaternion.Euler(0, 180, 0),
+				"top" => Quaternion.Euler(-45, 0, 0),
+				"bottom" => Quaternion.Euler(135, 0, 0),
+				_ => Quaternion.Euler(0, 0, 0)
+			};
+			
+			var coroutines = new List<IEnumerator>
+			{
+				RotateObjectCoroutine(obj, sideRotation, 1.0f)
+			};
+			
 			// StartCoroutine(Sequence(coroutines));
-			//
-			// return new Response(new Dictionary<string, dynamic>
-			// {
-			// 	{"name", "show side"},
-			// 	{"extra", figureSide}
-			// }, new List<string> {obj.name}, new Dictionary<string, dynamic>
-			// {
-			// 	{"side", figureSide}
-			// });
-
-			return new Response(new Dictionary<string, dynamic>(), new List<string>(), new Dictionary<string, dynamic>());
 		}
 
-		public Response SideBySideLook(string args)
+		public void SideBySideLook(string args)
 		{
-			// var argsList = args.Split(' ');
-			// GameObject fig = ContextManager.Instance.GetAttribute(argsList[0]);
-			// if (fig == null) return null;
-			//
-			// var objs = new List<GameObject>();
-			// for (var i = 0; i < fig.transform.childCount; i++)
-			// {
-			// 	objs.Add(fig.transform.GetChild(i).gameObject);
-			// }
-			//
-			// CloseLookFunctionality(objs);
-			//
-			// var objNames = objs.Select(obj => obj.name).ToList();
-			//
-			// return new Response(new Dictionary<string, dynamic>
-			// {
-			// 	{"name", "side by side look"}
-			// }, objNames, new Dictionary<string, dynamic>());
-
-			return new Response(new Dictionary<string, dynamic>(), new List<string>(), new Dictionary<string, dynamic>());
+			var argsList = args.Split(' ');
+			var fig = ContextManager.Instance.GetAttribute(argsList[0]) as GameObject;
+			if (fig == null) return;
+			
+			var objs = new List<GameObject>();
+			for (var i = 0; i < fig.transform.childCount; i++)
+			{
+				objs.Add(fig.transform.GetChild(i).gameObject);
+			}
+			
+			CloseLookFunctionality(objs);
+			
+			var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
-		public Response CloseLook(string args)
+		public void CloseLook(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// List<GameObject> objs = ContextManager.Instance.GetAttribute(argsList[0]);
-			// if (objs.Count == 0) return null;
-			//
-			// CloseLookFunctionality(objs);
-			//
-			// var objNames = objs.Select(obj => obj.name).ToList();
-			//
-			// return new Response(new Dictionary<string, dynamic>
-			// {
-			// 	{"name", "close look"}
-			// }, objNames, new Dictionary<string, dynamic>());
-
-			return new Response(new Dictionary<string, dynamic>(), new List<string>(), new Dictionary<string, dynamic>());
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var objs = ContextManager.Instance.GetAttribute(argsList[0]) as List<GameObject>;
+			if (objs == null || objs.Count == 0) return;
+			
+			CloseLookFunctionality(objs);
+			
+			var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
-		public Response Animate(string args)
+		public void Animate(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// GameObject fig = ContextManager.Instance.GetAttribute(argsList[1]);
-			// if (fig == null) return null;
-			//
-			// var state = argsList[0];
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var fig = ContextManager.Instance.GetAttribute(argsList[1]) as GameObject;
+			if (fig == null) return;
+			
+			var state = argsList[0];
 			// Attributes attributes = Context.Instance.InitialAttributes[fig.name];
-
+			//
 			// void StartAnimatingFigure()
 			// {
 			// 	var infiniteRotationComponent = fig.GetComponent<InfiniteRotation>();
@@ -337,7 +282,7 @@ namespace Catalogs
 			// 		infiniteRotationComponent.SetSpeed(25.0f);
 			// 	}
 			// }
-
+			//
 			// void StopAnimatingFigure()
 			// {
 			// 	var infiniteRotationComponent = fig.GetComponent<InfiniteRotation>();
@@ -348,62 +293,48 @@ namespace Catalogs
 			//
 			// 	StartCoroutine(ResetObjectCoroutine(fig, attributes, 1.0f));
 			// }
-			//
+			
 			// var infiniteRotationComponent = fig.GetComponent<InfiniteRotation>();
 			// if (infiniteRotationComponent == null && state == "on")
 			// {
 			// 	StartCoroutine(ResetObjectCoroutine(fig, attributes, 1.0f));
 			// }
-
+			//
 			// StartCoroutine(state == "on"
 			// 	? DelayCoroutine(1.0f, StartAnimatingFigure)
 			// 	: DelayCoroutine(1.0f, StopAnimatingFigure));
-
-			// return new Response(new Dictionary<string, dynamic>
-			// {
-			// 	{"name", "animate"},
-			// 	{"extra", state}
-			// }, new List<string> {fig.name}, new Dictionary<string, dynamic>());
-
-			return new Response(new Dictionary<string, dynamic>(), new List<string>(), new Dictionary<string, dynamic>());
 		}
 
-		public Response Visibility(string args)
+		public void Visibility(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// List<GameObject> objs = ContextManager.Instance.GetAttribute(argsList[1]);
-			// if (objs.Count == 0) return null;
-			//
-			// var state = argsList[0];
-			//
-			// foreach (var obj in objs)
-			// {
-			// 	obj.GetComponent<MeshRenderer>().enabled = state == "on";
-			// }
-			//
-			// var objNames = objs.Select(obj => obj.name).ToList();
-			//
-			// return new Response(new Dictionary<string, dynamic>
-			// {
-			// 	{"name", "visibility"},
-			// 	{"extra", state}
-			// }, objNames, new Dictionary<string, dynamic>());
-
-			return new Response(new Dictionary<string, dynamic>(), new List<string>(), new Dictionary<string, dynamic>());
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var objs = ContextManager.Instance.GetAttribute(argsList[1]) as List<GameObject>;
+			if (objs == null || objs.Count == 0) return;
+			
+			var state = argsList[0];
+			
+			foreach (var obj in objs)
+			{
+				obj.GetComponent<MeshRenderer>().enabled = state == "on";
+			}
+			
+			var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
-		public List<Action> CreateActions(string args)
+		public void CreateActions(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// var actionType = argsList[0];
-			// var refSpecified = argsList[1]; // always true for now
-			// List<string> idList = ContextManager.Instance.GetAttribute(argsList[2]);
-			//
-			// var actionsList = new List<Action>();
-			//
-			// if (refSpecified == "yes")
-			// {
-			// 	var referenceId = idList[idList.Count - 1];
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var actionType = argsList[0];
+			var refSpecified = argsList[1]; // always true for now
+			var idList = ContextManager.Instance.GetAttribute(argsList[2]) as List<string>;
+			
+			
+			var actionsList = new List<Action>();
+			if (idList == null) return;
+			
+			if (refSpecified == "yes")
+			{
+				var referenceId = idList[idList.Count - 1];
 
 			// for (var i = 0; i < idList.Count - 1; i++)
 			// {
@@ -413,11 +344,7 @@ namespace Catalogs
 			// 	new List<string>{idList[i], referenceId}
 			// });
 			// }
-			// }
-			//
-			// return actionsList;
-
-			return new List<Action>();
+			}
 		}
 
 		public string CheckActionsValidity(string args)
@@ -463,7 +390,7 @@ namespace Catalogs
 			return "";
 		}
 
-		public Response Attach(string args)
+		public void Attach(string args)
 		{
 			// Vector3 delta;
 			// ObjectMeta.RotationAxisEnum rotationAxis;
@@ -575,7 +502,6 @@ namespace Catalogs
 			// {
 			// 	{"name", "attach"}
 			// }, new List<string>(), new Dictionary<string, dynamic>());
-			return new Response(new Dictionary<string, dynamic>(), new List<string>(), new Dictionary<string, dynamic>());
 		}
 
 		private static void FocusObject(GameObject objA, GameObject objB)

@@ -45,7 +45,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 
 			var programs = new List<string>();
 
-			foreach (var value in queryData["programs"].Values) programs.Add(value[1]);
+			foreach (var value in queryData["programs"].Values) programs.Add(value);
 
 			Queries.Add(new Query(
 				file.Name,
