@@ -78,7 +78,9 @@ namespace Catalogs
 						var currentTask = ContextManager.Instance.CurrentTask;
 						var taskType = ContextManager.GetTaskType(currentTask);
 						var plainFigureName = Helpers.GetCurrentFigurePlainName();
-						var figureName = taskType == ContextManager.TaskType.Installation ? plainFigureName + "-Installation" : plainFigureName + "-Removal";
+						var figureName = taskType == Constants.TaskType.Installation
+							? plainFigureName + Constants.TaskType.Installation
+							: plainFigureName + Constants.TaskType.Removal;
 
 						foreach (var obj in parent)
 						{
@@ -107,7 +109,7 @@ namespace Catalogs
 			var currentTask = ContextManager.Instance.CurrentTask;
 			var taskType = ContextManager.GetTaskType(currentTask);
 			var plainFigureName = Helpers.GetCurrentFigurePlainName();
-			var figureName = taskType == ContextManager.TaskType.Installation ? plainFigureName + "-Installation" : plainFigureName + "-Removal";
+			var figureName = taskType == Constants.TaskType.Installation ? plainFigureName + Constants.TaskType.Installation : plainFigureName + Constants.TaskType.Removal;
 
 			var foundObs = new List<GameObject>();
 
@@ -136,7 +138,7 @@ namespace Catalogs
 			foreach (var id in ids)
 			{
 				var plainFigureName = Helpers.GetFigurePlainName(id);
-				var figureName = taskType == ContextManager.TaskType.Installation ? plainFigureName + "-Installation" : plainFigureName + "-Removal";
+				var figureName = taskType == Constants.TaskType.Installation ? plainFigureName + Constants.TaskType.Installation : plainFigureName + Constants.TaskType.Removal;
 
 				if (fig.name == figureName)
 					foundFigs.Add(fig);

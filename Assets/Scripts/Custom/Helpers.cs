@@ -19,7 +19,7 @@ namespace Custom
 				if (figureFullName.Contains(key))
 					prefabName = subtaskIdsToFigurePrefab[key];
 
-			var needsToReplace = new List<string> {"-IFM", "-RFM", "-Reference", "-Scattered"};
+			var needsToReplace = new List<string> {"IFM", "RFM", "Reference", "Scattered"};
 
 			foreach (var word in needsToReplace) prefabName = prefabName.Replace(word, "");
 
@@ -34,24 +34,24 @@ namespace Custom
 			return GetFigurePlainName(subtaskId);
 		}
 
-		public static GameObject FindObjectInFigure(AssetManager.FigureType type, string objName)
+		public static GameObject FindObjectInFigure(Constants.FigureType type, string objName)
 		{
 			var task = ContextManager.Instance.CurrentTask;
 			var taskType = ContextManager.GetTaskType(task);
 
-			var plainFigureName = Helpers.GetCurrentFigurePlainName();
+			var plainFigureName = GetCurrentFigurePlainName();
 
-			var figure = type switch
+			var figureName = type switch
 			{
-				AssetManager.FigureType.Current => taskType == ContextManager.TaskType.Installation
-					? GameObject.Find(plainFigureName + "-Installation")
-					: GameObject.Find(plainFigureName + "-Removal"),
-				AssetManager.FigureType.IFM => GameObject.Find(plainFigureName + "-IFM"),
-				AssetManager.FigureType.RFM => GameObject.Find(plainFigureName + "-RFM"),
-				AssetManager.FigureType.Reference => GameObject.Find(plainFigureName + "-Reference"),
-				AssetManager.FigureType.Scattered => GameObject.Find(plainFigureName + "-Scattered"),
-				_ => GameObject.Find(plainFigureName + "-Installation")
+				Constants.FigureType.Current => plainFigureName + taskType,
+				Constants.FigureType.IFM => plainFigureName + Constants.FigureType.IFM,
+				Constants.FigureType.RFM => plainFigureName + Constants.FigureType.RFM,
+				Constants.FigureType.Reference => plainFigureName + Constants.FigureType.Reference,
+				Constants.FigureType.Scattered => plainFigureName + Constants.FigureType.Scattered,
+				_ => plainFigureName + Constants.TaskType.Installation
 			};
+
+			var figure = GameObject.Find(figureName);
 
 			foreach (var child in figure.GetComponentsInChildren<Transform>())
 			{

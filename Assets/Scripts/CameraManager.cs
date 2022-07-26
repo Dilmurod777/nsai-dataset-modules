@@ -30,7 +30,7 @@ public class CameraManager : Singleton<CameraManager>
 
 		var task = ContextManager.Instance.CurrentTask;
 		var taskType = ContextManager.GetTaskType(task);
-		var scale = taskType == ContextManager.TaskType.Installation ? 1.5f : 1.2f;
+		var scale = taskType == Constants.TaskType.Installation ? 1.5f : 1.2f;
 
 		var minFov = 60 * scale;
 		var newOffsetZ = -0.75f;
@@ -111,7 +111,7 @@ public class CameraManager : Singleton<CameraManager>
 		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().Priority = 11;
 		_virtualCamera.GetComponent<CinemachineVirtualCamera>().Priority = 10;
 
-		Invoke("ResetFocusOnFigure", 2.0f);
+		Invoke(nameof(ResetFocusOnFigure), 2.0f);
 	}
 
 	public void ResetFocusOnFigure()

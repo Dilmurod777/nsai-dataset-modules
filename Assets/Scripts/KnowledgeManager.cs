@@ -189,8 +189,8 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 			{
 				if (action.Operation == "detach")
 				{
-					var attachingObj = Helpers.FindObjectInFigure(AssetManager.FigureType.Current, action.Components[0]);
-					var referenceObj = Helpers.FindObjectInFigure(AssetManager.FigureType.Current, action.Components[1]);
+					var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, action.Components[0]);
+					var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, action.Components[1]);
 
 					if (attachingObj.transform.childCount > 0)
 					{
@@ -206,8 +206,8 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 
 				if (action.Operation == "attach")
 				{
-					var attachingObj = Helpers.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[0] + "]");
-					var referenceObj = Helpers.FindObjectInFigure(AssetManager.FigureType.Current, "[" + action.Components[1] + "]");
+					var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, "[" + action.Components[0] + "]");
+					var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, "[" + action.Components[1] + "]");
 
 					if (attachingObj.transform.childCount > 0)
 					{

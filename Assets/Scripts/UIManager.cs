@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Custom;
 using Instances;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -158,7 +159,7 @@ public class UIManager : Singleton<UIManager>
 
 				foreach (var action in actions)
 				{
-					var obj = Helpers.FindObjectInFigure(AssetManager.FigureType.Current, action.Components[0]);
+					var obj = Helpers.FindObjectInFigure(Constants.FigureType.Current, action.Components[0]);
 
 					var finalObj = obj.transform.childCount > 1 ? obj.transform.GetChild(0).gameObject : obj;
 

@@ -2,6 +2,7 @@
 using System.Linq;
 using Custom;
 using Instances;
+using UnityEngine;
 
 public class ContextManager : Singleton<ContextManager>
 {
@@ -13,13 +14,6 @@ public class ContextManager : Singleton<ContextManager>
 	public object Prev;
 	public object Var1;
 	public object Var2;
-
-	public enum TaskType
-	{
-		Installation,
-		Removal,
-		Other
-	}
 
 	public T GetAttribute<T>(string attributeName)
 	{
@@ -106,6 +100,13 @@ public class ContextManager : Singleton<ContextManager>
 		SetCurrentTask(query.TaskId);
 		SetCurrentSubtask(query.SubtaskId);
 		SetCurrentInstruction(query.InstructionOrder);
+
+		var figurePlainName = Helpers.GetCurrentFigurePlainName();
+		var task = Instance.CurrentTask;
+		var taskType = GetTaskType(task);
+
+		var figure = GameObject.Find(figurePlainName + taskType);
+		AssetManager.Instance.ResetFigure(figure);
 	}
 
 	public void ResetCurrentTask()
@@ -123,18 +124,18 @@ public class ContextManager : Singleton<ContextManager>
 		CurrentQuery = null;
 	}
 
-	public static TaskType GetTaskType(Task task)
+	public static Constants.TaskType GetTaskType(Task task)
 	{
 		if (task.Title.ToLower().Contains("install"))
 		{
-			return TaskType.Installation;
+			return Constants.TaskType.Installation;
 		}
 
 		if (task.Title.ToLower().Contains("remov"))
 		{
-			return TaskType.Removal;
+			return Constants.TaskType.Removal;
 		}
 
-		return TaskType.Other;
+		return Constants.TaskType.Other;
 	}
 }
