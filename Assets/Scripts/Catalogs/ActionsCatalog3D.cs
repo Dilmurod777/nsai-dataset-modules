@@ -6,7 +6,6 @@ using Custom;
 using Instances;
 using UnityEngine;
 using UnityEngine.UI;
-using Action = System.Action;
 
 namespace Catalogs
 {
@@ -23,7 +22,8 @@ namespace Catalogs
 		void Animate(string args);
 		void Visibility(string args);
 		void Attach(string args);
-		void CreateActions(string args);
+		void Detach(string args);
+		List<Action> CreateActions(string args);
 		string CheckActionsValidity(string args);
 	}
 
@@ -115,7 +115,7 @@ namespace Catalogs
 
 			foreach (var id in ids)
 			foreach (var obj in allObjects)
-				if (obj.name.Contains(id) && obj.transform.parent.name.Equals(figureName))
+				if ((obj.name.Contains("[" + id + "]") || obj.name.Equals(id)) && obj.transform.parent.name.Equals(figureName))
 					foundObs.Add(obj);
 
 			return foundObs;
@@ -351,187 +351,148 @@ namespace Catalogs
 			var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
-		public void CreateActions(string args)
+		public List<Action> CreateActions(string args)
 		{
 			var argsList = args.Split(Constants.ArgsSeparator);
 			var actionType = argsList[0];
 			var refSpecified = argsList[1]; // always true for now
 			var idList = ContextManager.Instance.GetAttribute<List<string>>(argsList[2]);
 
-
 			var actionsList = new List<Action>();
-			if (idList == null) return;
+			if (idList == null) return null;
 
-			if (refSpecified == "yes")
+			if (refSpecified.ToLower() == "yes")
 			{
 				var referenceId = idList[idList.Count - 1];
 
-				// for (var i = 0; i < idList.Count - 1; i++)
-				// {
-				// actionsList.Add(new Action
-				// {
-				// 	"attach",
-				// 	new List<string>{idList[i], referenceId}
-				// });
-				// }
+				for (var i = 0; i < idList.Count - 1; i++)
+				{
+					actionsList.Add(new Action(actionType, new List<string> {idList[i], referenceId}));
+				}
 			}
+
+			return actionsList;
 		}
 
 		public string CheckActionsValidity(string args)
 		{
-			// var argsList = args.Split(General.ArgsSeparator);
-			// List<Action> a = ContextManager.Instance.GetAttribute(argsList[0]);
-			// List<JSONNode> b = ContextManager.Instance.GetAttribute(argsList[1]);
-			//
-			// var parsedB = new List<Action>();
-			//
-			// foreach (var node in b)
-			// {
-			// 	foreach (var item in node)
-			// 	{
-			// parsedB.Add(new Action
-			// {
-			// Name = item.Key,
-			// Components = new List<string>
-			// {
-			// 	"[" + item.Value[0] + "]",
-			// 	"[" + item.Value[1] + "]"
-			// }
-			// });
-			// 	}
-			// }
-			//
-			// // comparison logic
-			// if (a.Count != parsedB.Count) return "no";
-			//
-			// for (var i = 0; i < a.Count; i++)
-			// {
-			// 	var actionA = a[i];
-			// 	var actionB = parsedB[i];
+			Debug.Log("CheckActionsValidity: " + args);
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var a = ContextManager.Instance.GetAttribute<List<Action>>(argsList[0]);
+			var b = ContextManager.Instance.GetAttribute<List<JSONNode>>(argsList[1]);
 
-			// if (actionA.Name != actionB.Name) return "no";
-			//
-			// if (actionA.Components[0] != actionB.Components[0] ||
-			//     actionA.Components[1] != actionB.Components[1]) return "no";
-			// }
-			//
-			// return "yes";
+			var parsedB = new List<Action>();
 
-			return "";
+			foreach (var node in b)
+			{
+				foreach (var item in node)
+				{
+					parsedB.Add(new Action(item.Key, new List<string>
+					{
+						item.Value[0],
+						item.Value[1]
+					}));
+				}
+			}
+
+			for (var i = 0; i < a.Count; i++)
+			{
+				var actionA = a[i];
+				var actionB = parsedB[i];
+
+				if (actionA.Operation != actionB.Operation) return Constants.InvalidActions;
+
+				if (actionA.Components[0] != actionB.Components[0] ||
+				    actionA.Components[1] != actionB.Components[1]) return Constants.InvalidActions;
+			}
+
+			return Constants.ValidActions;
 		}
 
 		public void Attach(string args)
 		{
-			// Vector3 delta;
-			// ObjectMeta.RotationAxisEnum rotationAxis;
-			// const int steps = 3;
-			//
-			// var argsList = args.Split(General.ArgsSeparator);
-			// var valid = ContextManager.Instance.GetAttribute(argsList[0]) == "yes";
-			//
-			// if (!valid) return null;
-			//
-			// List<Action> actionsList = ContextManager.Instance.GetAttribute(argsList[1]);
-			//
-			// var figureID = ContextManager.Instance.Instance.CurrentFigureID;
-			// var figure = GameObject.Find(figureID);
-			// var figureRfmName = figureID + "-RFM";
-			// var figureIfmName = figureID + "-IFM";
-			//
-			// var rfm = GameObject.Find(figureRfmName);
-			// var ifm = GameObject.Find(figureIfmName);
-			//
-			// var routines = new List<IEnumerator>();
-			// var attachingObjs = new List<string>();
-			// var referenceObjs = new List<string>();
-			//
-			// foreach (var action in actionsList)
-			// {
-			// 	// var objA = HelperFunctions.FindObjectInFigure(figure, action.Components[0]);
-			// 	// var objB = HelperFunctions.FindObjectInFigure(figure, action.Components[1]);
-			//
-			// 	attachingObjs.Add(objA.name);
-			// 	referenceObjs.Add(objB.name);
-			// 	
-			// 	FocusObject(objA, objB);
-			//
-			// 	var rfmReferenceObjA = HelperFunctions.FindObjectInFigure(rfm, objA.name);
-			// 	var rfmReferenceObjB = HelperFunctions.FindObjectInFigure(rfm, objB.name);
-			// 	var ifmReferenceObjA = HelperFunctions.FindObjectInFigure(ifm, objA.name);
-			// 	var ifmReferenceObjB = HelperFunctions.FindObjectInFigure(ifm, objB.name);
-			//
-			// 	rfmReferenceObjA.transform.parent = rfmReferenceObjB.transform;
-			// 	var diff = rfmReferenceObjA.transform.localPosition;
-			// 	var rfmFinalPosition = objB.transform.TransformPoint(diff);
-			// 	rfmReferenceObjA.transform.parent = rfmReferenceObjB.transform.parent;
-			//
-			// 	ifmReferenceObjA.transform.parent = ifmReferenceObjB.transform;
-			// 	diff = ifmReferenceObjA.transform.localPosition;
-			// 	var ifmFinalPosition = objB.transform.TransformPoint(diff);
-			// 	ifmReferenceObjA.transform.parent = ifmReferenceObjB.transform.parent;
-			//
-			// 	routines.Add(RotateObjectCoroutine(objA, objB.transform.rotation, 0.5f));
-			// 	routines.Add(DelayCoroutine(0.5f));
-			// 	routines.Add(AdjustStructureCoroutine(objA, objB));
-			// 	routines.Add(MoveObjectCoroutine(objA, rfmFinalPosition, 0.5f));
-			// 	routines.Add(DelayCoroutine(0.5f));
-			//
-			// 	var objAObjectMeta = objA.GetComponent<ObjectMeta>();
-			// 	var attachType = GeneralConstants.AttachTypes.SmoothInstall;
-			// 	if (objAObjectMeta != null)
-			// 	{
-			// 		attachType = objAObjectMeta.AttachType;
-			// 	}
-			// 	
-			// 	switch (attachType)
-			// 	{
-			// 		case GeneralConstants.AttachTypes.SmoothInstall:
-			// 			routines.Add(MoveObjectCoroutine(objA, ifmFinalPosition, 1.0f));
-			// 			break;
-			// 		case GeneralConstants.AttachTypes.StepInstall:
-			// 			delta = ifmFinalPosition - rfmFinalPosition;
-			// 		
-			// 			for (var i = 1; i <= steps; i++)
-			// 			{
-			// 				routines.Add(MoveObjectCoroutine(objA, rfmFinalPosition + delta * i / steps, 0.5f));
-			// 				routines.Add(DelayCoroutine(0.3f));
-			// 			}
-			//
-			// 			break;
-			// 		case GeneralConstants.AttachTypes.SmoothScrew:
-			// 			rotationAxis = objA.GetComponent<ObjectMeta>().AttachRotationAxis;
-			// 		
-			// 			routines.Add(MoveObjectWithRotationCoroutine(objA, ifmFinalPosition, 2.0f, GetScrewVector(rotationAxis)));
-			// 			break;
-			// 		case GeneralConstants.AttachTypes.StepScrew:
-			// 			delta = ifmFinalPosition - rfmFinalPosition;
-			// 			rotationAxis = objA.GetComponent<ObjectMeta>().AttachRotationAxis;
-			//
-			// 			for (var i = 1; i <= steps; i++)
-			// 			{
-			// 				routines.Add(MoveObjectWithRotationCoroutine(objA, rfmFinalPosition + delta * i / steps, 0.5f, GetScrewVector(rotationAxis)));
-			// 				routines.Add(DelayCoroutine(0.3f));
-			// 			}
-			//
-			// 			break;
-			// 		default:
-			// 			routines.Add(MoveObjectCoroutine(objA, ifmFinalPosition, 1.0f));
-			// 			break;
-			// 	}
-			// 	
-			// 	routines.Add(DelayCoroutine(0.5f));
-			// }
-			//
-			// StartCoroutine(Sequence(routines, 1.0f));
-			//
-			// var objs = new List<string>();
-			// objs.AddRange(attachingObjs.Distinct().ToList());
-			// objs.AddRange(referenceObjs.Distinct().ToList());
+			Debug.Log("Attach: " + args);
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var valid = ContextManager.Instance.GetAttribute<string>(argsList[0]) == Constants.ValidActions;
 
-			// return new Response(new Dictionary<string, dynamic>
-			// {
-			// 	{"name", "attach"}
-			// }, new List<string>(), new Dictionary<string, dynamic>());
+			if (!valid) return;
+
+			var actions = ContextManager.Instance.GetAttribute<List<Action>>(argsList[1]);
+
+			var primitives = new List<IEnumerator>();
+			foreach (var action in actions)
+			{
+				if (action.Operation == "attach")
+				{
+					primitives.AddRange(GetAttachPrimitives(action.Components[0], action.Components[1]));
+				}
+			}
+
+			QueryExecutor.Instance.RunCoroutinesInSequence(primitives);
+		}
+
+		public void Detach(string args)
+		{
+			Debug.Log("Detach: " + args);
+			var argsList = args.Split(Constants.ArgsSeparator);
+			var valid = ContextManager.Instance.GetAttribute<string>(argsList[0]) == Constants.ValidActions;
+
+			if (!valid) return;
+
+			var actions = ContextManager.Instance.GetAttribute<List<Action>>(argsList[1]);
+
+			var primitives = new List<IEnumerator>();
+			foreach (var action in actions)
+			{
+				if (action.Operation == "detach")
+				{
+					primitives.AddRange(GetDetachPrimitives(action.Components[0], action.Components[1]));
+				}
+			}
+
+			QueryExecutor.Instance.RunCoroutinesInSequence(primitives);
+		}
+
+		public static List<IEnumerator> GetAttachPrimitives(string nameA, string nameB)
+		{
+			var primitives = new List<IEnumerator>();
+
+			var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameA);
+			var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameB);
+
+			if (attachingObj.transform.childCount > 0)
+			{
+				primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0).gameObject));
+				primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
+				primitives.Add(PrimitiveManager.Instance.GetAttachPrimitivesForChildren(attachingObj, referenceObj));
+			}
+			else
+			{
+				primitives.Add(PrimitiveManager.Instance.GetAttachPrimitivesForParent(attachingObj, referenceObj));
+			}
+
+			return primitives;
+		}
+
+		public static List<IEnumerator> GetDetachPrimitives(string nameA, string nameB)
+		{
+			var primitives = new List<IEnumerator>();
+
+			var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameA);
+			var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameB);
+
+			if (attachingObj.transform.childCount > 0)
+			{
+				primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0).gameObject));
+				primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
+				primitives.Add(PrimitiveManager.Instance.GetDetachPrimitivesForChildren(attachingObj, referenceObj));
+			}
+			else
+			{
+				primitives.Add(PrimitiveManager.Instance.GetDetachPrimitivesForParent(attachingObj, referenceObj));
+			}
+
+			return primitives;
 		}
 
 		private static void FocusObject(GameObject objA, GameObject objB)

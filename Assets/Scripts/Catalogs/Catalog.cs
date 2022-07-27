@@ -72,9 +72,14 @@ namespace Catalogs
 			_actionsCatalog3D.Attach(args);
 		}
 
-		public void CreateActions(string args)
+		public void Detach(string args)
 		{
-			_actionsCatalog3D.CreateActions(args);
+			_actionsCatalog3D.Detach(args);
+		}
+
+		public List<Action> CreateActions(string args)
+		{
+			return _actionsCatalog3D.CreateActions(args);
 		}
 
 		public string CheckActionsValidity(string args)
@@ -117,13 +122,12 @@ namespace Catalogs
 			return _generalCatalog.ExtractID(args);
 		}
 
-//
 		public string Same(string args)
 		{
 			return _generalCatalog.Same(args);
 		}
 
-		public List<JSONNode> FilterAttr(string args)
+		public JSONNode FilterAttr(string args)
 		{
 			return _knowledgeCatalog.FilterAttr(args);
 		}

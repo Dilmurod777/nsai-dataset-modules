@@ -44,8 +44,8 @@ namespace Custom
 			var figureName = type switch
 			{
 				Constants.FigureType.Current => plainFigureName + taskType,
-				Constants.FigureType.IFM => plainFigureName + Constants.FigureType.IFM,
-				Constants.FigureType.RFM => plainFigureName + Constants.FigureType.RFM,
+				Constants.FigureType.Ifm => plainFigureName + Constants.FigureType.Ifm,
+				Constants.FigureType.Rfm => plainFigureName + Constants.FigureType.Rfm,
 				Constants.FigureType.Reference => plainFigureName + Constants.FigureType.Reference,
 				Constants.FigureType.Scattered => plainFigureName + Constants.FigureType.Scattered,
 				_ => plainFigureName + Constants.TaskType.Installation

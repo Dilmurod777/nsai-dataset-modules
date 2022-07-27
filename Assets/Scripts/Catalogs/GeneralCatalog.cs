@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Custom;
 using Instances;
 using UnityEngine;
 
@@ -30,9 +31,11 @@ namespace Catalogs
 			switch (varName)
 			{
 				case "var1":
+				case "var_1":
 					ContextManager.Instance.Var1 = source;
 					break;
 				case "var2":
+				case "var_2":
 					ContextManager.Instance.Var2 = source;
 					break;
 			}
@@ -58,9 +61,12 @@ namespace Catalogs
 			var argsList = args.Split(Constants.ArgsSeparator);
 			var objs = ContextManager.Instance.GetAttribute<System.Object>(argsList[0]);
 
-			if (objs == null) return null;
-
-			return objs is IList ? (objs as IList)[0] : objs;
+			return objs switch
+			{
+				null => null,
+				IList list => list[0],
+				_ => objs
+			};
 		}
 
 		public List<string> ExtractNumbers(string args)
@@ -78,11 +84,11 @@ namespace Catalogs
 				title = title.Replace(figureIds[i].Value, "");
 			}
 
-			var objectIds = Regex.Matches(title, Constants.ObjectRegex);
-			for (var i = 0; i < objectIds.Count; i++)
-			{
-				title = title.Replace(objectIds[i].Value, "");
-			}
+			// var objectIds = Regex.Matches(title, Constants.ObjectRegex);
+			// for (var i = 0; i < objectIds.Count; i++)
+			// {
+			// 	title = title.Replace(objectIds[i].Value, "");
+			// }
 
 			var numbers = Regex.Matches(title, Constants.NumberRegex);
 			var result = new List<string>();

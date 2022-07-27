@@ -10,8 +10,8 @@
   ],
   "reply": "[15], [1]",
   "context": {
-    "taskId": "32-11-61-000-801",
-    "subtaskId": "32-11-61-020-002",
-    "instructionOrder": "3"
+    "current_task_id": "32-11-61-000-801",
+    "current_subtask_id": "32-11-61-020-002",
+    "current_instruction_order": "3"
   }
 }

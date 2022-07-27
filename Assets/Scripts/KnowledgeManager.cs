@@ -5,12 +5,14 @@ using Instances;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using Catalogs;
 using Cinemachine;
 using UnityEngine.Serialization;
 
 public class KnowledgeManager : Singleton<KnowledgeManager>
 {
 	public string rootDocument = "root";
+	public JSONNode Root;
 	public List<Task> Tasks = new List<Task>();
 	public List<Query> Queries = new List<Query>();
 
@@ -24,6 +26,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		var itemsData = JSON.Parse(jsonContent.ToString());
 		var tasksNode = itemsData[0]["tasks"];
 
+		Root = itemsData;
 		Tasks = CreateTasks(tasksNode);
 	}
 
@@ -52,9 +55,9 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 				queryData["query"],
 				programs,
 				queryData["reply"],
-				queryData["context"]["taskId"],
-				queryData["context"]["subtaskId"],
-				queryData["context"]["instructionOrder"]
+				queryData["context"]["current_task_id"],
+				queryData["context"]["current_subtask_id"],
+				queryData["context"]["current_instruction_order"]
 			));
 		}
 	}
@@ -189,36 +192,12 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 			{
 				if (action.Operation == "detach")
 				{
-					var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, action.Components[0]);
-					var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, action.Components[1]);
-
-					if (attachingObj.transform.childCount > 0)
-					{
-						primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0).gameObject));
-						primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
-						primitives.Add(PrimitiveManager.Instance.GetDetachPrimitivesForChildren(attachingObj, referenceObj));
-					}
-					else
-					{
-						primitives.Add(PrimitiveManager.Instance.GetDetachPrimitivesForParent(attachingObj, referenceObj));
-					}
+					primitives.AddRange(ActionsCatalog3D.GetDetachPrimitives(action.Components[0], action.Components[1]));
 				}
 
 				if (action.Operation == "attach")
 				{
-					var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, "[" + action.Components[0] + "]");
-					var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, "[" + action.Components[1] + "]");
-
-					if (attachingObj.transform.childCount > 0)
-					{
-						primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0).gameObject));
-						primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
-						primitives.Add(PrimitiveManager.Instance.GetAttachPrimitivesForChildren(attachingObj, referenceObj));
-					}
-					else
-					{
-						primitives.Add(PrimitiveManager.Instance.GetAttachPrimitivesForParent(attachingObj, referenceObj));
-					}
+					primitives.AddRange(ActionsCatalog3D.GetAttachPrimitives(action.Components[0], action.Components[1]));
 				}
 			}
 

@@ -1651,8 +1651,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachRotationAxis: 1
   dettachRotationAxis: 4
-  attachType: 1
-  detachType: 1
+  attachType: 2
+  detachType: 2
   status: 0
   isCoreInFigure: 0
 --- !u!65 &5111952358360527653

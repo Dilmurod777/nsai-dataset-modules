@@ -7,7 +7,7 @@ namespace Catalogs
 {
 	public interface IKnowledgeCatalogInterface
 	{
-		List<JSONNode> FilterAttr(string args);
+		JSONNode FilterAttr(string args);
 		List<JSONNode> FilterType(string args);
 		string QueryAttr(string args);
 		string ShowInfo(List<JSONNode> dataObjects);
@@ -15,14 +15,15 @@ namespace Catalogs
 
 	public class KnowledgeCatalog : IKnowledgeCatalogInterface
 	{
-		public List<JSONNode> FilterAttr(string args)
+		public JSONNode FilterAttr(string args)
 		{
+			Debug.Log("FilterAttr: " + args);
 			var argsList = args.Split(ArgsSeparator);
 			var attr = argsList[0];
 			var attrValue = ContextManager.Instance.GetAttribute<string>(argsList[1]);
 			var dataObjects = ContextManager.Instance.GetAttribute<List<JSONNode>>(argsList[2]);
 
-			var resultObjects = new List<JSONNode>();
+			var resultObjects = new JSONArray();
 			if (dataObjects == null) return resultObjects;
 
 			for (var i = 0; i < dataObjects.Count; i++)
@@ -38,16 +39,17 @@ namespace Catalogs
 
 		public List<JSONNode> FilterType(string args)
 		{
+			Debug.Log("FilterType: " + args);
 			var argsList = args.Split(ArgsSeparator);
 			var type = argsList[0];
-			var dataObjects = ContextManager.Instance.GetAttribute<List<JSONNode>>(argsList[1]);
+			var dataObjects = ContextManager.Instance.GetAttribute<JSONNode>(argsList[1]);
 
 			var resultObjects = new List<JSONNode>();
 			if (dataObjects == null) return resultObjects;
 
 			foreach (var dataObject in dataObjects)
 			{
-				foreach (var item in dataObject[type])
+				foreach (var item in dataObject.Value[type])
 				{
 					resultObjects.Add(item);
 				}

@@ -22,10 +22,10 @@ public class AssetManager : Singleton<AssetManager>
 			var plainFigureName = Helpers.GetCurrentFigurePlainName();
 
 			var figurePrefabInstallation = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Scattered);
-			var figurePrefabRemoval = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.IFM);
+			var figurePrefabRemoval = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Ifm);
 
-			var ifmPrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.IFM);
-			var rfmPrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.RFM);
+			var ifmPrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Ifm);
+			var rfmPrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Rfm);
 			var referencePrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Reference);
 			var scatteredPrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Scattered);
 
@@ -155,7 +155,7 @@ public class AssetManager : Singleton<AssetManager>
 			{
 				var instantiatedIfm = Instantiate(ifmPrefab);
 				instantiatedIfm.tag = "ReferenceObject";
-				instantiatedIfm.name = plainFigureName + Constants.FigureType.IFM;
+				instantiatedIfm.name = plainFigureName + Constants.FigureType.Ifm;
 				instantiatedIfm.transform.rotation = Quaternion.identity;
 				instantiatedIfm.transform.position = Vector3.zero;
 				instantiatedIfm.AddComponent<CustomDontDestroyOnLoad>();
@@ -167,7 +167,7 @@ public class AssetManager : Singleton<AssetManager>
 			{
 				var instantiatedRfm = Instantiate(rfmPrefab);
 				instantiatedRfm.tag = "ReferenceObject";
-				instantiatedRfm.name = plainFigureName + Constants.FigureType.RFM;
+				instantiatedRfm.name = plainFigureName + Constants.FigureType.Rfm;
 				instantiatedRfm.transform.rotation = Quaternion.identity;
 				instantiatedRfm.transform.position = Vector3.zero;
 				instantiatedRfm.AddComponent<CustomDontDestroyOnLoad>();
@@ -202,7 +202,9 @@ public class AssetManager : Singleton<AssetManager>
 	public void ResetFigure(GameObject figure)
 	{
 		var plainFigureName = Helpers.GetCurrentFigurePlainName();
-		var transformReferenceFigure = GameObject.Find(plainFigureName + Constants.FigureType.Reference).transform;
+		var transformReferenceFigure = GameObject.Find(plainFigureName + Constants.FigureType.Reference)?.transform;
+
+		if (transformReferenceFigure == null) return;
 
 		figure.transform.position = Vector3.zero;
 		figure.transform.rotation = transformReferenceFigure.rotation;
@@ -215,10 +217,13 @@ public class AssetManager : Singleton<AssetManager>
 			var objectMeta = child.GetComponent<ObjectMeta>();
 			if (objectMeta && objectMeta.isCoreInFigure) continue;
 
+			var outline = child.GetComponent<Outline>();
+			if (outline != null) Destroy(outline);
+
 
 			var referenceChild = Helpers.FindObjectInFigure(Constants.FigureType.Reference, child.name);
 			var transformReference = Helpers
-				.FindObjectInFigure(figure.name == plainFigureName + Constants.TaskType.Installation ? Constants.FigureType.Scattered : Constants.FigureType.IFM, child.name)
+				.FindObjectInFigure(figure.name == plainFigureName + Constants.TaskType.Installation ? Constants.FigureType.Scattered : Constants.FigureType.Ifm, child.name)
 				.transform;
 
 			child.position = transformReference.position;

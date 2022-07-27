@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class QueryExecutor : Singleton<QueryExecutor>
 {
+	public bool isQueryExecuting;
+
 	public void ExecuteQuery()
 	{
 		var query = ContextManager.Instance.CurrentQuery;
@@ -39,11 +41,18 @@ public class QueryExecutor : Singleton<QueryExecutor>
 		StartCoroutine(callback);
 	}
 
-	public void RunCoroutines(List<IEnumerator> callbacks)
+	public void RunCoroutinesInSequence(List<IEnumerator> callbacks)
 	{
-		foreach (var callback in callbacks)
+		StartCoroutine(Sequence(callbacks));
+	}
+
+	private IEnumerator Sequence(List<IEnumerator> list)
+	{
+		foreach (var c in list)
 		{
-			StartCoroutine(callback);
+			yield return StartCoroutine(c);
 		}
+
+		yield return null;
 	}
 }

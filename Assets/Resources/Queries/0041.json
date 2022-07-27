@@ -1,0 +1,23 @@
+{
+  "query": "hide highlight from 42 8 41",
+  "programs": [
+    "ExtractNumbers Query",
+    "SaveVal2Var prev var1",
+    "FilterType tasks root",
+    "FilterAttr task_id current_task_id prev",
+    "FilterType subtasks prev",
+    "FilterAttr subtask_id current_subtask_id prev",
+    "Unique prev",
+    "QueryAttr figure prev",
+    "Filter3DAttr name prev root3D",
+    "Unique prev",
+    "Filter3DAttr items var1 prev",
+    "Highlight off prev"
+  ],
+  "context": {
+    "current_task_id": "32-11-61-000-802",
+    "current_subtask_id": "32-11-61-020-007",
+    "current_instruction_order": "3"
+  },
+  "reply": "Hiding highlights from object(s) ['42', '8', '41']"
+}

@@ -233,71 +233,77 @@ public class UIManager : Singleton<UIManager>
 	{
 		var knowledgeContent = GameObject.FindWithTag("KnowledgeContent");
 
-		for (var i = 0; i < knowledgeContent.transform.childCount; i++) Destroy(knowledgeContent.transform.transform.GetChild(i).gameObject);
-
-		foreach (var task in tasks)
+		if (knowledgeContent.transform.childCount == 0)
 		{
-			var newTaskOption = Instantiate(uiOption, knowledgeContent.transform, false);
-			newTaskOption.name = task.TaskId;
-			newTaskOption.tag = "TaskOptionUI";
-			var newTaskOptionButtonComponent = newTaskOption.GetComponent<Button>();
-			newTaskOptionButtonComponent.interactable = false;
-
-			var newTaskOptionTextComponent = newTaskOption.transform.GetChild(0).GetComponent<Text>();
-			newTaskOptionTextComponent.text = "Task " + task.TaskId;
-			newTaskOptionTextComponent.color = Color.white;
-
-			if (task.isCompleted)
+			foreach (var task in tasks)
 			{
-				var newColorBlock = newTaskOptionButtonComponent.colors;
-				newColorBlock.disabledColor = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
-				newTaskOptionButtonComponent.colors = newColorBlock;
+				var newTaskOption = Instantiate(uiOption, knowledgeContent.transform, false);
+				newTaskOption.name = task.TaskId;
+				newTaskOption.tag = "TaskOptionUI";
+				var newTaskOptionButtonComponent = newTaskOption.GetComponent<Button>();
+				newTaskOptionButtonComponent.interactable = false;
+
+				var newTaskOptionTextComponent = newTaskOption.transform.GetChild(0).GetComponent<Text>();
+				newTaskOptionTextComponent.text = "Task " + task.TaskId;
+				newTaskOptionTextComponent.color = Color.white;
+
+				if (task.isCompleted)
+				{
+					var newColorBlock = newTaskOptionButtonComponent.colors;
+					newColorBlock.disabledColor = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
+					newTaskOptionButtonComponent.colors = newColorBlock;
+				}
+				else
+				{
+					var newColorBlock = newTaskOptionButtonComponent.colors;
+					newColorBlock.disabledColor = Color.black;
+					newTaskOptionButtonComponent.colors = newColorBlock;
+				}
+
+				var list = new GameObject("Subtasks-List", typeof(RectTransform));
+				list.transform.SetParent(knowledgeContent.transform, false);
+
+				var listVerticalLayoutGroup = list.AddComponent<VerticalLayoutGroup>();
+				var listContentSizeFitter = list.AddComponent<ContentSizeFitter>();
+
+				listVerticalLayoutGroup.padding.left = 50;
+				listVerticalLayoutGroup.childControlWidth = false;
+				listVerticalLayoutGroup.childControlHeight = false;
+				listVerticalLayoutGroup.childForceExpandWidth = true;
+				listVerticalLayoutGroup.childForceExpandHeight = false;
+
+				listContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+				foreach (var subtask in task.Subtasks)
+				{
+					var newSubtaskOption = Instantiate(uiOption, list.transform, false);
+					newSubtaskOption.name = subtask.SubtaskId;
+					newSubtaskOption.tag = "SubtaskOptionUI";
+					var newSubtaskOptionButtonComponent = newSubtaskOption.GetComponent<Button>();
+					var task1 = task;
+					newSubtaskOptionButtonComponent.onClick.AddListener(() => { UIOptionClick(UIOptionType.Subtask, new dynamic[] {task1, subtask}); });
+
+					var newSubtaskOptionTextComponent = newSubtaskOption.transform.GetChild(0).GetComponent<Text>();
+					newSubtaskOptionTextComponent.text = "Subtask " + subtask.SubtaskId;
+
+					if (!subtask.isCompleted) continue;
+
+					var newColorBlock = newSubtaskOptionButtonComponent.colors;
+					newColorBlock.normalColor = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
+					newSubtaskOptionButtonComponent.colors = newColorBlock;
+
+					newSubtaskOptionTextComponent.color = Color.white;
+
+					Invoke(nameof(ScrollKnowledgeToTop), 0.001f);
+				}
 			}
-			else
-			{
-				var newColorBlock = newTaskOptionButtonComponent.colors;
-				newColorBlock.disabledColor = Color.black;
-				newTaskOptionButtonComponent.colors = newColorBlock;
-			}
 
-			var list = new GameObject("Subtasks-List", typeof(RectTransform));
-			list.transform.SetParent(knowledgeContent.transform, false);
-
-			var listVerticalLayoutGroup = list.AddComponent<VerticalLayoutGroup>();
-			var listContentSizeFitter = list.AddComponent<ContentSizeFitter>();
-
-			listVerticalLayoutGroup.padding.left = 50;
-			listVerticalLayoutGroup.childControlWidth = false;
-			listVerticalLayoutGroup.childControlHeight = false;
-			listVerticalLayoutGroup.childForceExpandWidth = true;
-			listVerticalLayoutGroup.childForceExpandHeight = false;
-
-			listContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
-			foreach (var subtask in task.Subtasks)
-			{
-				var newSubtaskOption = Instantiate(uiOption, list.transform, false);
-				newSubtaskOption.name = subtask.SubtaskId;
-				newSubtaskOption.tag = "SubtaskOptionUI";
-				var newSubtaskOptionButtonComponent = newSubtaskOption.GetComponent<Button>();
-				var task1 = task;
-				newSubtaskOptionButtonComponent.onClick.AddListener(() => { UIOptionClick(UIOptionType.Subtask, new dynamic[] {task1, subtask}); });
-
-				var newSubtaskOptionTextComponent = newSubtaskOption.transform.GetChild(0).GetComponent<Text>();
-				newSubtaskOptionTextComponent.text = "Subtask " + subtask.SubtaskId;
-
-				if (!subtask.isCompleted) continue;
-
-				var newColorBlock = newSubtaskOptionButtonComponent.colors;
-				newColorBlock.normalColor = new Color(73 / 255.0f, 209 / 255.0f, 112 / 255.0f);
-				newSubtaskOptionButtonComponent.colors = newColorBlock;
-
-				newSubtaskOptionTextComponent.color = Color.white;
-			}
+			Invoke(nameof(ScrollQueriesToTop), 0.1f);
 		}
-
-		var knowledgeScrollRect = knowledgeContent.transform.parent.GetComponent<ScrollRect>();
-		knowledgeScrollRect!.normalizedPosition = new Vector2(0, 1);
+		else
+		{
+			Invoke(nameof(ScrollKnowledgeToTop), 0.001f);
+		}
 	}
 
 	private void SetUpQueryOptions(List<Query> queries)
@@ -305,6 +311,7 @@ public class UIManager : Singleton<UIManager>
 		var queriesContent = GameObject.FindWithTag("QueriesContent");
 
 		if (queriesContent.transform.childCount == 0)
+		{
 			for (var i = 0; i < queries.Count; i++)
 			{
 				var query = queries[i];
@@ -315,11 +322,34 @@ public class UIManager : Singleton<UIManager>
 
 				var newQueryOptionTextComponent = newQueryOption.transform.GetChild(0).GetComponent<Text>();
 				newQueryOptionTextComponent.text = query.Filename;
+
+				Invoke(nameof(ScrollQueriesToTop), 0.001f);
 			}
 
+			Invoke(nameof(ScrollQueriesToTop), 0.1f);
+		}
+		else
+		{
+			Invoke(nameof(ScrollQueriesToTop), 0.001f);
+		}
+	}
+
+	private void ScrollKnowledgeToTop()
+	{
+		var knowledgeContent = GameObject.FindWithTag("KnowledgeContent");
+		var knowledgeScrollRect = knowledgeContent.transform.parent.GetComponent<ScrollRect>();
+
+		knowledgeScrollRect!.normalizedPosition = new Vector2(0, 1);
+	}
+
+	private void ScrollQueriesToTop()
+	{
+		var queriesContent = GameObject.FindWithTag("QueriesContent");
 		var queryScrollRect = queriesContent.transform.parent.GetComponent<ScrollRect>();
+
 		queryScrollRect.normalizedPosition = new Vector2(0, 1);
 	}
+
 
 	private void UIOptionClick(UIOptionType type, dynamic[] data)
 	{

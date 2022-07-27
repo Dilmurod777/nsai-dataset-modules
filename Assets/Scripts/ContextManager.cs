@@ -17,19 +17,21 @@ public class ContextManager : Singleton<ContextManager>
 
 	public T GetAttribute<T>(string attributeName)
 	{
-		return attributeName switch
+		var result = attributeName.ToLower() switch
 		{
 			"query" => (T) (object) Instance.CurrentQuery,
 			"programs" => Instance.CurrentQuery != null ? (T) (object) Instance.CurrentQuery.Programs : (T) (object) null,
 			"var1" => (T) Instance.Var1,
 			"var2" => (T) Instance.Var2,
 			"prev" => (T) Instance.Prev,
-			"root" => (T) (object) KnowledgeManager.Instance.Tasks,
-			"CurrentTaskID" => (T) (object) Instance.CurrentTask.TaskId,
-			"CurrentSubtaskID" => (T) (object) Instance.CurrentSubtask.SubtaskId,
-			"CurrentInstructionOrder" => (T) (object) Instance.CurrentInstruction.Order,
+			"root" => (T) (object) KnowledgeManager.Instance.Root,
+			"current_task_id" => (T) (object) Instance.CurrentTask.TaskId,
+			"current_subtask_id" => (T) (object) Instance.CurrentSubtask.SubtaskId,
+			"current_instruction_order" => (T) (object) Instance.CurrentInstruction.Order,
 			_ => (T) (object) null
 		};
+
+		return result;
 	}
 
 	public bool HasAttribute(string attributeName)
@@ -37,23 +39,6 @@ public class ContextManager : Singleton<ContextManager>
 		var attributes = new[] {"var1", "var2", "prev", "root", "query", "programs"};
 
 		return attributes.Contains(attributeName);
-	}
-
-	public Type GetAttributeType(string attributeName)
-	{
-		return attributeName switch
-		{
-			"query" => Instance.CurrentQuery.GetType(),
-			"programs" => Instance.CurrentQuery?.Programs.GetType(),
-			"var1" => Instance.Var1.GetType(),
-			"var2" => Instance.Var2.GetType(),
-			"prev" => Instance.Prev.GetType(),
-			"root" => KnowledgeManager.Instance.Tasks.GetType(),
-			"CurrentTaskID" => Instance.CurrentTask.TaskId.GetType(),
-			"CurrentSubtaskID" => Instance.CurrentSubtask.SubtaskId.GetType(),
-			"CurrentInstructionOrder" => Instance.CurrentInstruction.Order.GetType(),
-			_ => null
-		};
 	}
 
 	public void SetCurrentTask(Task task)
