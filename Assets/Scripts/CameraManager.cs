@@ -8,20 +8,29 @@ public class CameraManager : Singleton<CameraManager>
 {
 	private GameObject _virtualCamera;
 	private GameObject _figureFocusVirtualCamera;
+	private GameObject _objectFocusVirtualCamera;
+
+	private GameObject _currentFocusingGameObject;
 
 	private void Start()
 	{
 		_virtualCamera = GameObject.FindWithTag("VirtualCamera");
 		_figureFocusVirtualCamera = GameObject.FindWithTag("FigureFocusVirtualCamera");
+		_objectFocusVirtualCamera = GameObject.FindWithTag("ObjectFocusVirtualCamera");
 	}
 
 	public IEnumerator UpdateVirtualCameraTargetCoroutine(GameObject target)
 	{
+		yield return _currentFocusingGameObject = target;
+
 		var vcComponent = _virtualCamera.GetComponent<CinemachineVirtualCamera>();
 		var ffvcComponent = _figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>();
+		var ofvcComponent = _objectFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>();
 
-		vcComponent.Priority = 11;
-		ffvcComponent.Priority = 10;
+		vcComponent.m_Priority = 11;
+		ffvcComponent.m_Priority = 10;
+		ofvcComponent.m_Priority = 10;
+
 		vcComponent.m_LookAt = target.transform;
 		vcComponent.m_Follow = target.transform;
 
@@ -77,12 +86,14 @@ public class CameraManager : Singleton<CameraManager>
 			newOffsetZ *= 1.5f;
 		}
 
-		Debug.Log(target.name + " | " + volume + " | " + minFov + " | " + newOffsetZ);
+		// Debug.Log(target.name + " | " + volume + " | " + minFov + " | " + newOffsetZ);
 
 		_virtualCamera.GetComponent<CinemachineFollowZoom>().m_MinFOV = minFov;
 
 		var oldOffset = vcComponent.GetComponent<CinemachineCameraOffset>().m_Offset;
 		vcComponent.GetComponent<CinemachineCameraOffset>().m_Offset = new Vector3(oldOffset.x, oldOffset.y, newOffsetZ);
+
+		Invoke(nameof(SwitchToObjectFocusVirtualCamera), 2.0f);
 
 		yield return null;
 	}
@@ -108,8 +119,8 @@ public class CameraManager : Singleton<CameraManager>
 		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = target.transform;
 		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = target.transform;
 
-		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().Priority = 11;
-		_virtualCamera.GetComponent<CinemachineVirtualCamera>().Priority = 10;
+		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().m_Priority = 11;
+		_virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Priority = 10;
 
 		Invoke(nameof(ResetFocusOnFigure), 2.0f);
 	}
@@ -118,5 +129,17 @@ public class CameraManager : Singleton<CameraManager>
 	{
 		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = null;
 		_figureFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = null;
+	}
+
+	public void SwitchToObjectFocusVirtualCamera()
+	{
+		var position = _virtualCamera.transform.position;
+		var rotation = _virtualCamera.transform.rotation;
+
+		_objectFocusVirtualCamera.transform.position = position;
+		_objectFocusVirtualCamera.transform.rotation = rotation;
+
+		_objectFocusVirtualCamera.GetComponent<CinemachineVirtualCamera>().m_Priority = 11;
+		_virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Priority = 10;
 	}
 }

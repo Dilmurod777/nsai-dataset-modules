@@ -3453,6 +3453,7 @@ GameObject:
   - component: {fileID: 2374275146563939646}
   - component: {fileID: 8485773906581455737}
   - component: {fileID: 1610805816756551661}
+  - component: {fileID: 8389679381645398012}
   m_Layer: 0
   m_Name: '[15] REACTION LINK ASSEMBLY'
   m_TagString: ReferenceObject
@@ -3553,8 +3554,21 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.37535092, y: 0.08930775, z: 0.11055155}
-  m_Center: {x: 0.12735099, y: 0.009554235, z: 0.0128135625}
+  m_Size: {x: 1.9553578, y: 1.4282717, z: 2.1677072}
+  m_Center: {x: 0.022233482, y: -0.5262608, z: -0.46994388}
+--- !u!65 &8389679381645398012
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7040482213520063091}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.1014166, y: 0.97529364, z: 0.27233374}
+  m_Center: {x: -0.91352165, y: -0.39498746, z: 0.028663246}
 --- !u!1 &7179090487558693466
 GameObject:
   m_ObjectHideFlags: 0

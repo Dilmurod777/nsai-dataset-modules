@@ -270,7 +270,7 @@ public class AssetManager : Singleton<AssetManager>
 					{
 						var objectMeta = figureInScene.transform.GetChild(i).gameObject.GetComponent<ObjectMeta>();
 
-						if (objectMeta.isCoreInFigure) CameraManager.Instance.FocusOnFigure(figureInScene.transform.GetChild(i).gameObject);
+						if (objectMeta != null && objectMeta.isCoreInFigure) CameraManager.Instance.FocusOnFigure(figureInScene.transform.GetChild(i).gameObject);
 
 						var meshRenderer = figureInScene.transform.GetChild(i).GetComponent<MeshRenderer>();
 						if (meshRenderer != null) meshRenderer.enabled = objectMeta.status == ObjectMeta.Status.Attached;

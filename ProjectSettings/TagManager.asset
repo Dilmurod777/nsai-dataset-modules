@@ -28,6 +28,7 @@ TagManager:
   - QueryPlayButton
   - FigureFocusVirtualCamera
   - BasicOperationsUI
+  - ObjectFocusVirtualCamera
   layers:
   - Default
   - TransparentFX

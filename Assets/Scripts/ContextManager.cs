@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Custom;
 using Instances;
@@ -58,15 +59,116 @@ public class ContextManager : Singleton<ContextManager>
 	public void SetCurrentSubtask(Subtask subtask)
 	{
 		CurrentSubtask = subtask;
+
+		var previousSubtasks = new List<Subtask>();
+
+		if (Instance.CurrentTask != null)
+		{
+			foreach (var s in Instance.CurrentTask.Subtasks)
+			{
+				if (s.SubtaskId == subtask.SubtaskId)
+				{
+					break;
+				}
+
+				previousSubtasks.Add(subtask);
+			}
+		}
+
+		Debug.Log(previousSubtasks.Count);
+
 		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
 		AssetManager.Instance.UpdateAssets();
 	}
 
 	public void SetCurrentSubtask(string subtaskId)
 	{
-		CurrentSubtask = Instance.CurrentTask!.Subtasks.First(subtask => subtask.SubtaskId == subtaskId);
+		var previousSubtasks = new List<Subtask>();
+
+		if (Instance.CurrentTask != null)
+		{
+			foreach (var subtask in Instance.CurrentTask.Subtasks)
+			{
+				if (subtask.SubtaskId == subtaskId)
+				{
+					CurrentSubtask = subtask;
+					break;
+				}
+
+				previousSubtasks.Add(subtask);
+			}
+		}
+
 		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
 		AssetManager.Instance.UpdateAssets();
+
+		var figurePlanName = Helpers.GetCurrentFigurePlainName();
+		var task = Instance.CurrentTask;
+		var taskType = GetTaskType(task);
+		var figure = GameObject.Find(figurePlanName + taskType);
+
+		var core = figure.transform.GetComponentsInChildren<Transform>().First(child =>
+		{
+			var objectMeta = child.GetComponent<ObjectMeta>();
+
+			return objectMeta && objectMeta.isCoreInFigure;
+		});
+
+		Debug.Log("Prev Subtasks Count: " + previousSubtasks.Count);
+		foreach (var prevSubtask in previousSubtasks)
+		{
+			Debug.Log("Prev Subtask: " + prevSubtask.SubtaskId);
+			var instructions = prevSubtask.Instructions;
+
+			foreach (var instruction in instructions)
+			{
+				if (instruction.Actions == null || instruction.Actions.Count == 0) continue;
+
+				foreach (var action in instruction.Actions)
+				{
+					var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, action.Components[0]);
+					var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, "core");
+					var ifmAttachingObj =
+						Helpers.FindObjectInFigure(taskType == Constants.TaskType.Installation ? Constants.FigureType.Ifm : Constants.FigureType.Scattered, "core");
+					var ifmReferenceObj =
+						Helpers.FindObjectInFigure(taskType == Constants.TaskType.Installation ? Constants.FigureType.Ifm : Constants.FigureType.Scattered, "core");
+
+					if (attachingObj.transform.childCount > 0)
+					{
+						// PrimitiveManager.Instance.GetAttachPrimitivesForChildren(attachingObj, referenceObj);
+					}
+					else
+					{
+						var diff = ifmAttachingObj.transform.position - ifmReferenceObj.transform.position;
+						attachingObj.transform.position = referenceObj.transform.position + diff;
+
+						var meshRenderer = attachingObj.GetComponent<MeshRenderer>();
+
+						if (meshRenderer != null)
+						{
+							var oldMaterials = meshRenderer.materials;
+							var newMaterials = new Material[oldMaterials.Length];
+							for (var i = 0; i < newMaterials.Length; i++)
+							{
+								newMaterials[i] = new Material(AssetManager.Instance.tempMaterial);
+								newMaterials[i].color = oldMaterials[i].color;
+							}
+
+							for (var i = 0; i < oldMaterials.Length; i++)
+							{
+								var oldColor = oldMaterials[i].color;
+								var newColor = new Color(oldColor.r, oldColor.g, oldColor.b, 0.0f);
+								newMaterials[i].color = newColor;
+							}
+
+							meshRenderer.materials = newMaterials;
+						}
+
+						// PrimitiveManager.Instance.GetAttachPrimitivesForParent(attachingObj, referenceObj);
+					}
+				}
+			}
+		}
 	}
 
 	public void SetCurrentInstruction(Instruction instruction)

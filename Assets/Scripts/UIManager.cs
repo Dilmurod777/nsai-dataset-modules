@@ -298,7 +298,7 @@ public class UIManager : Singleton<UIManager>
 				}
 			}
 
-			Invoke(nameof(ScrollQueriesToTop), 0.1f);
+			Invoke(nameof(ScrollKnowledgeToTop), 0.001f);
 		}
 		else
 		{
@@ -326,7 +326,7 @@ public class UIManager : Singleton<UIManager>
 				Invoke(nameof(ScrollQueriesToTop), 0.001f);
 			}
 
-			Invoke(nameof(ScrollQueriesToTop), 0.1f);
+			Invoke(nameof(ScrollQueriesToTop), 0.001f);
 		}
 		else
 		{

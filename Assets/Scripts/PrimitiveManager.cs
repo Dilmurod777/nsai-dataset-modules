@@ -400,7 +400,6 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		yield return DelayPrimitive(1.0f);
 		yield return Instance.CreateFromScatteredToRfmPrimitives(attachingObj, referenceObj);
 		yield return DelayPrimitive(1.0f);
-		yield return CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj);
 
 		var rotationAxis = objectMeta.attachRotationAxis;
 

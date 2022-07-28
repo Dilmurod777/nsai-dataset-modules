@@ -113,7 +113,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		{
 			string subtaskId = node[i]["subtask_id"];
 			string content = node[i]["content"];
-			string figure = node[i]["figure"];
+			string figure = node[i]["figure"] ?? node[i]["subtask_id"];
 			var instructions = new List<Instruction>();
 
 			if (node[i].HasKey("instructions")) instructions = CreateInstructions(node[i]["instructions"]);

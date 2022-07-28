@@ -65,6 +65,7 @@ namespace Catalogs
 
 					if (prev is string) ids.Add((string) prev);
 					if (prev is IList) ids.AddRange((IList<string>) prev);
+					if (prev is null) ids.Add(ContextManager.Instance.CurrentSubtask?.SubtaskId);
 
 					var objects = FindObjectsWithIds(ids, parent);
 					var figures = FindFigureWithId(ids, parent);

@@ -55,7 +55,7 @@ namespace Custom
 
 			foreach (var child in figure.GetComponentsInChildren<Transform>())
 			{
-				if (child.name.Contains(objName))
+				if (child.name.ToLower().Contains(objName.ToLower()))
 					return child.gameObject;
 			}
 
