@@ -75,74 +75,90 @@ public class ContextManager : Singleton<ContextManager>
 			}
 		}
 
-		Debug.Log(previousSubtasks.Count);
-
 		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
 		AssetManager.Instance.UpdateAssets();
 	}
 
 	public void SetCurrentSubtask(string subtaskId)
 	{
-		var previousSubtasks = new List<Subtask>();
-
-		if (Instance.CurrentTask != null)
-		{
-			foreach (var subtask in Instance.CurrentTask.Subtasks)
-			{
-				if (subtask.SubtaskId == subtaskId)
-				{
-					CurrentSubtask = subtask;
-					break;
-				}
-
-				previousSubtasks.Add(subtask);
-			}
-		}
+		CurrentSubtask = CurrentTask?.Subtasks.First(s => s.SubtaskId == subtaskId);
 
 		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
 		AssetManager.Instance.UpdateAssets();
+	}
+
+	public void SetCurrentInstruction(Instruction instruction)
+	{
+		CurrentInstruction = instruction;
+	}
+
+	public void SetCurrentInstruction(string instructionOrder)
+	{
+		CurrentInstruction = Instance.CurrentSubtask!.Instructions.First(instr => instr.Order == instructionOrder);
+	}
+
+	public void ExecutePreviousInstructions(Instruction instruction)
+	{
+		if (instruction == null) return;
+
+		var previousInstructions = new List<Instruction>();
+
+		if (Instance.CurrentTask != null && Instance.CurrentSubtask != null)
+		{
+			foreach (var subtask in Instance.CurrentTask.Subtasks)
+			{
+				if (subtask.SubtaskId != CurrentSubtask.SubtaskId)
+				{
+					foreach (var prevInstruction in subtask.Instructions)
+					{
+						previousInstructions.Add(prevInstruction);
+					}
+				}
+				else
+				{
+					foreach (var prevInstruction in subtask.Instructions)
+					{
+						if (prevInstruction.Order != instruction.Order)
+						{
+							previousInstructions.Add(prevInstruction);
+						}
+						else
+						{
+							break;
+						}
+					}
+
+					break;
+				}
+			}
+		}
 
 		var figurePlanName = Helpers.GetCurrentFigurePlainName();
 		var task = Instance.CurrentTask;
 		var taskType = GetTaskType(task);
 		var figure = GameObject.Find(figurePlanName + taskType);
 
-		var core = figure.transform.GetComponentsInChildren<Transform>().First(child =>
+		foreach (var previousInstruction in previousInstructions)
 		{
-			var objectMeta = child.GetComponent<ObjectMeta>();
+			if (previousInstruction.Actions == null || previousInstruction.Actions.Count == 0) continue;
 
-			return objectMeta && objectMeta.isCoreInFigure;
-		});
-
-		Debug.Log("Prev Subtasks Count: " + previousSubtasks.Count);
-		foreach (var prevSubtask in previousSubtasks)
-		{
-			Debug.Log("Prev Subtask: " + prevSubtask.SubtaskId);
-			var instructions = prevSubtask.Instructions;
-
-			foreach (var instruction in instructions)
+			foreach (var action in previousInstruction.Actions)
 			{
-				if (instruction.Actions == null || instruction.Actions.Count == 0) continue;
+				var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, action.Components[0]);
+				var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, "core");
+				var ifmAttachingObj =
+					Helpers.FindObjectInFigure(taskType == Constants.TaskType.Installation ? Constants.FigureType.Ifm : Constants.FigureType.Scattered, action.Components[0]);
+				var ifmReferenceObj =
+					Helpers.FindObjectInFigure(taskType == Constants.TaskType.Installation ? Constants.FigureType.Ifm : Constants.FigureType.Scattered, "core");
 
-				foreach (var action in instruction.Actions)
+				if (attachingObj.transform.childCount > 0)
 				{
-					var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, action.Components[0]);
-					var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, "core");
-					var ifmAttachingObj =
-						Helpers.FindObjectInFigure(taskType == Constants.TaskType.Installation ? Constants.FigureType.Ifm : Constants.FigureType.Scattered, "core");
-					var ifmReferenceObj =
-						Helpers.FindObjectInFigure(taskType == Constants.TaskType.Installation ? Constants.FigureType.Ifm : Constants.FigureType.Scattered, "core");
-
-					if (attachingObj.transform.childCount > 0)
+					for (var m = 0; m < attachingObj.transform.childCount; m++)
 					{
-						// PrimitiveManager.Instance.GetAttachPrimitivesForChildren(attachingObj, referenceObj);
-					}
-					else
-					{
-						var diff = ifmAttachingObj.transform.position - ifmReferenceObj.transform.position;
-						attachingObj.transform.position = referenceObj.transform.position + diff;
+						var diff = ifmAttachingObj.transform.GetChild(m).position - ifmReferenceObj.transform.position;
+						attachingObj.transform.GetChild(m).position = referenceObj.transform.position + diff;
 
-						var meshRenderer = attachingObj.GetComponent<MeshRenderer>();
+						var meshRenderer = attachingObj.transform.GetChild(m).gameObject.GetComponent<MeshRenderer>();
 
 						if (meshRenderer != null)
 						{
@@ -163,22 +179,37 @@ public class ContextManager : Singleton<ContextManager>
 
 							meshRenderer.materials = newMaterials;
 						}
+					}
+				}
+				else
+				{
+					var diff = ifmAttachingObj.transform.position - ifmReferenceObj.transform.position;
+					attachingObj.transform.position = referenceObj.transform.position + diff;
 
-						// PrimitiveManager.Instance.GetAttachPrimitivesForParent(attachingObj, referenceObj);
+					var meshRenderer = attachingObj.GetComponent<MeshRenderer>();
+
+					if (meshRenderer != null)
+					{
+						var oldMaterials = meshRenderer.materials;
+						var newMaterials = new Material[oldMaterials.Length];
+						for (var i = 0; i < newMaterials.Length; i++)
+						{
+							newMaterials[i] = new Material(AssetManager.Instance.tempMaterial);
+							newMaterials[i].color = oldMaterials[i].color;
+						}
+
+						for (var i = 0; i < oldMaterials.Length; i++)
+						{
+							var oldColor = oldMaterials[i].color;
+							var newColor = new Color(oldColor.r, oldColor.g, oldColor.b, 0.0f);
+							newMaterials[i].color = newColor;
+						}
+
+						meshRenderer.materials = newMaterials;
 					}
 				}
 			}
 		}
-	}
-
-	public void SetCurrentInstruction(Instruction instruction)
-	{
-		CurrentInstruction = instruction;
-	}
-
-	public void SetCurrentInstruction(string instructionOrder)
-	{
-		CurrentInstruction = Instance.CurrentSubtask!.Instructions.First(instr => instr.Order == instructionOrder);
 	}
 
 	public void SetCurrentQuery(Query query)
@@ -187,13 +218,6 @@ public class ContextManager : Singleton<ContextManager>
 		SetCurrentTask(query.TaskId);
 		SetCurrentSubtask(query.SubtaskId);
 		SetCurrentInstruction(query.InstructionOrder);
-
-		var figurePlainName = Helpers.GetCurrentFigurePlainName();
-		var task = Instance.CurrentTask;
-		var taskType = GetTaskType(task);
-
-		var figure = GameObject.Find(figurePlainName + taskType);
-		AssetManager.Instance.ResetFigure(figure);
 	}
 
 	public void ResetCurrentTask()

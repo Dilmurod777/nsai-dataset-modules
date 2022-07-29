@@ -17,8 +17,6 @@ public class AssetManager : Singleton<AssetManager>
 
 		if (task != null && subtask != null)
 		{
-			if (subtask.Figure == null) return;
-
 			var plainFigureName = Helpers.GetCurrentFigurePlainName();
 
 			var figurePrefabInstallation = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Scattered);
@@ -295,6 +293,8 @@ public class AssetManager : Singleton<AssetManager>
 					break;
 				}
 		}
+
+		ContextManager.Instance.ExecutePreviousInstructions(ContextManager.Instance.CurrentInstruction);
 	}
 
 	public void HideAllFigures()

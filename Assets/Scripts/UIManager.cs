@@ -353,8 +353,8 @@ public class UIManager : Singleton<UIManager>
 
 	private void UIOptionClick(UIOptionType type, dynamic[] data)
 	{
-		Task task;
-		Subtask subtask;
+		Task task = null;
+		Subtask subtask = null;
 		Instruction instruction;
 		Query query;
 
@@ -384,6 +384,15 @@ public class UIManager : Singleton<UIManager>
 				break;
 			default:
 				throw new ArgumentOutOfRangeException(nameof(type), type, null);
+		}
+
+		if (task != null && subtask != null)
+		{
+			var figurePlainName = Helpers.GetCurrentFigurePlainName();
+			var taskType = ContextManager.GetTaskType(task);
+
+			var figure = GameObject.Find(figurePlainName + taskType);
+			AssetManager.Instance.ResetFigure(figure);
 		}
 
 		SceneManager.Instance.LoadScene(SceneManager.MainSceneNameGlobal);

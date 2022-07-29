@@ -1,5 +1,5 @@
 ﻿{
-  "query": "Rotate 402-32-45-11-000-801-A by 35 degrees in Y axis",
+  "query": "Rotate 402-32-11-61-000-802-A by 35 degrees in Y axis",
   "programs": [
     "ExtractNumbers query",
     "SaveVal2Var prev var1",
@@ -10,10 +10,10 @@
     "Unique prev",
     "Rotate prev var1"
   ],
-  "reply": "402-32-11-61-990-802-A",
+  "reply": "402-32-11-61-000-802-A",
   "context": {
-    "current_task_id": "32-45-11-000-801",
-    "current_subtask_id": "32-45-11-020-001",
+    "current_task_id": "32-11-61-000-802",
+    "current_subtask_id": "32-11-61-020-008",
     "current_instruction_order": "1"
   }
 }

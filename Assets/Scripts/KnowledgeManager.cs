@@ -331,20 +331,25 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		}
 	}
 
-	private void SetCurrentSubtaskCompleted()
+	public void SetSubtaskCompleted(Subtask subtask)
 	{
-		var currentTask = ContextManager.Instance.CurrentTask;
-		var currentSubtask = ContextManager.Instance.CurrentSubtask;
-		currentSubtask.isCompleted = true;
+		subtask.isCompleted = true;
 
-		foreach (var t in Tasks.Where(t => t.TaskId == currentTask.TaskId))
+		foreach (var t in Tasks)
 		{
-			foreach (var t1 in t.Subtasks.Where(t1 => t1.SubtaskId == currentSubtask.SubtaskId))
+			foreach (var t1 in t.Subtasks.Where(t1 => t1.SubtaskId == subtask.SubtaskId))
 			{
 				t1.isCompleted = true;
 				break;
 			}
 		}
+	}
+
+	private void SetCurrentSubtaskCompleted()
+	{
+		var currentSubtask = ContextManager.Instance.CurrentSubtask;
+
+		SetSubtaskCompleted(currentSubtask);
 	}
 
 	private IEnumerator Sequence(List<IEnumerator> sequence)
