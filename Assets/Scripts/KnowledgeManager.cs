@@ -16,7 +16,8 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 	public List<Task> Tasks = new List<Task>();
 	public List<Query> Queries = new List<Query>();
 
-	[HideInInspector] public bool isExecutingSubtask;
+	[FormerlySerializedAs("isExecutingSubtask")] [HideInInspector]
+	public bool isExecuting;
 
 	public void ReadKnowledgeAndSetUp()
 	{
@@ -178,7 +179,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		var primitives = new List<IEnumerator>();
 
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.ResetBasicOperationsList(); }));
-		primitives.Add(PrimitiveManager.SimplePrimitive(() => { Instance.isExecutingSubtask = true; }));
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { Instance.isExecuting = true; }));
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.DisableAllButtons(); }));
 
 		foreach (var instruction in instructions)
@@ -208,7 +209,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		}
 
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => Instance.SetCurrentSubtaskCompleted()));
-		primitives.Add(PrimitiveManager.SimplePrimitive(() => { Instance.isExecutingSubtask = false; }));
+		primitives.Add(PrimitiveManager.SimplePrimitive(() => { Instance.isExecuting = false; }));
 		primitives.Add(PrimitiveManager.SimplePrimitive(() => { UIManager.Instance.UpdateUI(); }));
 
 		StartCoroutine(Sequence(primitives));

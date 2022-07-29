@@ -32,7 +32,7 @@ public class UIManager : Singleton<UIManager>
 		{
 			homeButton.GetComponent<Button>().onClick.RemoveAllListeners();
 			homeButton.GetComponent<Button>().onClick.AddListener(() => { SceneManager.Instance.LoadScene(SceneManager.MenuSceneNameGlobal); });
-			homeButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecutingSubtask;
+			homeButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecuting;
 		}
 
 		var playButton = GameObject.FindWithTag("PlayButton");
@@ -42,7 +42,7 @@ public class UIManager : Singleton<UIManager>
 			playButton.GetComponent<Button>().onClick.AddListener(() => { KnowledgeManager.Instance.ExecuteSubtask(); });
 			playButton.GetComponent<Button>().interactable =
 				!ContextManager.Instance.CurrentTask.isCompleted && !ContextManager.Instance.CurrentSubtask.isCompleted &&
-				!KnowledgeManager.Instance.isExecutingSubtask;
+				!KnowledgeManager.Instance.isExecuting;
 		}
 
 		var nextButton = GameObject.FindWithTag("NextButton");
@@ -54,7 +54,7 @@ public class UIManager : Singleton<UIManager>
 				KnowledgeManager.GoToNextSubtask();
 				Instance.UpdateUI();
 			});
-			nextButton.GetComponent<Button>().interactable = KnowledgeManager.HasNextSubtask() && !KnowledgeManager.Instance.isExecutingSubtask;
+			nextButton.GetComponent<Button>().interactable = KnowledgeManager.HasNextSubtask() && !KnowledgeManager.Instance.isExecuting;
 		}
 
 		var previousButton = GameObject.FindWithTag("PreviousButton");
@@ -66,7 +66,7 @@ public class UIManager : Singleton<UIManager>
 				KnowledgeManager.GoToPreviousSubtask();
 				Instance.UpdateUI();
 			});
-			previousButton.GetComponent<Button>().interactable = KnowledgeManager.HasPreviousSubtask() && !KnowledgeManager.Instance.isExecutingSubtask;
+			previousButton.GetComponent<Button>().interactable = KnowledgeManager.HasPreviousSubtask() && !KnowledgeManager.Instance.isExecuting;
 		}
 
 		var resetButton = GameObject.FindWithTag("ResetButton");
@@ -79,7 +79,7 @@ public class UIManager : Singleton<UIManager>
 				KnowledgeManager.Instance.ResetTasks();
 				SceneManager.Instance.LoadScene(SceneManager.MenuSceneNameGlobal);
 			});
-			resetButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecutingSubtask;
+			resetButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecuting;
 		}
 
 		var queryPlayButton = GameObject.FindWithTag("QueryPlayButton");
@@ -87,7 +87,7 @@ public class UIManager : Singleton<UIManager>
 		{
 			queryPlayButton.GetComponent<Button>().onClick.RemoveAllListeners();
 			queryPlayButton.GetComponent<Button>().onClick.AddListener(() => { QueryExecutor.Instance.ExecuteQuery(); });
-			queryPlayButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecutingSubtask && ContextManager.Instance.CurrentQuery != null;
+			queryPlayButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecuting && ContextManager.Instance.CurrentQuery != null;
 		}
 
 		var query = ContextManager.Instance.CurrentQuery;

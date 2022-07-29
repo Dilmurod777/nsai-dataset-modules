@@ -12,6 +12,9 @@ public class QueryExecutor : Singleton<QueryExecutor>
 
 	public void ExecuteQuery()
 	{
+		KnowledgeManager.Instance.isExecuting = true;
+		UIManager.Instance.UpdateUI();
+
 		var query = ContextManager.Instance.CurrentQuery;
 		var programs = query.Programs;
 
@@ -38,12 +41,23 @@ public class QueryExecutor : Singleton<QueryExecutor>
 
 	public void RunCoroutine(IEnumerator callback)
 	{
-		StartCoroutine(callback);
+		RunCoroutinesInSequence(new List<IEnumerator>
+		{
+			callback
+		});
 	}
 
 	public void RunCoroutinesInSequence(List<IEnumerator> callbacks)
 	{
-		StartCoroutine(Sequence(callbacks));
+		var finalList = new List<IEnumerator>();
+		finalList.AddRange(callbacks);
+		finalList.Add(PrimitiveManager.SimplePrimitive(() =>
+		{
+			KnowledgeManager.Instance.isExecuting = false;
+			UIManager.Instance.UpdateUI();
+		}));
+
+		StartCoroutine(Sequence(finalList));
 	}
 
 	private IEnumerator Sequence(List<IEnumerator> list)

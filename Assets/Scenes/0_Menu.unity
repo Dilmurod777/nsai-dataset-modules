@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rootDocument: root
-  isExecutingSubtask: 0
+  isExecuting: 0
 --- !u!1 &422674988
 GameObject:
   m_ObjectHideFlags: 3
@@ -2063,6 +2063,7 @@ GameObject:
   - component: {fileID: 1654056412}
   - component: {fileID: 1654056414}
   - component: {fileID: 1654056415}
+  - component: {fileID: 1654056416}
   m_Layer: 0
   m_Name: ObjectFocus Virtual Camera
   m_TagString: ObjectFocusVirtualCamera
@@ -2144,9 +2145,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d70cc20219cd84593f67d248eafe36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Offset: {x: 0, y: 0, z: -3}
+  m_Offset: {x: 0, y: 0, z: -1.5}
   m_ApplyAfter: 1
-  m_PreserveComposition: 0
+  m_PreserveComposition: 1
+--- !u!114 &1654056416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654056411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0544e7b14d134a1449e61175446cfb95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ApplyAfter: 3
+  m_Tilt: 0.31
+  m_Pan: 1.18
+  m_Dutch: 0
+  m_ZoomScale: 0.5
+  m_FollowAttachment: 0.17
+  m_LookAtAttachment: 0.18
 --- !u!1 &1837083061
 GameObject:
   m_ObjectHideFlags: 0
@@ -2262,7 +2282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Width: 0
   m_Damping: 0
-  m_MinFOV: 30
+  m_MinFOV: 24
   m_MaxFOV: 179
 --- !u!114 &1837083066
 MonoBehaviour:
@@ -2288,7 +2308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d70cc20219cd84593f67d248eafe36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Offset: {x: 2, y: 0.5, z: -0.5}
+  m_Offset: {x: 2, y: 0.5, z: -1.035}
   m_ApplyAfter: 3
   m_PreserveComposition: 1
 --- !u!1 &1842461721

@@ -158,26 +158,29 @@ public class ContextManager : Singleton<ContextManager>
 						var diff = ifmAttachingObj.transform.GetChild(m).position - ifmReferenceObj.transform.position;
 						attachingObj.transform.GetChild(m).position = referenceObj.transform.position + diff;
 
-						var meshRenderer = attachingObj.transform.GetChild(m).gameObject.GetComponent<MeshRenderer>();
-
-						if (meshRenderer != null)
+						if (action.Operation == "detach")
 						{
-							var oldMaterials = meshRenderer.materials;
-							var newMaterials = new Material[oldMaterials.Length];
-							for (var i = 0; i < newMaterials.Length; i++)
-							{
-								newMaterials[i] = new Material(AssetManager.Instance.tempMaterial);
-								newMaterials[i].color = oldMaterials[i].color;
-							}
+							var meshRenderer = attachingObj.transform.GetChild(m).gameObject.GetComponent<MeshRenderer>();
 
-							for (var i = 0; i < oldMaterials.Length; i++)
+							if (meshRenderer != null)
 							{
-								var oldColor = oldMaterials[i].color;
-								var newColor = new Color(oldColor.r, oldColor.g, oldColor.b, 0.0f);
-								newMaterials[i].color = newColor;
-							}
+								var oldMaterials = meshRenderer.materials;
+								var newMaterials = new Material[oldMaterials.Length];
+								for (var i = 0; i < newMaterials.Length; i++)
+								{
+									newMaterials[i] = new Material(AssetManager.Instance.tempMaterial);
+									newMaterials[i].color = oldMaterials[i].color;
+								}
 
-							meshRenderer.materials = newMaterials;
+								for (var i = 0; i < oldMaterials.Length; i++)
+								{
+									var oldColor = oldMaterials[i].color;
+									var newColor = new Color(oldColor.r, oldColor.g, oldColor.b, 0.0f);
+									newMaterials[i].color = newColor;
+								}
+
+								meshRenderer.materials = newMaterials;
+							}
 						}
 					}
 				}
