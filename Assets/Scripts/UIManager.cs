@@ -27,7 +27,7 @@ public class UIManager : Singleton<UIManager>
 
 	public void UpdateUI()
 	{
-		var homeButton = GameObject.FindWithTag("HomeButton");
+		var homeButton = GameObject.FindWithTag(Tags.HomeButton);
 		if (homeButton != null)
 		{
 			homeButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -35,7 +35,7 @@ public class UIManager : Singleton<UIManager>
 			homeButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecuting;
 		}
 
-		var playButton = GameObject.FindWithTag("PlayButton");
+		var playButton = GameObject.FindWithTag(Tags.PlayButton);
 		if (playButton != null)
 		{
 			playButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -45,7 +45,7 @@ public class UIManager : Singleton<UIManager>
 				!KnowledgeManager.Instance.isExecuting;
 		}
 
-		var nextButton = GameObject.FindWithTag("NextButton");
+		var nextButton = GameObject.FindWithTag(Tags.NextButton);
 		if (nextButton != null)
 		{
 			nextButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -57,7 +57,7 @@ public class UIManager : Singleton<UIManager>
 			nextButton.GetComponent<Button>().interactable = KnowledgeManager.HasNextSubtask() && !KnowledgeManager.Instance.isExecuting;
 		}
 
-		var previousButton = GameObject.FindWithTag("PreviousButton");
+		var previousButton = GameObject.FindWithTag(Tags.PreviousButton);
 		if (previousButton != null)
 		{
 			previousButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -69,7 +69,7 @@ public class UIManager : Singleton<UIManager>
 			previousButton.GetComponent<Button>().interactable = KnowledgeManager.HasPreviousSubtask() && !KnowledgeManager.Instance.isExecuting;
 		}
 
-		var resetButton = GameObject.FindWithTag("ResetButton");
+		var resetButton = GameObject.FindWithTag(Tags.ResetButton);
 		if (resetButton != null)
 		{
 			resetButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -82,7 +82,7 @@ public class UIManager : Singleton<UIManager>
 			resetButton.GetComponent<Button>().interactable = !KnowledgeManager.Instance.isExecuting;
 		}
 
-		var queryPlayButton = GameObject.FindWithTag("QueryPlayButton");
+		var queryPlayButton = GameObject.FindWithTag(Tags.QueryPlayButton);
 		if (queryPlayButton != null)
 		{
 			queryPlayButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -93,7 +93,7 @@ public class UIManager : Singleton<UIManager>
 		var query = ContextManager.Instance.CurrentQuery;
 		if (query != null)
 		{
-			var queryText = GameObject.FindWithTag("QueryText");
+			var queryText = GameObject.FindWithTag(Tags.QueryText);
 			queryText!.GetComponent<InputField>().text = query.Title;
 
 			ContextManager.Instance.SetCurrentTask(query.TaskId);
@@ -101,7 +101,7 @@ public class UIManager : Singleton<UIManager>
 			ContextManager.Instance.SetCurrentInstruction(query.InstructionOrder);
 		}
 
-		var knowledgeTaskUI = GameObject.FindWithTag("KnowledgeTaskUI");
+		var knowledgeTaskUI = GameObject.FindWithTag(Tags.KnowledgeTaskUI);
 		if (knowledgeTaskUI)
 		{
 			knowledgeTaskUI.transform.GetChild(0).GetComponent<Image>().enabled = ContextManager.Instance.CurrentTask != null;
@@ -116,7 +116,7 @@ public class UIManager : Singleton<UIManager>
 		}
 
 
-		var knowledgeSubtaskUI = GameObject.FindWithTag("KnowledgeSubtaskUI");
+		var knowledgeSubtaskUI = GameObject.FindWithTag(Tags.KnowledgeSubtaskUI);
 		if (knowledgeSubtaskUI)
 		{
 			knowledgeSubtaskUI.transform.GetChild(0).GetComponent<Image>().enabled = ContextManager.Instance.CurrentSubtask != null;
@@ -131,7 +131,7 @@ public class UIManager : Singleton<UIManager>
 			knowledgeSubtaskUI.transform.GetChild(1).GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 1);
 		}
 
-		var knowledgeInstructionUI = GameObject.FindWithTag("KnowledgeInstructionUI");
+		var knowledgeInstructionUI = GameObject.FindWithTag(Tags.KnowledgeInstructionUI);
 		if (knowledgeInstructionUI != null)
 		{
 			knowledgeInstructionUI!.GetComponent<Image>().enabled = ContextManager.Instance.CurrentInstruction != null;
@@ -141,7 +141,7 @@ public class UIManager : Singleton<UIManager>
 			knowledgeInstructionUI.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 1);
 		}
 
-		var knowledgeActionsUI = GameObject.FindWithTag("KnowledgeActionsUI");
+		var knowledgeActionsUI = GameObject.FindWithTag(Tags.KnowledgeActionsUI);
 		if (knowledgeActionsUI != null)
 		{
 			knowledgeActionsUI!.transform.GetChild(0).GetChild(0).GetComponent<Text>().enabled =
@@ -180,7 +180,7 @@ public class UIManager : Singleton<UIManager>
 
 	public void UpdateBasicOperationsList(string text)
 	{
-		var basicOperationsList = GameObject.FindWithTag("BasicOperationsUI");
+		var basicOperationsList = GameObject.FindWithTag(Tags.BasicOperationsUI);
 
 		if (basicOperationsList)
 		{
@@ -197,13 +197,13 @@ public class UIManager : Singleton<UIManager>
 
 	private void ScrollBasicOperationsListToBottom()
 	{
-		var basicOperationsList = GameObject.FindWithTag("BasicOperationsUI");
+		var basicOperationsList = GameObject.FindWithTag(Tags.BasicOperationsUI);
 		basicOperationsList.transform.GetChild(1).GetComponent<ScrollRect>().verticalNormalizedPosition = 0;
 	}
 
 	public static void ResetBasicOperationsList()
 	{
-		var basicOperationsList = GameObject.FindWithTag("BasicOperationsUI");
+		var basicOperationsList = GameObject.FindWithTag(Tags.BasicOperationsUI);
 		if (!basicOperationsList) return;
 
 		basicOperationsList.transform.GetChild(0).GetComponent<Text>().enabled = false;
@@ -215,7 +215,7 @@ public class UIManager : Singleton<UIManager>
 
 	public static void UpdateReply(string text)
 	{
-		var reply = GameObject.FindWithTag("ReplyUI");
+		var reply = GameObject.FindWithTag(Tags.ReplyUI);
 		if (!reply) return;
 
 		var textComponent = reply.GetComponent<Text>();
@@ -231,7 +231,7 @@ public class UIManager : Singleton<UIManager>
 
 	private void SetUpKnowledgeOptions(List<Task> tasks)
 	{
-		var knowledgeContent = GameObject.FindWithTag("KnowledgeContent");
+		var knowledgeContent = GameObject.FindWithTag(Tags.KnowledgeContent);
 
 		if (knowledgeContent.transform.childCount == 0)
 		{
@@ -239,10 +239,9 @@ public class UIManager : Singleton<UIManager>
 			{
 				var newTaskOption = Instantiate(uiOption, knowledgeContent.transform, false);
 				newTaskOption.name = task.TaskId;
-				newTaskOption.tag = "TaskOptionUI";
+				newTaskOption.tag = Tags.TaskOptionUI;
 				var newTaskOptionButtonComponent = newTaskOption.GetComponent<Button>();
 				newTaskOptionButtonComponent.interactable = false;
-
 				var newTaskOptionTextComponent = newTaskOption.transform.GetChild(0).GetComponent<Text>();
 				newTaskOptionTextComponent.text = "Task " + task.TaskId;
 				newTaskOptionTextComponent.color = Color.white;
@@ -278,7 +277,7 @@ public class UIManager : Singleton<UIManager>
 				{
 					var newSubtaskOption = Instantiate(uiOption, list.transform, false);
 					newSubtaskOption.name = subtask.SubtaskId;
-					newSubtaskOption.tag = "SubtaskOptionUI";
+					newSubtaskOption.tag = Tags.SubtaskOptionUI;
 					var newSubtaskOptionButtonComponent = newSubtaskOption.GetComponent<Button>();
 					var task1 = task;
 					newSubtaskOptionButtonComponent.onClick.AddListener(() => { UIOptionClick(UIOptionType.Subtask, new dynamic[] {task1, subtask}); });
@@ -308,7 +307,7 @@ public class UIManager : Singleton<UIManager>
 
 	private void SetUpQueryOptions(List<Query> queries)
 	{
-		var queriesContent = GameObject.FindWithTag("QueriesContent");
+		var queriesContent = GameObject.FindWithTag(Tags.QueriesContent);
 
 		if (queriesContent.transform.childCount == 0)
 		{
@@ -316,12 +315,12 @@ public class UIManager : Singleton<UIManager>
 			{
 				var query = queries[i];
 				var newQueryOption = Instantiate(uiOption, queriesContent.transform, false);
-				newQueryOption.name = query.Filename;
-				newQueryOption.tag = "QueryOptionUI";
+				newQueryOption.name = query.Filename.Split('.')[0];
+				newQueryOption.tag = Tags.QueryOptionUI;
 				newQueryOption.GetComponent<Button>().onClick.AddListener(() => { UIOptionClick(UIOptionType.Query, new dynamic[] {query}); });
 
 				var newQueryOptionTextComponent = newQueryOption.transform.GetChild(0).GetComponent<Text>();
-				newQueryOptionTextComponent.text = query.Filename;
+				newQueryOptionTextComponent.text = "Query " + query.Filename.Split('.')[0];
 
 				Invoke(nameof(ScrollQueriesToTop), 0.001f);
 			}
@@ -336,7 +335,7 @@ public class UIManager : Singleton<UIManager>
 
 	private void ScrollKnowledgeToTop()
 	{
-		var knowledgeContent = GameObject.FindWithTag("KnowledgeContent");
+		var knowledgeContent = GameObject.FindWithTag(Tags.KnowledgeContent);
 		var knowledgeScrollRect = knowledgeContent.transform.parent.GetComponent<ScrollRect>();
 
 		knowledgeScrollRect!.normalizedPosition = new Vector2(0, 1);
@@ -344,7 +343,7 @@ public class UIManager : Singleton<UIManager>
 
 	private void ScrollQueriesToTop()
 	{
-		var queriesContent = GameObject.FindWithTag("QueriesContent");
+		var queriesContent = GameObject.FindWithTag(Tags.QueriesContent);
 		var queryScrollRect = queriesContent.transform.parent.GetComponent<ScrollRect>();
 
 		queryScrollRect.normalizedPosition = new Vector2(0, 1);

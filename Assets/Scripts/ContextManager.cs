@@ -59,22 +59,6 @@ public class ContextManager : Singleton<ContextManager>
 	public void SetCurrentSubtask(Subtask subtask)
 	{
 		CurrentSubtask = subtask;
-
-		var previousSubtasks = new List<Subtask>();
-
-		if (Instance.CurrentTask != null)
-		{
-			foreach (var s in Instance.CurrentTask.Subtasks)
-			{
-				if (s.SubtaskId == subtask.SubtaskId)
-				{
-					break;
-				}
-
-				previousSubtasks.Add(subtask);
-			}
-		}
-
 		CurrentInstruction = CurrentSubtask != null && CurrentSubtask.Instructions.Count > 0 ? CurrentSubtask.Instructions[0] : null;
 		AssetManager.Instance.UpdateAssets();
 	}

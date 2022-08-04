@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using Custom;
 using Instances;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Catalogs
 {
@@ -83,13 +82,7 @@ namespace Catalogs
 							? plainFigureName + Constants.TaskType.Installation
 							: plainFigureName + Constants.TaskType.Removal;
 
-						foreach (var obj in parent)
-						{
-							if (obj.CompareTag("Figure") && obj.name == figureName)
-							{
-								allObjects.Add(obj);
-							}
-						}
+						allObjects.AddRange(parent.Where(obj => obj.CompareTag(Tags.Figure) && obj.name == figureName));
 					}
 
 					break;
@@ -98,13 +91,12 @@ namespace Catalogs
 			return allObjects;
 		}
 
-		// find object with part of name
 		private static List<GameObject> FindObjectsWithIds(List<string> ids, List<GameObject> parentObjects)
 		{
 			var allObjects = parentObjects;
 			if (parentObjects == null || parentObjects.Count == 0)
 			{
-				allObjects = GameObject.FindGameObjectsWithTag("Object").ToList();
+				allObjects = GameObject.FindGameObjectsWithTag(Tags.Object).ToList();
 			}
 
 			var currentTask = ContextManager.Instance.CurrentTask;
@@ -115,9 +107,7 @@ namespace Catalogs
 			var foundObs = new List<GameObject>();
 
 			foreach (var id in ids)
-			foreach (var obj in allObjects)
-				if ((obj.name.Contains("[" + id + "]") || obj.name.Equals(id)) && obj.transform.parent.name.Equals(figureName))
-					foundObs.Add(obj);
+				foundObs.AddRange(allObjects.Where(obj => (obj.name.Contains("[" + id + "]") || obj.name.Equals(id)) && obj.transform.parent.name.Equals(figureName)));
 
 			return foundObs;
 		}
@@ -127,7 +117,7 @@ namespace Catalogs
 			var allFigures = parentFigures;
 			if (parentFigures == null || parentFigures.Count == 0)
 			{
-				allFigures = GameObject.FindGameObjectsWithTag("Figure").ToList();
+				allFigures = GameObject.FindGameObjectsWithTag(Tags.Figure).ToList();
 			}
 
 			var foundFigs = new List<GameObject>();
@@ -136,14 +126,13 @@ namespace Catalogs
 			var taskType = ContextManager.GetTaskType(currentTask);
 
 			foreach (var fig in allFigures)
-			foreach (var id in ids)
-			{
-				var plainFigureName = Helpers.GetFigurePlainName(id);
-				var figureName = taskType == Constants.TaskType.Installation ? plainFigureName + Constants.TaskType.Installation : plainFigureName + Constants.TaskType.Removal;
-
-				if (fig.name == figureName)
-					foundFigs.Add(fig);
-			}
+				foundFigs.AddRange(from id in ids
+					select Helpers.GetFigurePlainName(id)
+					into plainFigureName
+					select taskType == Constants.TaskType.Installation ? plainFigureName + Constants.TaskType.Installation : plainFigureName + Constants.TaskType.Removal
+					into figureName
+					where fig.name == figureName
+					select fig);
 
 			return foundFigs;
 		}
@@ -156,20 +145,19 @@ namespace Catalogs
 			if (obj == null) return;
 
 			var restArgs = ContextManager.Instance.GetAttribute<List<string>>(argsList[1]);
-			if (restArgs != null)
-			{
-				var degree = float.Parse(restArgs[0]);
-				var axisRegex = Regex.Match(ContextManager.Instance.CurrentQuery.Title, @"[XYZ] axis").Value;
+			if (restArgs == null) return;
 
-				var rotation = obj.transform.rotation;
-				var axis = axisRegex.Split(' ')[0];
-				var rotationX = axis == "X" ? degree : 0;
-				var rotationY = axis == "Y" ? degree : 0;
-				var rotationZ = axis == "Z" ? degree : 0;
+			var degree = float.Parse(restArgs[0]);
+			var axisRegex = Regex.Match(ContextManager.Instance.CurrentQuery.Title, @"[XYZ] axis").Value;
 
-				var newRotation = rotation * Quaternion.Euler(rotationX, rotationY, rotationZ);
-				QueryExecutor.Instance.RunCoroutine(Robot.Instance.Rotate(obj, newRotation.eulerAngles));
-			}
+			var rotation = obj.transform.rotation;
+			var axis = axisRegex.Split(' ')[0];
+			var rotationX = axis == "X" ? degree : 0;
+			var rotationY = axis == "Y" ? degree : 0;
+			var rotationZ = axis == "Z" ? degree : 0;
+
+			var newRotation = rotation * Quaternion.Euler(rotationX, rotationY, rotationZ);
+			QueryExecutor.Instance.RunCoroutine(Robot.Instance.Rotate(obj, newRotation.eulerAngles));
 		}
 
 		public void Scale(string args)
@@ -201,7 +189,7 @@ namespace Catalogs
 		public void Reset(string args)
 		{
 			var argsList = args.Split(Constants.ArgsSeparator);
-			var state = argsList[0];
+			// var state = argsList[0];
 
 			var obj = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
 			if (obj == null) return;
@@ -257,14 +245,7 @@ namespace Catalogs
 				_ => Quaternion.Euler(0, 0, 0)
 			};
 
-			// var coroutines = new List<IEnumerator>
-			// {
-			// RotateObjectCoroutine(obj, sideRotation, 1.0f)
-			// };
-
 			QueryExecutor.Instance.RunCoroutine(Robot.Instance.Rotate(obj, sideRotation.eulerAngles));
-
-			// StartCoroutine(Sequence(coroutines));
 		}
 
 		public void SideBySideLook(string args)
@@ -281,7 +262,7 @@ namespace Catalogs
 
 			CloseLookFunctionality(objs);
 
-			var objNames = objs.Select(obj => obj.name).ToList();
+			// var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
 		public void CloseLook(string args)
@@ -292,16 +273,16 @@ namespace Catalogs
 
 			CloseLookFunctionality(objs);
 
-			var objNames = objs.Select(obj => obj.name).ToList();
+			// var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
 		public void Animate(string args)
 		{
-			var argsList = args.Split(Constants.ArgsSeparator);
-			var fig = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
-			if (fig == null) return;
+			// var argsList = args.Split(Constants.ArgsSeparator);
+			// var fig = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
+			// if (fig == null) return;
 
-			var state = argsList[0];
+			// var state = argsList[0];
 			// Attributes attributes = Context.Instance.InitialAttributes[fig.name];
 			//
 			// void StartAnimatingFigure()
@@ -349,7 +330,7 @@ namespace Catalogs
 				obj.GetComponent<MeshRenderer>().enabled = state == "on";
 			}
 
-			var objNames = objs.Select(obj => obj.name).ToList();
+			// var objNames = objs.Select(obj => obj.name).ToList();
 		}
 
 		public List<Action> CreateActions(string args)
@@ -496,36 +477,6 @@ namespace Catalogs
 			return primitives;
 		}
 
-		private static void FocusObject(GameObject objA, GameObject objB)
-		{
-			// var objAPosition = objA.transform.position;
-			// var objBPosition = objB.transform.position;
-			// var middlePosition = (objAPosition + objBPosition) / 2;
-			//
-			// Context.Instance.Camera.transform.LookAt(middlePosition);
-		}
-
-		private static Vector3 GetScrewVector(ObjectMeta.RotationAxisEnum rotationAxis)
-		{
-			switch (rotationAxis)
-			{
-				case ObjectMeta.RotationAxisEnum.X:
-					return Vector3.right;
-				case ObjectMeta.RotationAxisEnum.NegX:
-					return Vector3.left;
-				case ObjectMeta.RotationAxisEnum.Y:
-					return Vector3.up;
-				case ObjectMeta.RotationAxisEnum.NegY:
-					return Vector3.down;
-				case ObjectMeta.RotationAxisEnum.Z:
-					return Vector3.forward;
-				case ObjectMeta.RotationAxisEnum.NegZ:
-					return Vector3.back;
-				default:
-					return Vector3.forward;
-			}
-		}
-
 		private void CloseLookFunctionality(List<GameObject> objs)
 		{
 			// var parentFigure = objs[0].transform.parent.gameObject;
@@ -622,144 +573,5 @@ namespace Catalogs
 		// 		yield return null;
 		// 	}
 		// }
-
-		private static IEnumerator AdjustStructureCoroutine(GameObject objA, GameObject objB, float duration = 0.1f)
-		{
-			objA.transform.parent = objB.transform;
-
-			float elapsedTime = 0;
-			while (elapsedTime <= duration)
-			{
-				objA.transform.parent = objB.transform;
-				elapsedTime += Time.deltaTime;
-				yield return null;
-			}
-		}
-
-		// smoothly move object
-		private static IEnumerator MoveObjectCoroutine(GameObject obj, Vector3 finalPosition, float duration)
-		{
-			// if (ScriptExecutor.IsInAction) yield break;
-			// ScriptExecutor.IsInAction = true;
-			//
-			// float counter = 0;
-			// var currentPos = obj.transform.position;
-			// while (counter < 1)
-			// {
-			// 	counter += Time.deltaTime / duration;
-			//
-			// 	obj.transform.position = Vector3.Lerp(currentPos, finalPosition, counter);
-			// 	yield return new WaitForSeconds(0.0001f);
-			// }
-
-			// ScriptExecutor.IsInAction = false;
-			yield return null;
-		}
-
-		private static IEnumerator MoveObjectWithRotationCoroutine(GameObject obj, Vector3 finalPosition, float duration, Vector3 direction = default)
-		{
-			// if (ScriptExecutor.IsInAction) yield break;
-			// ScriptExecutor.IsInAction = true;
-			//
-			// var infiniteRotationComponents = obj.GetComponents<InfiniteRotation>();
-			// InfiniteRotation infiniteRotationComponent;
-			// if (infiniteRotationComponents.Length == 0)
-			// {
-			// 	infiniteRotationComponent = obj.AddComponent<InfiniteRotation>();
-			// }
-			// else if (infiniteRotationComponents.Length > 1)
-			// {
-			// 	for (var i = 1; i < infiniteRotationComponents.Length; i++)
-			// 	{
-			// 		Destroy(infiniteRotationComponents[i]);
-			// 	}
-			//
-			// 	infiniteRotationComponent = infiniteRotationComponents[0];
-			// }
-			// else
-			// {
-			// 	infiniteRotationComponent = infiniteRotationComponents[0];
-			// }
-			//
-			//
-			// infiniteRotationComponent.SetSpeed(150);
-			// infiniteRotationComponent.SetDirection(direction);
-			//
-			// var currentPos = obj.transform.position;
-			// float counter = 0;
-			// while (counter < 1)
-			// {
-			// 	counter += Time.deltaTime / duration;
-			// 	obj.transform.position = Vector3.Lerp(currentPos, finalPosition, counter);
-			// 	yield return null;
-			// }
-			//
-			// Destroy(infiniteRotationComponent);
-			//
-			// ScriptExecutor.IsInAction = false;
-
-			yield return null;
-		}
-
-		// smoothly change rotation of camera
-		private static IEnumerator RotateObjectCoroutine(dynamic obj, Quaternion finalRotation, float duration)
-		{
-			// if (ScriptExecutor.IsInAction) yield break;
-			// ScriptExecutor.IsInAction = true;
-			//
-			// var currentRot = obj.transform.rotation;
-			// float counter = 0;
-			// while (counter < 1)
-			// {
-			// 	counter += Time.deltaTime / duration;
-			//
-			// 	obj.transform.rotation = Quaternion.Slerp(currentRot, finalRotation, counter);
-			// 	yield return null;
-			// }
-			//
-			// ScriptExecutor.IsInAction = false;
-
-			yield return null;
-		}
-
-		private static IEnumerator ScaleObjectCoroutine(dynamic obj, Vector3 finalScale, float duration)
-		{
-			// if (ScriptExecutor.IsInAction) yield break;
-			// ScriptExecutor.IsInAction = true;
-			//
-			// var currentScale = obj.transform.localScale;
-			// float counter = 0;
-			// while (counter < 1)
-			// {
-			// 	counter += Time.deltaTime / duration;
-			//
-			// 	obj.transform.localScale = Vector3.Lerp(currentScale, finalScale, counter);
-			// 	yield return null;
-			// }
-			//
-			// ScriptExecutor.IsInAction = false;
-			yield return null;
-		}
-
-		// smoothly change FoV of camera
-		private static IEnumerator ChangeFieldOfViewByValueCoroutine(Camera camera, float finalFoV, float duration)
-		{
-			// if (ScriptExecutor.IsInAction) yield break;
-			//
-			// ScriptExecutor.IsInAction = true;
-			//
-			// var currentFOV = camera.fieldOfView;
-			// float counter = 0;
-			// while (counter < duration)
-			// {
-			// 	counter += Time.deltaTime;
-			//
-			// 	camera.fieldOfView = Mathf.Lerp(currentFOV, finalFoV, counter / duration);
-			// 	yield return null;
-			// }
-			//
-			// ScriptExecutor.IsInAction = false;
-			yield return null;
-		}
 	}
 }

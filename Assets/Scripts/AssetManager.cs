@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Custom;
+﻿using Custom;
 using Instances;
 using UnityEngine;
 
@@ -31,7 +30,7 @@ public class AssetManager : Singleton<AssetManager>
 			{
 				var instantiatedReference = Instantiate(referencePrefab);
 				instantiatedReference.transform.position = _offset + new Vector3(0, 0, 100f);
-				instantiatedReference.tag = "ReferenceObject";
+				instantiatedReference.tag = Tags.ReferenceObject;
 				instantiatedReference.name = plainFigureName + Constants.FigureType.Reference;
 				instantiatedReference.transform.rotation = Quaternion.identity;
 				instantiatedReference.AddComponent<CustomDontDestroyOnLoad>();
@@ -42,7 +41,7 @@ public class AssetManager : Singleton<AssetManager>
 			if (figurePrefabInstallation != null)
 			{
 				var instantiatedFigure = Instantiate(figurePrefabInstallation);
-				instantiatedFigure.tag = "Figure";
+				instantiatedFigure.tag = Tags.Figure;
 				instantiatedFigure.name = plainFigureName + Constants.TaskType.Installation;
 				instantiatedFigure.transform.rotation = Quaternion.identity;
 				instantiatedFigure.transform.position = Vector3.zero;
@@ -52,7 +51,7 @@ public class AssetManager : Singleton<AssetManager>
 				{
 					if (child.name == instantiatedFigure.name) continue;
 
-					child.tag = "Object";
+					child.tag = Tags.Object;
 					var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
 					if (meshRenderer != null) meshRenderer.enabled = false;
 
@@ -97,7 +96,7 @@ public class AssetManager : Singleton<AssetManager>
 			if (figurePrefabRemoval != null)
 			{
 				var instantiatedFigure = Instantiate(figurePrefabRemoval);
-				instantiatedFigure.tag = "Figure";
+				instantiatedFigure.tag = Tags.Figure;
 				instantiatedFigure.name = plainFigureName + Constants.TaskType.Removal;
 				instantiatedFigure.transform.rotation = Quaternion.identity;
 				instantiatedFigure.transform.position = Vector3.zero;
@@ -107,7 +106,7 @@ public class AssetManager : Singleton<AssetManager>
 				{
 					if (child.name == instantiatedFigure.name) continue;
 
-					child.tag = "Object";
+					child.tag = Tags.Object;
 					var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
 					if (meshRenderer != null) meshRenderer.enabled = false;
 
@@ -152,7 +151,7 @@ public class AssetManager : Singleton<AssetManager>
 			if (ifmPrefab != null)
 			{
 				var instantiatedIfm = Instantiate(ifmPrefab);
-				instantiatedIfm.tag = "ReferenceObject";
+				instantiatedIfm.tag = Tags.ReferenceObject;
 				instantiatedIfm.name = plainFigureName + Constants.FigureType.Ifm;
 				instantiatedIfm.transform.rotation = Quaternion.identity;
 				instantiatedIfm.transform.position = Vector3.zero;
@@ -164,7 +163,7 @@ public class AssetManager : Singleton<AssetManager>
 			if (rfmPrefab != null)
 			{
 				var instantiatedRfm = Instantiate(rfmPrefab);
-				instantiatedRfm.tag = "ReferenceObject";
+				instantiatedRfm.tag = Tags.ReferenceObject;
 				instantiatedRfm.name = plainFigureName + Constants.FigureType.Rfm;
 				instantiatedRfm.transform.rotation = Quaternion.identity;
 				instantiatedRfm.transform.position = Vector3.zero;
@@ -176,7 +175,7 @@ public class AssetManager : Singleton<AssetManager>
 			if (scatteredPrefab != null)
 			{
 				var instantiatedScattered = Instantiate(scatteredPrefab);
-				instantiatedScattered.tag = "ReferenceObject";
+				instantiatedScattered.tag = Tags.ReferenceObject;
 				instantiatedScattered.name = plainFigureName + Constants.FigureType.Scattered;
 				instantiatedScattered.transform.rotation = Quaternion.identity;
 				instantiatedScattered.transform.position = Vector3.zero;
@@ -189,7 +188,7 @@ public class AssetManager : Singleton<AssetManager>
 
 	public void ResetFigures()
 	{
-		var figures = GameObject.FindGameObjectsWithTag("Figure");
+		var figures = GameObject.FindGameObjectsWithTag(Tags.Figure);
 
 		foreach (var figure in figures)
 		{
@@ -258,7 +257,7 @@ public class AssetManager : Singleton<AssetManager>
 		var taskType = ContextManager.GetTaskType(currentTask);
 		var plainFigureName = Helpers.GetCurrentFigurePlainName();
 
-		var figuresInScene = GameObject.FindGameObjectsWithTag("Figure");
+		var figuresInScene = GameObject.FindGameObjectsWithTag(Tags.Figure);
 		foreach (var figureInScene in figuresInScene)
 		{
 			if (taskType == Constants.TaskType.Installation)
@@ -299,7 +298,7 @@ public class AssetManager : Singleton<AssetManager>
 
 	public void HideAllFigures()
 	{
-		var figuresInScene = GameObject.FindGameObjectsWithTag("Figure");
+		var figuresInScene = GameObject.FindGameObjectsWithTag(Tags.Figure);
 		foreach (var figureInScene in figuresInScene)
 		foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>())
 			meshRenderer.enabled = false;

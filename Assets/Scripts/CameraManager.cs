@@ -14,9 +14,9 @@ public class CameraManager : Singleton<CameraManager>
 
 	private void Start()
 	{
-		_virtualCamera = GameObject.FindWithTag("VirtualCamera");
-		_figureFocusVirtualCamera = GameObject.FindWithTag("FigureFocusVirtualCamera");
-		_objectFocusVirtualCamera = GameObject.FindWithTag("ObjectFocusVirtualCamera");
+		_virtualCamera = GameObject.FindWithTag(Tags.VirtualCamera);
+		_figureFocusVirtualCamera = GameObject.FindWithTag(Tags.FigureFocusVirtualCamera);
+		_objectFocusVirtualCamera = GameObject.FindWithTag(Tags.ObjectFocusVirtualCamera);
 	}
 
 	public IEnumerator UpdateVirtualCameraTargetCoroutine(GameObject target)
