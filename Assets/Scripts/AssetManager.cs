@@ -204,7 +204,7 @@ public class AssetManager : Singleton<AssetManager>
 		if (transformReferenceFigure == null) return;
 
 		figure.transform.position = Vector3.zero;
-		figure.transform.rotation = transformReferenceFigure.rotation;
+		figure.transform.rotation = Quaternion.identity;
 		figure.transform.localScale = transformReferenceFigure.localScale;
 
 		foreach (var child in figure.GetComponentsInChildren<Transform>())

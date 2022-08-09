@@ -385,14 +385,11 @@ public class UIManager : Singleton<UIManager>
 				throw new ArgumentOutOfRangeException(nameof(type), type, null);
 		}
 
-		if (task != null && subtask != null)
-		{
-			var figurePlainName = Helpers.GetCurrentFigurePlainName();
-			var taskType = ContextManager.GetTaskType(task);
+		var figurePlainName = Helpers.GetCurrentFigurePlainName();
+		var taskType = ContextManager.GetTaskType(ContextManager.Instance.CurrentTask);
 
-			var figure = GameObject.Find(figurePlainName + taskType);
-			AssetManager.Instance.ResetFigure(figure);
-		}
+		var figure = GameObject.Find(figurePlainName + taskType);
+		AssetManager.Instance.ResetFigure(figure);
 
 		SceneManager.Instance.LoadScene(SceneManager.MainSceneNameGlobal);
 	}

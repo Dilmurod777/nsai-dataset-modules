@@ -67,6 +67,12 @@ namespace Catalogs
 			if (dataObject == null) return "";
 
 			string result = dataObject[attr];
+
+			if (attr == "figure" && string.IsNullOrEmpty(result))
+			{
+				return ContextManager.Instance.CurrentTask.TaskId;
+			}
+			
 			return result;
 		}
 
