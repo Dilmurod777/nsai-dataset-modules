@@ -37,6 +37,9 @@ public static class Tags
 	public const string Figure = "Figure";
 	public const string Object = "Object";
 	public const string ReferenceObject = "ReferenceObject";
+	public const string CloneObject = "CloneObject";
+
+	public const string Grid = "Grid";
 
 	public const string KnowledgeContent = "KnowledgeContent";
 	public const string QueriesContent = "QueriesContent";

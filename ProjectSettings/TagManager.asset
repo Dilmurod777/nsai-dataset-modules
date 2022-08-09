@@ -27,6 +27,8 @@ TagManager:
   - QueryPlayButton
   - FigureFocusVirtualCamera
   - ObjectFocusVirtualCamera
+  - CloneObject
+  - Grid
   layers:
   - Default
   - TransparentFX

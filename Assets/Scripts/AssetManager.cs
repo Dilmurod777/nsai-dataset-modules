@@ -326,4 +326,19 @@ public class AssetManager : Singleton<AssetManager>
         foreach (var meshRenderer in figureInScene.GetComponentsInChildren<MeshRenderer>())
             meshRenderer.enabled = false;
     }
+
+    public void CreateCloneObject(GameObject obj)
+    {
+        var gridGameObject = GameObject.FindWithTag(Tags.Grid);
+        if (!gridGameObject) return;
+
+        const float scale = 0.15f;
+        var position = new Vector3(0, 0, gridGameObject.transform.childCount * scale);
+        
+        var cloneObject = Instantiate(obj, gridGameObject.transform);
+        cloneObject.tag = Tags.CloneObject;
+        cloneObject.GetComponent<MeshRenderer>().enabled = true;
+        cloneObject.transform.rotation = obj.transform.rotation;
+        cloneObject.transform.position = position;
+    }
 }

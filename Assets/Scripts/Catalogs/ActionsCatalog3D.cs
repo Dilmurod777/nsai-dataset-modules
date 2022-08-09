@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Custom;
-using Instances;
 using UnityEngine;
+using Action = Instances.Action;
 
 namespace Catalogs
 {
@@ -298,13 +299,14 @@ namespace Catalogs
 
         public void CloseLook(string args)
         {
+            Debug.Log("CloseLook: " + args);
             var argsList = args.Split(Constants.ArgsSeparator);
             var objs = ContextManager.Instance.GetAttribute<List<GameObject>>(argsList[0]);
             if (objs == null || objs.Count == 0) return;
 
             CloseLookFunctionality(objs);
 
-            // var objNames = objs.Select(obj => obj.name).ToList();
+            QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
         public void Animate(string args)
@@ -516,50 +518,19 @@ namespace Catalogs
 
         private void CloseLookFunctionality(List<GameObject> objs)
         {
-            // var parentFigure = objs[0].transform.parent.gameObject;
-            // var cloneObjects = new List<GameObject>();
-            //
-            // void CreateCloneObjects()
-            // {
-            // 	for (var i = 0; i < parentFigure.transform.childCount; i++)
-            // 	{
-            // 		var child = parentFigure.transform.GetChild(i);
-            // 		child.GetComponent<MeshRenderer>().enabled = false;
-            // 	}
-            //
-            // 	foreach (var obj in objs)
-            // 	{
-            // 		var cloneObject = Instantiate(obj);
-            // 		cloneObject.tag = "CloneObject";
-            // 		cloneObject.GetComponent<MeshRenderer>().enabled = true;
-            // 		cloneObject.transform.rotation = parentFigure.transform.rotation;
-            // 		cloneObject.transform.position = parentFigure.transform.position;
-            // 		cloneObjects.Add(cloneObject);
-            // 	}
-            // }
-            //
-            // void MoveCloneObjects()
-            // {
-            // 	var coroutines = new List<IEnumerator>();
-            // 	var width = Math.Max(20, 5 * cloneObjects.Count);
-            // 	for (var i = 0; i < cloneObjects.Count; i++)
-            // 	{
-            // 		coroutines.Add(MoveObjectCoroutine(cloneObjects[i],
-            // 			new Vector3((i + 1) * width / (cloneObjects.Count + 1) - width / 2, 5.0f, 0), 0.2f));
-            // 	}
-            //
-            // 	StartCoroutine(Sequence(coroutines));
-            // }
+            AssetManager.Instance.HideAllFigures();
+            
+            foreach (var obj in objs)
+            {
+                AssetManager.Instance.CreateCloneObject(obj);
+            }
 
-            // Attributes attributes = Context.Instance.InitialAttributes[parentFigure.name];
-            // var coroutines = new List<IEnumerator>
-            // {
-            // 	ResetObjectCoroutine(parentFigure, attributes, 0.2f),
-            // 	DelayCoroutine(0.2f, CreateCloneObjects),
-            // 	DelayCoroutine(0.2f, MoveCloneObjects)
-            // };
+            var cloneObjects = GameObject.FindGameObjectsWithTag(Tags.CloneObject);
+            var midObject = cloneObjects[Mathf.RoundToInt(cloneObjects.Length / 2.0f)];
 
-            // StartCoroutine(Sequence(coroutines));
+            var grid = GameObject.FindWithTag(Tags.Grid);
+            
+            QueryExecutor.Instance.RunCoroutine(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(grid));
         }
     }
 }
