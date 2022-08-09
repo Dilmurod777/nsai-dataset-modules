@@ -321,6 +321,7 @@ namespace Catalogs
             {
                 infiniteRotationComponent = fig.AddComponent<InfiniteRotation>();
             }
+
             infiniteRotationComponent.Speed = 25.0f;
             infiniteRotationComponent.enabled = state == "on";
 
@@ -329,6 +330,7 @@ namespace Catalogs
 
         public void Visibility(string args)
         {
+            Debug.Log("Visibility: " + args);
             var argsList = args.Split(Constants.ArgsSeparator);
             var objs = ContextManager.Instance.GetAttribute<List<GameObject>>(argsList[1]);
             if (objs == null || objs.Count == 0) return;
@@ -337,10 +339,28 @@ namespace Catalogs
 
             foreach (var obj in objs)
             {
-                obj.GetComponent<MeshRenderer>().enabled = state == "on";
+                if (obj.CompareTag(Tags.Figure))
+                {
+                    foreach (var child in obj.GetComponentsInChildren<Transform>())
+                    {
+                        var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
+                        if (meshRenderer != null)
+                        {
+                            meshRenderer.enabled = state == "on";
+                        }
+                    }
+                }
+                else
+                {
+                    var meshRenderer = obj.gameObject.GetComponent<MeshRenderer>();
+                    if (meshRenderer != null)
+                    {
+                        meshRenderer.enabled = state == "on";
+                    }
+                }
             }
 
-            // var objNames = objs.Select(obj => obj.name).ToList();
+            QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
         public List<Action> CreateActions(string args)
