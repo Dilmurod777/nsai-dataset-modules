@@ -13,9 +13,14 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		yield return null;
 	}
 
-	public static IEnumerator DelayPrimitive(float seconds)
+	public static IEnumerator DelayPrimitive(float seconds, Constants.FunctionDelegate callback = null)
 	{
 		yield return new WaitForSeconds(seconds);
+
+		if (callback == null) yield break;
+		
+		callback();
+		yield return null;
 	}
 
 	public IEnumerator CreateRotatePrimitives(GameObject objA)

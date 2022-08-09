@@ -28,22 +28,6 @@ namespace Catalogs
 
     public class ActionsCatalog3D : IActionsCatalog3DInterface
     {
-        // private IEnumerator Sequence(List<IEnumerator> coroutines, float delay = 0.0f)
-        // {
-        // 	yield return new WaitForSeconds(delay);
-        // 	foreach (var c in coroutines) yield return StartCoroutine(c);
-        // }
-        //
-        // private static void DestroyCloneObjects()
-        // {
-        // 	var cloneObjects = GameObject.FindGameObjectsWithTag("CloneObject");
-        //
-        // 	foreach (var cloneObj in cloneObjects)
-        // 	{
-        // 		Destroy(cloneObj);
-        // 	}
-        // }
-
         public List<GameObject> Filter3DAttr(string args)
         {
             Debug.Log("Filter3DAttr: " + args);
@@ -188,6 +172,7 @@ namespace Catalogs
 
         public void Scale(string args)
         {
+            Debug.Log("Scale: " + args);
             var argsList = args.Split(Constants.ArgsSeparator);
             var obj = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
             if (obj == null) return;
@@ -209,18 +194,19 @@ namespace Catalogs
             var finalScale = new Vector3(currentLocalScaleX * change, currentLocalScaleY * change,
                 currentLocalScaleZ * change);
 
-            QueryExecutor.Instance.StartCoroutine(Robot.Instance.Scale(obj, finalScale));
+            QueryExecutor.Instance.RunCoroutine(Robot.Instance.Scale(obj, finalScale));
         }
 
         public void Reset(string args)
         {
+            Debug.Log("Reset: " + args);
             var argsList = args.Split(Constants.ArgsSeparator);
-            // var state = argsList[0];
 
-            var obj = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
+            var obj = ContextManager.Instance.GetAttribute<GameObject>(argsList[0]);
             if (obj == null) return;
 
             AssetManager.Instance.ResetFigure(obj);
+            QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
         public void Highlight(string args)
@@ -257,6 +243,7 @@ namespace Catalogs
 
         public void ShowSide(string args)
         {
+            Debug.Log("Show side: " + args);
             var argsList = args.Split(Constants.ArgsSeparator);
             var obj = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
             if (obj == null) return;
@@ -322,43 +309,22 @@ namespace Catalogs
 
         public void Animate(string args)
         {
-            // var argsList = args.Split(Constants.ArgsSeparator);
-            // var fig = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
-            // if (fig == null) return;
+            Debug.Log("Animate: " + args);
+            var argsList = args.Split(Constants.ArgsSeparator);
+            var fig = ContextManager.Instance.GetAttribute<GameObject>(argsList[1]);
+            if (fig == null) return;
 
-            // var state = argsList[0];
-            // Attributes attributes = Context.Instance.InitialAttributes[fig.name];
-            //
-            // void StartAnimatingFigure()
-            // {
-            // 	var infiniteRotationComponent = fig.GetComponent<InfiniteRotation>();
-            // 	if (infiniteRotationComponent == null)
-            // 	{
-            // 		infiniteRotationComponent = fig.AddComponent<InfiniteRotation>();
-            // 		infiniteRotationComponent.SetSpeed(25.0f);
-            // 	}
-            // }
-            //
-            // void StopAnimatingFigure()
-            // {
-            // 	var infiniteRotationComponent = fig.GetComponent<InfiniteRotation>();
-            // 	if (infiniteRotationComponent != null)
-            // 	{
-            // 		Destroy(infiniteRotationComponent);
-            // 	}
-            //
-            // 	StartCoroutine(ResetObjectCoroutine(fig, attributes, 1.0f));
-            // }
+            var state = argsList[0];
 
-            // var infiniteRotationComponent = fig.GetComponent<InfiniteRotation>();
-            // if (infiniteRotationComponent == null && state == "on")
-            // {
-            // 	StartCoroutine(ResetObjectCoroutine(fig, attributes, 1.0f));
-            // }
-            //
-            // StartCoroutine(state == "on"
-            // 	? DelayCoroutine(1.0f, StartAnimatingFigure)
-            // 	: DelayCoroutine(1.0f, StopAnimatingFigure));
+            var infiniteRotationComponent = fig.GetComponent<InfiniteRotation>();
+            if (infiniteRotationComponent == null)
+            {
+                infiniteRotationComponent = fig.AddComponent<InfiniteRotation>();
+            }
+            infiniteRotationComponent.Speed = 25.0f;
+            infiniteRotationComponent.enabled = state == "on";
+
+            QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
         public void Visibility(string args)
@@ -379,6 +345,7 @@ namespace Catalogs
 
         public List<Action> CreateActions(string args)
         {
+            Debug.Log("CreateActions: " + args);
             var argsList = args.Split(Constants.ArgsSeparator);
             var actionType = argsList[0];
             var refSpecified = argsList[1]; // always true for now
@@ -574,54 +541,5 @@ namespace Catalogs
 
             // StartCoroutine(Sequence(coroutines));
         }
-
-        // private static IEnumerator ResetObjectCoroutine(GameObject obj, Attributes attributes, float duration)
-        // {
-        // 	if (ScriptExecutor.IsInAction) yield break;
-        // 	ScriptExecutor.IsInAction = true;
-        //
-        // 	var currentRot = obj.transform.rotation;
-        // 	var currentScale = obj.transform.localScale;
-        //
-        // 	var infiniteRotationComponent = obj.GetComponent<InfiniteRotation>();
-        // 	if (infiniteRotationComponent != null)
-        // 	{
-        // 		Destroy(infiniteRotationComponent);
-        // 	}
-        //
-        // 	DestroyCloneObjects();
-        //
-        // 	foreach (var o in obj.transform.GetComponentsInChildren<Transform>())
-        // 	{
-        // 		var oTransform = o.transform;
-        // 		var meshRenderer = o.GetComponent<MeshRenderer>();
-        // 		if (meshRenderer != null)
-        // 		{
-        // 			o.GetComponent<MeshRenderer>().enabled = true;
-        // 		}
-        //
-        // 		if (Context.Instance.InitialAttributes.ContainsKey(obj.name + GeneralConstants.ArgsSeparator + o.name))
-        // 		{
-        // 			var attr = Context.Instance.InitialAttributes[obj.name + GeneralConstants.ArgsSeparator + o.name];
-        // 			oTransform.rotation = attr.Rotation;
-        // 			oTransform.position = attr.Position;
-        // 			oTransform.localScale = attr.Scale;
-        // 		}
-        //
-        // 		o.transform.parent = obj.transform;
-        // 	}
-        //
-        // 	float counter = 0;
-        // 	while (counter < 1)
-        // 	{
-        // 		counter += Time.deltaTime / duration;
-        //
-        // 		obj.transform.rotation = Quaternion.Lerp(currentRot, attributes.Rotation, counter);
-        // 		obj.transform.localScale = Vector3.Lerp(currentScale, attributes.Scale, counter);
-        // 		obj.transform.position = Vector3.Lerp(obj.transform.position, attributes.Position, counter);
-        //
-        // 		yield return null;
-        // 	}
-        // }
     }
 }
