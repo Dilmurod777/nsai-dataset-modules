@@ -282,6 +282,7 @@ namespace Catalogs
 
         public void SideBySideLook(string args)
         {
+            Debug.Log("SideBySideLook: " + args);
             var argsList = args.Split(' ');
             var fig = ContextManager.Instance.GetAttribute<GameObject>(argsList[0]);
             if (fig == null) return;
@@ -294,7 +295,7 @@ namespace Catalogs
 
             CloseLookFunctionality(objs);
 
-            // var objNames = objs.Select(obj => obj.name).ToList();
+            QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
         public void CloseLook(string args)
@@ -475,18 +476,23 @@ namespace Catalogs
             var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameA);
             var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameB);
 
+            if (attachingObj == null)
+            {
+                var attachingObjReference = Helpers.FindObjectInFigure(Constants.FigureType.Rfm, nameA);
+
+                attachingObj = AssetManager.Instance.CreateCloneObject(attachingObjReference, referenceObj.transform.parent.gameObject,
+                    Tags.CloneObject, false, true, true, true, true);
+            }
+
             if (attachingObj.transform.childCount > 0)
             {
-                primitives.Add(
-                    CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0)
-                        .gameObject));
+                primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0).name));
                 primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
-                primitives.Add(
-                    PrimitiveManager.Instance.GetAttachPrimitivesForChildren(attachingObj, referenceObj));
+                primitives.Add(PrimitiveManager.Instance.GetAttachPrimitivesForChildren(nameA, nameB));
             }
             else
             {
-                primitives.Add(PrimitiveManager.Instance.GetAttachPrimitivesForParent(attachingObj, referenceObj));
+                primitives.Add(PrimitiveManager.Instance.GetAttachPrimitivesForParent(nameA, nameB));
             }
 
             return primitives;
@@ -502,8 +508,7 @@ namespace Catalogs
             if (attachingObj.transform.childCount > 0)
             {
                 primitives.Add(
-                    CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0)
-                        .gameObject));
+                    CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0).name));
                 primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
                 primitives.Add(
                     PrimitiveManager.Instance.GetDetachPrimitivesForChildren(attachingObj, referenceObj));
@@ -519,18 +524,16 @@ namespace Catalogs
         private void CloseLookFunctionality(List<GameObject> objs)
         {
             AssetManager.Instance.HideAllFigures();
-            
-            foreach (var obj in objs)
-            {
-                AssetManager.Instance.CreateCloneObject(obj);
-            }
-
-            var cloneObjects = GameObject.FindGameObjectsWithTag(Tags.CloneObject);
-            var midObject = cloneObjects[Mathf.RoundToInt(cloneObjects.Length / 2.0f)];
 
             var grid = GameObject.FindWithTag(Tags.Grid);
-            
-            QueryExecutor.Instance.RunCoroutine(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(grid));
+            if (grid == null) return;
+
+            foreach (var obj in objs)
+            {
+                AssetManager.Instance.CreateCloneObject(obj, grid);
+            }
+
+            QueryExecutor.Instance.RunCoroutine(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(grid.name));
         }
     }
 }

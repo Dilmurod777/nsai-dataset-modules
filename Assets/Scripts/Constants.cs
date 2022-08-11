@@ -15,8 +15,7 @@ public static class Constants
 		Current,
 		Ifm,
 		Rfm,
-		Reference,
-		Scattered
+		Reference
 	}
 
 	public enum TaskType

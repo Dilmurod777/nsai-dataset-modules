@@ -7,8 +7,6 @@ public class AssetManager : Singleton<AssetManager>
     public Material inProgressMaterial;
     public Material tempMaterial;
 
-    private readonly Vector3 _offset = new Vector3(-60.7f, -20.4f, 36.9f);
-
     public void UpdateAssets()
     {
         var task = ContextManager.Instance.CurrentTask;
@@ -18,27 +16,22 @@ public class AssetManager : Singleton<AssetManager>
         {
             var plainFigureName = Helpers.GetCurrentFigurePlainName();
 
-            var figurePrefabInstallation = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" +
-                                                                      plainFigureName + "/" +
-                                                                      Constants.FigureType.Scattered);
-            var figurePrefabRemoval = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName +
-                                                                 "/" + Constants.FigureType.Ifm);
+            var figurePrefabInstallation =
+                Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Reference);
+            var figurePrefabRemoval =
+                Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Ifm);
 
-            var ifmPrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" +
-                                                       Constants.FigureType.Ifm);
-            var rfmPrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" +
-                                                       Constants.FigureType.Rfm);
-            var referencePrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" +
-                                                             Constants.FigureType.Reference);
-            var scatteredPrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" +
-                                                             Constants.FigureType.Scattered);
+            var ifmPrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Ifm);
+            var rfmPrefab = Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Rfm);
+            var referencePrefab =
+                Resources.Load<GameObject>(Constants.ModelPrefabFolder + "/" + plainFigureName + "/" + Constants.FigureType.Reference);
 
             if (referencePrefab != null)
             {
                 var instantiatedReference = Instantiate(referencePrefab);
-                instantiatedReference.transform.position = _offset + new Vector3(0, 0, 100f);
                 instantiatedReference.tag = Tags.ReferenceObject;
                 instantiatedReference.name = plainFigureName + Constants.FigureType.Reference;
+                instantiatedReference.transform.position = Vector3.zero;
                 instantiatedReference.transform.rotation = Quaternion.identity;
                 instantiatedReference.AddComponent<CustomDontDestroyOnLoad>();
 
@@ -60,44 +53,12 @@ public class AssetManager : Singleton<AssetManager>
                     if (child.name == instantiatedFigure.name) continue;
 
                     child.tag = Tags.Object;
-                    var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
-                    if (meshRenderer != null) meshRenderer.enabled = false;
+                    var objectMeta = child.GetComponent<ObjectMeta>();
 
-                    var referenceChild = Helpers.FindObjectInFigure(Constants.FigureType.Reference, child.name);
+                    if (objectMeta == null) continue;
+                    if (objectMeta.status == ObjectMeta.Status.Attached || objectMeta.isCoreInFigure) continue;
 
-                    if (referenceChild != null)
-                    {
-                        var childObjectMeta = child.GetComponent<ObjectMeta>();
-
-                        if (childObjectMeta == null)
-                        {
-                            var referenceObjectMeta = referenceChild.GetComponent<ObjectMeta>();
-                            if (referenceObjectMeta != null)
-                            {
-                                childObjectMeta = child.gameObject.AddComponent<ObjectMeta>();
-                                childObjectMeta.attachType = referenceObjectMeta.attachType;
-                                childObjectMeta.detachType = referenceObjectMeta.detachType;
-                                childObjectMeta.attachRotationAxis = referenceObjectMeta.attachRotationAxis;
-                                childObjectMeta.dettachRotationAxis = referenceObjectMeta.dettachRotationAxis;
-                                childObjectMeta.status = referenceObjectMeta.status;
-                                childObjectMeta.isCoreInFigure = referenceObjectMeta.isCoreInFigure;
-                            }
-                        }
-
-                        var boxCollider = child.GetComponent<BoxCollider>();
-                        if (boxCollider == null)
-                        {
-                            var referenceBoxCollider = referenceChild.GetComponent<BoxCollider>();
-
-                            if (referenceBoxCollider != null)
-                            {
-                                boxCollider = child.gameObject.AddComponent<BoxCollider>();
-                                boxCollider.isTrigger = referenceBoxCollider.isTrigger;
-                                boxCollider.center = referenceBoxCollider.center;
-                                boxCollider.size = referenceBoxCollider.size;
-                            }
-                        }
-                    }
+                    Destroy(child.gameObject);
                 }
             }
 
@@ -181,19 +142,6 @@ public class AssetManager : Singleton<AssetManager>
                 foreach (var meshRenderer in instantiatedRfm.GetComponentsInChildren<MeshRenderer>())
                     meshRenderer.enabled = false;
             }
-
-            if (scatteredPrefab != null)
-            {
-                var instantiatedScattered = Instantiate(scatteredPrefab);
-                instantiatedScattered.tag = Tags.ReferenceObject;
-                instantiatedScattered.name = plainFigureName + Constants.FigureType.Scattered;
-                instantiatedScattered.transform.rotation = Quaternion.identity;
-                instantiatedScattered.transform.position = Vector3.zero;
-                instantiatedScattered.AddComponent<CustomDontDestroyOnLoad>();
-
-                foreach (var meshRenderer in instantiatedScattered.GetComponentsInChildren<MeshRenderer>())
-                    meshRenderer.enabled = false;
-            }
         }
     }
 
@@ -236,12 +184,7 @@ public class AssetManager : Singleton<AssetManager>
 
 
             var referenceChild = Helpers.FindObjectInFigure(Constants.FigureType.Reference, child.name);
-            var transformReference = Helpers
-                .FindObjectInFigure(
-                    figure.name == plainFigureName + Constants.TaskType.Installation
-                        ? Constants.FigureType.Scattered
-                        : Constants.FigureType.Ifm, child.name)
-                .transform;
+            var transformReference = Helpers.FindObjectInFigure(Constants.FigureType.Ifm, child.name).transform;
 
             child.position = transformReference.position;
             child.rotation = transformReference.rotation;
@@ -266,6 +209,10 @@ public class AssetManager : Singleton<AssetManager>
                     objectMeta.dettachRotationAxis = referenceObjectMeta.dettachRotationAxis;
                     objectMeta.status = referenceObjectMeta.status;
                     objectMeta.isCoreInFigure = referenceObjectMeta.isCoreInFigure;
+
+                    if (!figure.name.Contains(Constants.TaskType.Installation.ToString())) continue;
+                    if (objectMeta.isCoreInFigure || objectMeta.status == ObjectMeta.Status.Attached) continue;
+                    Destroy(child.gameObject);
                 }
             }
         }
@@ -327,18 +274,56 @@ public class AssetManager : Singleton<AssetManager>
             meshRenderer.enabled = false;
     }
 
-    public void CreateCloneObject(GameObject obj)
+    public GameObject CreateCloneObject(GameObject obj, GameObject parent, string cloneTag = Tags.CloneObject, bool isEnabled = true,
+        bool isPositionInherited = false, bool isRotationInherited = true, bool isObjectMetaInherited = false, bool isColliderInherited = false)
     {
-        var gridGameObject = GameObject.FindWithTag(Tags.Grid);
-        if (!gridGameObject) return;
-
         const float scale = 0.15f;
-        var position = new Vector3(0, 0, gridGameObject.transform.childCount * scale);
-        
-        var cloneObject = Instantiate(obj, gridGameObject.transform);
-        cloneObject.tag = Tags.CloneObject;
-        cloneObject.GetComponent<MeshRenderer>().enabled = true;
-        cloneObject.transform.rotation = obj.transform.rotation;
+        var position = new Vector3(0, 0, parent.transform.childCount * scale);
+        var rotation = Quaternion.identity;
+
+        if (isPositionInherited) position = obj.transform.position;
+        if (isRotationInherited) rotation = obj.transform.rotation;
+
+        var cloneObject = Instantiate(obj, parent.transform);
+        cloneObject.tag = cloneTag;
+        cloneObject.transform.rotation = rotation;
         cloneObject.transform.position = position;
+
+        var meshRenderer = cloneObject.GetComponent<MeshRenderer>();
+        if (meshRenderer == null) return cloneObject;
+        cloneObject.GetComponent<MeshRenderer>().enabled = isEnabled;
+
+        var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Reference, obj.name);
+
+        if (isObjectMetaInherited)
+        {
+            var objectMeta = cloneObject.AddComponent<ObjectMeta>();
+            var referenceObjectMeta = referenceObj.GetComponent<ObjectMeta>();
+
+            if (referenceObjectMeta)
+            {
+                objectMeta.status = referenceObjectMeta.status;
+                objectMeta.attachType = referenceObjectMeta.attachType;
+                objectMeta.detachType = referenceObjectMeta.detachType;
+                objectMeta.attachRotationAxis = referenceObjectMeta.attachRotationAxis;
+                objectMeta.dettachRotationAxis = referenceObjectMeta.dettachRotationAxis;
+                objectMeta.isCoreInFigure = referenceObjectMeta.isCoreInFigure;
+            }
+        }
+
+        if (isColliderInherited)
+        {
+            var boxCollider = cloneObject.AddComponent<BoxCollider>();
+            var referenceBoxCollider = referenceObj.GetComponent<BoxCollider>();
+
+            if (referenceBoxCollider)
+            {
+                boxCollider.center = referenceBoxCollider.center;
+                boxCollider.size = referenceBoxCollider.size;
+                boxCollider.isTrigger = referenceBoxCollider.isTrigger;
+            }
+        }
+
+        return cloneObject;
     }
 }

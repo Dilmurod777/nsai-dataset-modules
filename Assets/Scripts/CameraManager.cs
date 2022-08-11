@@ -19,8 +19,9 @@ public class CameraManager : Singleton<CameraManager>
 		_objectFocusVirtualCamera = GameObject.FindWithTag(Tags.ObjectFocusVirtualCamera);
 	}
 
-	public IEnumerator UpdateVirtualCameraTargetCoroutine(GameObject target)
+	public IEnumerator UpdateVirtualCameraTargetCoroutine(string objName)
 	{
+		var target = Helpers.FindObjectInFigure(Constants.FigureType.Current, objName);
 		yield return _currentFocusingGameObject = target;
 
 		var vcComponent = _virtualCamera.GetComponent<CinemachineVirtualCamera>();

@@ -117,10 +117,8 @@ public class ContextManager : Singleton<ContextManager>
 			}
 		}
 
-		var figurePlanName = Helpers.GetCurrentFigurePlainName();
 		var task = Instance.CurrentTask;
 		var taskType = GetTaskType(task);
-		var figure = GameObject.Find(figurePlanName + taskType);
 
 		foreach (var previousInstruction in previousInstructions)
 		{
@@ -131,9 +129,9 @@ public class ContextManager : Singleton<ContextManager>
 				var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, action.Components[0]);
 				var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, "core");
 				var ifmAttachingObj =
-					Helpers.FindObjectInFigure(taskType == Constants.TaskType.Installation ? Constants.FigureType.Ifm : Constants.FigureType.Scattered, action.Components[0]);
+					Helpers.FindObjectInFigure(taskType == Constants.TaskType.Installation ? Constants.FigureType.Ifm : Constants.FigureType.Reference, action.Components[0]);
 				var ifmReferenceObj =
-					Helpers.FindObjectInFigure(taskType == Constants.TaskType.Installation ? Constants.FigureType.Ifm : Constants.FigureType.Scattered, "core");
+					Helpers.FindObjectInFigure(taskType == Constants.TaskType.Installation ? Constants.FigureType.Ifm : Constants.FigureType.Reference, "core");
 
 				if (attachingObj.transform.childCount > 0)
 				{
