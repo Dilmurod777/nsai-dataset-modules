@@ -94,7 +94,7 @@ public class CameraManager : Singleton<CameraManager>
 		var oldOffset = vcComponent.GetComponent<CinemachineCameraOffset>().m_Offset;
 		vcComponent.GetComponent<CinemachineCameraOffset>().m_Offset = new Vector3(oldOffset.x, oldOffset.y, newOffsetZ);
 
-		Invoke(nameof(SwitchToObjectFocusVirtualCamera), 2.0f);
+		// Invoke(nameof(SwitchToObjectFocusVirtualCamera), 2.0f);
 
 		yield return null;
 	}

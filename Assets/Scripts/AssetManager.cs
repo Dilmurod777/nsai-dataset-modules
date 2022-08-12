@@ -76,9 +76,6 @@ public class AssetManager : Singleton<AssetManager>
                     if (child.name == instantiatedFigure.name) continue;
 
                     child.tag = Tags.Object;
-                    var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
-                    if (meshRenderer != null) meshRenderer.enabled = false;
-
 
                     var referenceChild = Helpers.FindObjectInFigure(Constants.FigureType.Reference, child.name);
 
@@ -157,6 +154,8 @@ public class AssetManager : Singleton<AssetManager>
 
     public void ResetFigure(GameObject figure)
     {
+        var task = ContextManager.Instance.CurrentTask;
+        var taskType = ContextManager.GetTaskType(task);
         var plainFigureName = Helpers.GetCurrentFigurePlainName();
         var transformReferenceFigure = GameObject.Find(plainFigureName + Constants.FigureType.Reference)?.transform;
 
@@ -212,13 +211,13 @@ public class AssetManager : Singleton<AssetManager>
 
                     if (!figure.name.Contains(Constants.TaskType.Installation.ToString())) continue;
                     if (objectMeta.isCoreInFigure || objectMeta.status == ObjectMeta.Status.Attached) continue;
-                    Destroy(child.gameObject);
+                    if (taskType == Constants.TaskType.Installation) Destroy(child.gameObject);
                 }
             }
         }
     }
 
-    public void ShowCurrentFigure()
+    public GameObject GetCurrentFigure()
     {
         var currentTask = ContextManager.Instance.CurrentTask;
         var taskType = ContextManager.GetTaskType(currentTask);
@@ -230,37 +229,41 @@ public class AssetManager : Singleton<AssetManager>
             if (taskType == Constants.TaskType.Installation)
                 if (figureInScene.name == plainFigureName + Constants.TaskType.Installation)
                 {
-                    for (var i = 0; i < figureInScene.transform.childCount; i++)
-                    {
-                        var objectMeta = figureInScene.transform.GetChild(i).gameObject.GetComponent<ObjectMeta>();
-
-                        if (objectMeta != null && objectMeta.isCoreInFigure)
-                            CameraManager.Instance.FocusOnFigure(figureInScene.transform.GetChild(i).gameObject);
-
-                        var meshRenderer = figureInScene.transform.GetChild(i).GetComponent<MeshRenderer>();
-                        if (meshRenderer != null)
-                            meshRenderer.enabled = objectMeta.status == ObjectMeta.Status.Attached;
-                    }
-
-                    break;
+                    return figureInScene;
                 }
 
             if (taskType == Constants.TaskType.Removal)
                 if (figureInScene.name == plainFigureName + Constants.TaskType.Removal)
                 {
-                    foreach (var child in figureInScene.GetComponentsInChildren<Transform>())
-                    {
-                        var objectMeta = child.gameObject.GetComponent<ObjectMeta>();
-
-                        if (objectMeta && objectMeta.isCoreInFigure)
-                            CameraManager.Instance.FocusOnFigure(child.gameObject);
-
-                        var meshRenderer = child.GetComponent<MeshRenderer>();
-                        if (meshRenderer) meshRenderer.enabled = true;
-                    }
-
-                    break;
+                    return figureInScene;
                 }
+        }
+
+        return null;
+    }
+
+    public void ShowCurrentFigure()
+    {
+        var currentFigure = GetCurrentFigure();
+        var task = ContextManager.Instance.CurrentTask;
+        var taskType = ContextManager.GetTaskType(task);
+
+        if (currentFigure != null)
+        {
+            foreach (var child in currentFigure.GetComponentsInChildren<Transform>())
+            {
+                var objectMeta = child.gameObject.GetComponent<ObjectMeta>();
+
+                if (objectMeta == null) continue;
+
+                if (objectMeta.isCoreInFigure)
+                    CameraManager.Instance.FocusOnFigure(child.gameObject);
+
+                var meshRenderer = child.gameObject.GetComponent<MeshRenderer>();
+                if (meshRenderer == null) continue;
+
+                meshRenderer.enabled = true;
+            }
         }
 
         ContextManager.Instance.ExecutePreviousInstructions(ContextManager.Instance.CurrentInstruction);
@@ -286,6 +289,7 @@ public class AssetManager : Singleton<AssetManager>
 
         var cloneObject = Instantiate(obj, parent.transform);
         cloneObject.tag = cloneTag;
+        cloneObject.name = obj.name;
         cloneObject.transform.rotation = rotation;
         cloneObject.transform.position = position;
 

@@ -120,13 +120,13 @@ namespace Catalogs
             var allFigures = new List<GameObject>();
             if (parent == null)
             {
-                allFigures = GameObject.FindGameObjectsWithTag(Tags.Figure).ToList();
+                allFigures.AddRange(GameObject.FindGameObjectsWithTag(Tags.Figure).ToList());
             }
             else
             {
-                allFigures = parent.GetComponentsInChildren<Transform>()
+                allFigures.AddRange(parent.GetComponentsInChildren<Transform>()
                     .Where(obj => obj.CompareTag(Tags.Figure))
-                    .Select(obj => obj.gameObject).ToList();
+                    .Select(obj => obj.gameObject).ToList());
             }
 
             var foundFigs = new List<GameObject>();
@@ -476,6 +476,15 @@ namespace Catalogs
             var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameA);
             var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameB);
 
+            if (referenceObj == null)
+            {
+                var referenceObjReference = Helpers.FindObjectInFigure(Constants.FigureType.Ifm, nameB);
+                var currentFigure = AssetManager.Instance.GetCurrentFigure();
+                
+                referenceObj = AssetManager.Instance.CreateCloneObject(referenceObjReference, currentFigure,
+                    Tags.CloneObject, false, true, true, true, true);
+            }
+            
             if (attachingObj == null)
             {
                 var attachingObjReference = Helpers.FindObjectInFigure(Constants.FigureType.Rfm, nameA);

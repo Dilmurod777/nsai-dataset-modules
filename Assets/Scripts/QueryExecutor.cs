@@ -57,17 +57,6 @@ public class QueryExecutor : Singleton<QueryExecutor>
             UIManager.Instance.UpdateUI();
         }));
 
-        StartCoroutine(Sequence(finalList));
-    }
-
-    private IEnumerator Sequence(List<IEnumerator> list)
-    {
-        foreach (var c in list)
-        {
-            if (c == null) continue;
-            yield return StartCoroutine(c);
-        }
-
-        yield return null;
+        StartCoroutine(PrimitiveManager.Instance.Sequence(finalList));
     }
 }

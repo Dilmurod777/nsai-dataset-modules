@@ -33,6 +33,7 @@ public class SceneManager : Singleton<SceneManager>
 				UIManager.ResetBasicOperationsList();
 				UIManager.Instance.UpdateUI();
 				AssetManager.Instance.UpdateAssets();
+				AssetManager.Instance.HideAllFigures();
 				AssetManager.Instance.ShowCurrentFigure();
 				break;
 		}

@@ -22,6 +22,17 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
         callback();
         yield return null;
     }
+    
+    public IEnumerator Sequence(List<IEnumerator> list)
+    {
+        foreach (var c in list)
+        {
+            if (c == null) continue;
+            yield return StartCoroutine(c);
+        }
+
+        yield return null;
+    }
 
     public IEnumerator CreateRotatePrimitives(string nameA)
     {
@@ -50,28 +61,26 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 
     public IEnumerator SmoothInstall(string nameA, string nameB, string type)
     {
-        yield return StartCoroutine(SimplePrimitive(() =>
+        GameObject referenceObjA, referenceObjB;
+
+        var objA = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameA);
+        var objB = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameB);
+
+        if (type == "attach")
         {
-            GameObject referenceObjA, referenceObjB;
+            referenceObjA = Helpers.FindObjectInFigure(Constants.FigureType.Ifm, objA.name);
+            referenceObjB = Helpers.FindObjectInFigure(Constants.FigureType.Ifm, objB.name);
+        }
+        else
+        {
+            referenceObjA = Helpers.FindObjectInFigure(Constants.FigureType.Rfm, objA.name);
+            referenceObjB = Helpers.FindObjectInFigure(Constants.FigureType.Rfm, objB.name);
+        }
 
-            var objA = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameA);
-            var objB = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameB);
-
-            if (type == "attach")
-            {
-                referenceObjA = Helpers.FindObjectInFigure(Constants.FigureType.Ifm, objA.name);
-                referenceObjB = Helpers.FindObjectInFigure(Constants.FigureType.Ifm, objB.name);
-            }
-            else
-            {
-                referenceObjA = Helpers.FindObjectInFigure(Constants.FigureType.Rfm, objA.name);
-                referenceObjB = Helpers.FindObjectInFigure(Constants.FigureType.Rfm, objB.name);
-            }
-
-            var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
-            var finalPosition = objB.transform.position + rfmDiff;
-            StartCoroutine(Robot.Instance.Move(objA, finalPosition));
-        }));
+        var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
+        var finalPosition = objB.transform.position + rfmDiff;
+        
+        yield return Robot.Instance.Move(objA, finalPosition);
     }
 
     public IEnumerator SmoothScrew(string nameA, string nameB, Vector3 direction, string type)
@@ -95,7 +104,7 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
         var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
         var finalPosition = objB.transform.position + rfmDiff;
 
-        yield return StartCoroutine(Robot.Instance.MoveWithRotation(objA, finalPosition, direction));
+        yield return Robot.Instance.MoveWithRotation(objA, finalPosition, direction);
     }
 
     public IEnumerator StepInstall(string nameA, string nameB, string type, int steps = 3)
@@ -121,8 +130,8 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 
         for (var i = 0; i < steps; i++)
         {
-            yield return StartCoroutine(Robot.Instance.Move(objA, objA.transform.position + (i + 1) * delta / steps));
-            yield return StartCoroutine(Robot.Instance.Wait(0.25f));
+            yield return Robot.Instance.Move(objA, objA.transform.position + (i + 1) * delta / steps);
+            yield return Robot.Instance.Wait(0.25f);
         }
     }
 
@@ -156,8 +165,8 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 
         for (var i = 0; i < steps; i++)
         {
-            yield return StartCoroutine(Robot.Instance.MoveWithRotation(objA, newPositions[i], direction));
-            yield return StartCoroutine(Robot.Instance.Wait(0.25f));
+            yield return Robot.Instance.MoveWithRotation(objA, newPositions[i], direction);
+            yield return Robot.Instance.Wait(0.25f);
         }
     }
 
@@ -213,20 +222,24 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
         yield return null;
     }
 
-    public IEnumerator ResetObjectMaterial(string name)
+    public IEnumerator ResetObjectMaterial(string objName)
     {
-        var obj = Helpers.FindObjectInFigure(Constants.FigureType.Current, name);
+        var obj = Helpers.FindObjectInFigure(Constants.FigureType.Current, objName);
         var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Reference, obj.name);
 
-        var referenceMaterials = referenceObj.GetComponent<MeshRenderer>().materials;
-        var materials = obj.GetComponent<MeshRenderer>().materials;
-
-        for (var i = 0; i < referenceMaterials.Length; i++)
+        var meshRenderer = referenceObj.GetComponent<MeshRenderer>();
+        if (meshRenderer)
         {
-            materials[i] = referenceMaterials[i];
-        }
+            var referenceMaterials = referenceObj.GetComponent<MeshRenderer>().materials;
+            var materials = obj.GetComponent<MeshRenderer>().materials;
 
-        obj.GetComponent<MeshRenderer>().materials = materials;
+            for (var i = 0; i < referenceMaterials.Length; i++)
+            {
+                materials[i] = referenceMaterials[i];
+            }
+
+            obj.GetComponent<MeshRenderer>().materials = materials;
+        }
 
         yield return null;
     }

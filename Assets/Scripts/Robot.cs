@@ -13,9 +13,9 @@ public class Robot : Singleton<Robot>
 
 	private void Start()
 	{
-		_moveDuration = 1.5f;
-		_rotateDuration = 1.5f;
-		_scaleDuration = 1.5f;
+		_moveDuration = 1f;
+		_rotateDuration = 1f;
+		_scaleDuration = 1f;
 		_defaultMoveDuration = _moveDuration;
 		_defaultRotateDuration = _rotateDuration;
 		_defaultScaleDuration = _scaleDuration;
