@@ -1,1 +1,18 @@
-{"query": "demonstrate summary for this subtask", "programs": ["FilterType tasks root", "FilterAttr task_id current_task_id prev", "FilterType subtasks prev", "FilterAttr subtask_id current_subtask_id prev", "ShowInfo prev"], "context": {"current_task_id": "32-11-61-000-801", "current_subtask_id": "32-11-61-020-003", "current_instruction_order": "4"}, "reply": "subtask_id: 32-11-61-020-003\ncontent: Disconnect the upper side strut assembly [3] from the lower side strut assembly, lower [8]]\nfigure: 402-32-11-61-990-802-B\ninstructions: 5 item(s)\n"}
+{
+    "query": "demonstrate summary for this subtask",
+    "programs":
+    [
+        "FilterType tasks root",
+        "FilterAttr task_id current_task_id prev",
+        "FilterType subtasks prev",
+        "FilterAttr subtask_id current_subtask_id prev",
+        "ShowInfo prev"
+    ],
+    "context":
+    {
+        "current_task_id": "32-11-61-000-801",
+        "current_subtask_id": "32-11-61-020-003",
+        "current_instruction_order": "4"
+    },
+    "reply": "subtask_id: 32-11-61-020-003\ncontent: Disconnect the upper side strut assembly [3] from the lower side strut assembly, lower [8]]\nfigure: 402-32-11-61-990-802-B\ninstructions: 5 item(s)\n"
+}

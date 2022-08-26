@@ -43,7 +43,6 @@ public class QueryExecutor : Singleton<QueryExecutor>
             var form = new WWWForm();
             form.AddField("query", currentQueryText);
 
-            Debug.Log("Text: " + currentQueryText);
             var www = UnityWebRequest.Post("http://165.246.43.139:8000/predict", form);
             yield return www.SendWebRequest();
             if (www.result == UnityWebRequest.Result.Success)
@@ -97,7 +96,7 @@ public class QueryExecutor : Singleton<QueryExecutor>
         {
             var data = program.Split(' ');
             var methodName = data[0];
-            var parameters = data.Skip(1).Take(data.Length - 1).ToArray();
+            var parameters = data.Length > 1 ? data.Skip(1).Take(data.Length - 1).ToArray() : new string[] { };
             var joinedParameters = string.Join(Constants.ArgsSeparator.ToString(), parameters);
 
             var methodInfo = Catalog.Instance.GetType().GetMethod(methodName);
@@ -106,7 +105,7 @@ public class QueryExecutor : Singleton<QueryExecutor>
                 yield return ContextManager.Instance.Prev = methodInfo.Invoke(Catalog.Instance, new object[] { joinedParameters });
             }
         }
-        
+
         UIManager.Instance.UpdateUI();
     }
 

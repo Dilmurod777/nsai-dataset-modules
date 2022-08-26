@@ -141,14 +141,14 @@ namespace Catalogs
 			return _knowledgeCatalog.QueryAttr(args);
 		}
 
-		public string ShowInfo(List<JSONNode> dataObjects)
+		public void ShowInfo(string args)
 		{
-			return _knowledgeCatalog.ShowInfo(dataObjects);
+			_knowledgeCatalog.ShowInfo(args);
 		}
 
-		public void NotUnderstood()
+		public void NotUnderstood(string args)
 		{
-			_generalCatalog.NotUnderstood();
+			_generalCatalog.NotUnderstood(args);
 		}
 	}
 }

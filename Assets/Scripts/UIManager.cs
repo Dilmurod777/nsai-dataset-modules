@@ -140,18 +140,6 @@ public class UIManager : Singleton<UIManager>
             }
         }
     }
-
-    public void UpdateReplyText(string text)
-    {
-        var replyUI = GameObject.FindWithTag(Tags.ReplyUI);
-        if (replyUI == null) return;
-
-        var replyUIText = replyUI.GetComponent<Text>();
-        if (replyUIText == null) return;
-
-        replyUIText.text = text;
-    }
-
     public void UpdateQueryPlayButtonState()
     {
         var queryPlayButton = GameObject.FindWithTag(Tags.QueryPlayButton);

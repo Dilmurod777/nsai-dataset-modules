@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Custom;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace Catalogs
         JSONNode FilterAttr(string args);
         List<JSONNode> FilterType(string args);
         string QueryAttr(string args);
-        string ShowInfo(List<JSONNode> dataObjects);
+        void ShowInfo(string args);
     }
 
     public class KnowledgeCatalog : IKnowledgeCatalogInterface
@@ -76,21 +77,34 @@ namespace Catalogs
             return result;
         }
 
-        public string ShowInfo(List<JSONNode> dataObjects)
+        public void ShowInfo(string args)
         {
-            var result = "";
-            foreach (var dataObject in dataObjects)
+            Debug.Log("Show Info: " + args);
+            var argsList = args.Split(ArgsSeparator);
+            var dataObjects = ContextManager.Instance.GetAttribute<System.Object>(argsList[0]);
+
+            if (dataObjects is JSONArray)
             {
-                foreach (var item in dataObject)
+                var result = "";
+                foreach (var dataObject in (JSONArray)dataObjects)
                 {
-                    if (!item.Value.IsArray)
+                    if (!dataObject.Value.IsArray)
                     {
-                        result += item.Key + ": " + item.Value + "\n";
+                        result +=dataObject.Value["content"] + "\n";
                     }
                 }
-            }
 
-            return result;
+                UIManager.UpdateReply(result);
+            }
+            else if (dataObjects is string)
+            {
+                UIManager.UpdateReply((string)dataObjects);
+            }
+            else
+            {
+                Debug.Log("Show Info error: " + dataObjects.GetType());
+                UIManager.UpdateReply("");
+            }
         }
     }
 }

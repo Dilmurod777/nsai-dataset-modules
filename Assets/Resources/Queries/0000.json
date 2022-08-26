@@ -1,1 +1,17 @@
-{"query": "show the task_id of this task", "programs": ["FilterType tasks root", "FilterAttr task_id current_task_id prev", "Unique prev", "QueryAttr task_id prev"], "context": {"current_task_id": "32-11-61-000-801", "current_subtask_id": "32-11-61-020-002", "current_instruction_order": "2"}, "reply": "32-11-61-000-801"}
+{
+    "query": "show the task_id of this task",
+    "programs":
+    [
+        "FilterType tasks root",
+        "FilterAttr task_id current_task_id prev",
+        "Unique prev",
+        "QueryAttr task_id prev"
+    ],
+    "context":
+    {
+        "current_task_id": "32-11-61-000-801",
+        "current_subtask_id": "32-11-61-020-002",
+        "current_instruction_order": "2"
+    },
+    "reply": "32-11-61-000-801"
+}

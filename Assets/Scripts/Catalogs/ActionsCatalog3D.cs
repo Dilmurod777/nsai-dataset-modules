@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 using Custom;
-using Instances;
 using UnityEngine;
 using Action = Instances.Action;
 
@@ -170,8 +167,8 @@ namespace Catalogs
             var rotationZ = axis == "Z" ? degree : 0;
 
             var newRotation = rotation * Quaternion.Euler(rotationX, rotationY, rotationZ);
-            
-            UIManager.Instance.UpdateReplyText("Rotating " + obj.name + " by " + degree + " in " + axis + " axis");
+
+            UIManager.UpdateReply("Rotating " + obj.name + " by " + degree + " in " + axis + " axis");
             QueryExecutor.Instance.RunCoroutine(Robot.Instance.Rotate(obj, newRotation.eulerAngles));
         }
 
@@ -199,7 +196,7 @@ namespace Catalogs
             var finalScale = new Vector3(currentLocalScaleX * change, currentLocalScaleY * change,
                 currentLocalScaleZ * change);
 
-            UIManager.Instance.UpdateReplyText("Scaling " + state + " " + obj.name + " by " + scaleRatio);
+            UIManager.UpdateReply("Scaling " + state + " " + obj.name + " by " + scaleRatio);
             QueryExecutor.Instance.RunCoroutine(Robot.Instance.Scale(obj, finalScale));
         }
 
@@ -212,7 +209,7 @@ namespace Catalogs
             if (obj == null) return;
 
             AssetManager.Instance.ResetFigure(obj);
-            UIManager.Instance.UpdateReplyText("Resetting " + obj.name);
+            UIManager.UpdateReply("Resetting " + obj.name);
             QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
@@ -224,7 +221,7 @@ namespace Catalogs
 
             var objs = ContextManager.Instance.GetAttribute<List<GameObject>>(argsList[1]);
             if (objs == null || objs.Count == 0) return;
-            
+
             var objNames = new List<string>();
             foreach (var obj in objs)
             {
@@ -246,16 +243,17 @@ namespace Catalogs
                         break;
                 }
             }
-            
+
             switch (state)
             {
                 case "on":
-                    UIManager.Instance.UpdateReplyText("Highlighting " + string.Join(",", objNames));
+                    UIManager.UpdateReply("Highlighting " + string.Join(",", objNames));
                     break;
                 case "off":
-                    UIManager.Instance.UpdateReplyText("Hiding highlight from " + string.Join(",", objNames));
+                    UIManager.UpdateReply("Hiding highlight from " + string.Join(",", objNames));
                     break;
             }
+
             QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
@@ -268,9 +266,6 @@ namespace Catalogs
 
             var figureSide = argsList[0];
 
-            var forward = obj.transform.forward;
-            var right = obj.transform.right;
-            var up = obj.transform.up;
             var sideRotation = figureSide switch
             {
                 "front" => new Vector3(0, 0, 0),
@@ -281,9 +276,6 @@ namespace Catalogs
                 "bottom" => new Vector3(0, -90, 0),
                 _ => new Vector3(0, 0, 0)
             };
-            // var angle = Quaternion.Angle(Quaternion.Euler(sideRotation), Quaternion.Euler(Camera.main.transform.forward));
-            // var finalRotation = obj.transform.rotation * angle;
-            // obj.transform.LookAt(Camera.main.transform.position, sideRotation);
 
             var camera = Camera.main;
             if (camera != null)
@@ -293,6 +285,7 @@ namespace Catalogs
                     Quaternion.LookRotation(
                         obj.transform.position + cameraRotation * Vector3.forward + sideRotation);
 
+                UIManager.UpdateReply("Showing " + figureSide + " of " + obj.name);
                 QueryExecutor.Instance.RunCoroutine(Robot.Instance.Rotate(obj, finalRotation.eulerAngles));
             }
         }
@@ -312,6 +305,7 @@ namespace Catalogs
 
             CloseLookFunctionality(objs);
 
+            UIManager.UpdateReply("Showing side by side look of " + fig.name);
             QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
@@ -324,6 +318,13 @@ namespace Catalogs
 
             CloseLookFunctionality(objs);
 
+            var objNames = new List<string>();
+            foreach (var obj in objs)
+            {
+                objNames.Add(obj.name);
+            }
+
+            UIManager.UpdateReply("Showing close look of " + string.Join(",", objNames));
             QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
@@ -345,6 +346,7 @@ namespace Catalogs
             infiniteRotationComponent.Speed = 25.0f;
             infiniteRotationComponent.enabled = state == "on";
 
+            UIManager.UpdateReply("Animating " + fig.name);
             QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
@@ -356,9 +358,11 @@ namespace Catalogs
             if (objs == null || objs.Count == 0) return;
 
             var state = argsList[0];
+            var objNames = new List<string>();
 
             foreach (var obj in objs)
             {
+                objNames.Add(obj.name);
                 if (obj.CompareTag(Tags.Figure))
                 {
                     foreach (var child in obj.GetComponentsInChildren<Transform>())
@@ -378,6 +382,17 @@ namespace Catalogs
                         meshRenderer.enabled = state == "on";
                     }
                 }
+            }
+
+
+            switch (state)
+            {
+                case "on":
+                    UIManager.UpdateReply("Showing " + string.Join(",", objNames));
+                    break;
+                case "off":
+                    UIManager.UpdateReply("Animating " + string.Join(",", objNames));
+                    break;
             }
 
             QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
@@ -459,7 +474,7 @@ namespace Catalogs
                 {
                     primitives.Add(PrimitiveManager.SimplePrimitive(() =>
                     {
-                        UIManager.Instance.UpdateReplyText("Attaching " + action.Components[0] + " from " + action.Components[1]);
+                        UIManager.UpdateReply("Attaching " + action.Components[0] + " from " + action.Components[1]);
                     }));
                     primitives.AddRange(GetAttachPrimitives(action.Components[0], action.Components[1]));
                 }
@@ -485,7 +500,7 @@ namespace Catalogs
                 {
                     primitives.Add(PrimitiveManager.SimplePrimitive(() =>
                     {
-                        UIManager.Instance.UpdateReplyText("Detaching " + action.Components[0] + " from " + action.Components[1]);
+                        UIManager.UpdateReply("Detaching " + action.Components[0] + " from " + action.Components[1]);
                     }));
                     primitives.AddRange(GetDetachPrimitives(action.Components[0], action.Components[1]));
                 }
@@ -551,7 +566,7 @@ namespace Catalogs
             {
                 primitives.Add(PrimitiveManager.Instance.GetDetachPrimitivesForParent(attachingObj, referenceObj));
             }
-            
+
             return primitives;
         }
 

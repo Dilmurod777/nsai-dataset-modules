@@ -17,7 +17,7 @@ namespace Catalogs
 		List<string> ExtractNumbers(string args);
 		List<string> ExtractID(string args);
 		string Same(string args);
-		void NotUnderstood();
+		void NotUnderstood(string args);
 	}
 
 	public class GeneralCatalog : IGeneralCatalogInterface
@@ -163,10 +163,9 @@ namespace Catalogs
 			return var1;
 		}
 		
-		public void NotUnderstood()
+		public void NotUnderstood(string args)
 		{
-			Debug.Log("Not Understood");
-			UIManager.Instance.UpdateReplyText("Not Understood");
+			UIManager.UpdateReply("Not Understood");
 		}
 	}
 }

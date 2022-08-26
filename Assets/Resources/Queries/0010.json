@@ -1,1 +1,19 @@
-{"query": "display the figure of this subtask", "programs": ["FilterType tasks root", "FilterAttr task_id current_task_id prev", "FilterType subtasks prev", "FilterAttr subtask_id current_subtask_id prev", "Unique prev", "QueryAttr figure prev"], "context": {"current_task_id": "32-11-61-400-801", "current_subtask_id": "32-11-61-420-002", "current_instruction_order": "9"}, "reply": "402-32-11-61-990-802-B"}
+{
+    "query": "display the figure of this subtask",
+    "programs":
+    [
+        "FilterType tasks root",
+        "FilterAttr task_id current_task_id prev",
+        "FilterType subtasks prev",
+        "FilterAttr subtask_id current_subtask_id prev",
+        "Unique prev",
+        "QueryAttr figure prev"
+    ],
+    "context":
+    {
+        "current_task_id": "32-11-61-400-801",
+        "current_subtask_id": "32-11-61-420-002",
+        "current_instruction_order": "9"
+    },
+    "reply": "402-32-11-61-990-802-B"
+}

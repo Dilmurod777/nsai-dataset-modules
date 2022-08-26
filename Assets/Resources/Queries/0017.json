@@ -1,1 +1,21 @@
-{"query": "demonstrate content of this instruction", "programs": ["FilterType tasks root", "FilterAttr task_id current_task_id prev", "FilterType subtasks prev", "FilterAttr subtask_id current_subtask_id prev", "FilterType instructions prev", "FilterAttr order current_instruction_order prev", "Unique prev", "QueryAttr content prev"], "context": {"current_task_id": "32-11-61-000-801", "current_subtask_id": "32-11-61-020-004", "current_instruction_order": "2"}, "reply": "Remove the cross bolt [16] from the side strut pin [22]"}
+{
+    "query": "demonstrate content of this instruction",
+    "programs":
+    [
+        "FilterType tasks root",
+        "FilterAttr task_id current_task_id prev",
+        "FilterType subtasks prev",
+        "FilterAttr subtask_id current_subtask_id prev",
+        "FilterType instructions prev",
+        "FilterAttr order current_instruction_order prev",
+        "Unique prev",
+        "QueryAttr content prev"
+    ],
+    "context":
+    {
+        "current_task_id": "32-11-61-000-801",
+        "current_subtask_id": "32-11-61-020-004",
+        "current_instruction_order": "2"
+    },
+    "reply": "Remove the cross bolt [16] from the side strut pin [22]"
+}
