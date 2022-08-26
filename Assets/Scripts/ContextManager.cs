@@ -4,6 +4,7 @@ using System.Linq;
 using Custom;
 using Instances;
 using UnityEngine;
+using Object = System.Object;
 
 public class ContextManager : Singleton<ContextManager>
 {
@@ -23,7 +24,11 @@ public class ContextManager : Singleton<ContextManager>
             "query" => (T)(object)Instance.CurrentQuery,
             "programs" => Instance.CurrentQuery != null ? (T)(object)Instance.CurrentQuery.Programs : (T)(object)null,
             "var1" => (T)Instance.Var1,
+            "var_1" => (T)Instance.Var1,
+            "val_1" => (T)Instance.Var1,
             "var2" => (T)Instance.Var2,
+            "var_2" => (T)Instance.Var2,
+            "val_2" => (T)Instance.Var2,
             "prev" => (T)Instance.Prev,
             "root" => (T)(object)KnowledgeManager.Instance.Root,
             "current_task_id" => (T)(object)Instance.CurrentTask.TaskId,
@@ -37,7 +42,7 @@ public class ContextManager : Singleton<ContextManager>
 
     public bool HasAttribute(string attributeName)
     {
-        var attributes = new[] { "var1", "var2", "prev", "root", "query", "programs" };
+        var attributes = new[] { "var1", "val1", "val_1", "var2", "val2", "val_2", "prev", "root", "query", "programs" };
 
         return attributes.Contains(attributeName);
     }
@@ -143,17 +148,21 @@ public class ContextManager : Singleton<ContextManager>
                         var referenceObjReference = Helpers.FindObjectInFigure(Constants.FigureType.Ifm, action.Components[1]);
                         var figure = AssetManager.Instance.GetCurrentFigure();
 
-                        AssetManager.Instance.CreateCloneObject(referenceObjReference, figure,
+                        var clonedObject = AssetManager.Instance.CreateCloneObject(referenceObjReference, figure,
                             Tags.CloneObject, false, true, true, true, true);
+
+                        clonedObject.GetComponent<ObjectMeta>().status = ObjectMeta.Status.Attached;
                     }
-                    
+
                     if (attachingObj == null)
                     {
                         var attachingObjReference = Helpers.FindObjectInFigure(Constants.FigureType.Ifm, action.Components[0]);
                         var figure = AssetManager.Instance.GetCurrentFigure();
 
-                        AssetManager.Instance.CreateCloneObject(attachingObjReference, figure,
+                        var clonedObject = AssetManager.Instance.CreateCloneObject(attachingObjReference, figure,
                             Tags.CloneObject, true, true, true, true, true);
+
+                        clonedObject.GetComponent<ObjectMeta>().status = ObjectMeta.Status.Attached;
                     }
                 }
                 else if (action.Operation == "detach")

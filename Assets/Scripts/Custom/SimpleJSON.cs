@@ -738,7 +738,7 @@ namespace Custom
 			return ctx;
 		}
 	}
-	// End of JSONNode
+// End of JSONNode
 
 	public partial class JSONArray : JSONNode
 	{
@@ -863,7 +863,7 @@ namespace Custom
 			aSB.Append(']');
 		}
 	}
-	// End of JSONArray
+// End of JSONArray
 
 	public partial class JSONObject : JSONNode
 	{
@@ -1039,7 +1039,7 @@ namespace Custom
 			aSB.Append('}');
 		}
 	}
-	// End of JSONObject
+// End of JSONObject
 
 	public partial class JSONString : JSONNode
 	{
@@ -1098,7 +1098,7 @@ namespace Custom
 			m_Data = "";
 		}
 	}
-	// End of JSONString
+// End of JSONString
 
 	public partial class JSONNumber : JSONNode
 	{
@@ -1195,7 +1195,7 @@ namespace Custom
 			m_Data = 0;
 		}
 	}
-	// End of JSONNumber
+// End of JSONNumber
 
 	public partial class JSONBool : JSONNode
 	{
@@ -1265,7 +1265,7 @@ namespace Custom
 			m_Data = false;
 		}
 	}
-	// End of JSONBool
+// End of JSONBool
 
 	public partial class JSONNull : JSONNode
 	{
@@ -1325,7 +1325,7 @@ namespace Custom
 			aSB.Append("null");
 		}
 	}
-	// End of JSONNull
+// End of JSONNull
 
 	internal partial class JSONLazyCreator : JSONNode
 	{
@@ -1493,7 +1493,7 @@ namespace Custom
 			aSB.Append("null");
 		}
 	}
-	// End of JSONLazyCreator
+// End of JSONLazyCreator
 
 	public static class JSON
 	{

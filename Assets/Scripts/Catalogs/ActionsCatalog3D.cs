@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Custom;
+using Instances;
 using UnityEngine;
 using Action = Instances.Action;
 
@@ -86,7 +88,7 @@ namespace Catalogs
 
         private static List<GameObject> FindObjectsWithIds(IList<string> ids, GameObject parent)
         {
-            var allObjects = new List<GameObject>();
+            List<GameObject> allObjects;
             if (parent == null)
             {
                 allObjects = GameObject.FindGameObjectsWithTag(Tags.Object).ToList();
@@ -168,6 +170,8 @@ namespace Catalogs
             var rotationZ = axis == "Z" ? degree : 0;
 
             var newRotation = rotation * Quaternion.Euler(rotationX, rotationY, rotationZ);
+            
+            UIManager.Instance.UpdateReplyText("Rotating " + obj.name + " by " + degree + " in " + axis + " axis");
             QueryExecutor.Instance.RunCoroutine(Robot.Instance.Rotate(obj, newRotation.eulerAngles));
         }
 
@@ -195,6 +199,7 @@ namespace Catalogs
             var finalScale = new Vector3(currentLocalScaleX * change, currentLocalScaleY * change,
                 currentLocalScaleZ * change);
 
+            UIManager.Instance.UpdateReplyText("Scaling " + state + " " + obj.name + " by " + scaleRatio);
             QueryExecutor.Instance.RunCoroutine(Robot.Instance.Scale(obj, finalScale));
         }
 
@@ -207,6 +212,7 @@ namespace Catalogs
             if (obj == null) return;
 
             AssetManager.Instance.ResetFigure(obj);
+            UIManager.Instance.UpdateReplyText("Resetting " + obj.name);
             QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
@@ -218,9 +224,11 @@ namespace Catalogs
 
             var objs = ContextManager.Instance.GetAttribute<List<GameObject>>(argsList[1]);
             if (objs == null || objs.Count == 0) return;
-
+            
+            var objNames = new List<string>();
             foreach (var obj in objs)
             {
+                objNames.Add(obj.name);
                 var outlineComponent = obj.GetComponent<Outline>();
                 if (outlineComponent == null) outlineComponent = obj.AddComponent<Outline>();
 
@@ -238,7 +246,16 @@ namespace Catalogs
                         break;
                 }
             }
-
+            
+            switch (state)
+            {
+                case "on":
+                    UIManager.Instance.UpdateReplyText("Highlighting " + string.Join(",", objNames));
+                    break;
+                case "off":
+                    UIManager.Instance.UpdateReplyText("Hiding highlight from " + string.Join(",", objNames));
+                    break;
+            }
             QueryExecutor.Instance.RunCoroutine(PrimitiveManager.DelayPrimitive(1.0f));
         }
 
@@ -440,6 +457,10 @@ namespace Catalogs
             {
                 if (action.Operation == "attach")
                 {
+                    primitives.Add(PrimitiveManager.SimplePrimitive(() =>
+                    {
+                        UIManager.Instance.UpdateReplyText("Attaching " + action.Components[0] + " from " + action.Components[1]);
+                    }));
                     primitives.AddRange(GetAttachPrimitives(action.Components[0], action.Components[1]));
                 }
             }
@@ -462,6 +483,10 @@ namespace Catalogs
             {
                 if (action.Operation == "detach")
                 {
+                    primitives.Add(PrimitiveManager.SimplePrimitive(() =>
+                    {
+                        UIManager.Instance.UpdateReplyText("Detaching " + action.Components[0] + " from " + action.Components[1]);
+                    }));
                     primitives.AddRange(GetDetachPrimitives(action.Components[0], action.Components[1]));
                 }
             }
@@ -480,11 +505,11 @@ namespace Catalogs
             {
                 var referenceObjReference = Helpers.FindObjectInFigure(Constants.FigureType.Ifm, nameB);
                 var currentFigure = AssetManager.Instance.GetCurrentFigure();
-                
+
                 referenceObj = AssetManager.Instance.CreateCloneObject(referenceObjReference, currentFigure,
                     Tags.CloneObject, false, true, true, true, true);
             }
-            
+
             if (attachingObj == null)
             {
                 var attachingObjReference = Helpers.FindObjectInFigure(Constants.FigureType.Rfm, nameA);
@@ -526,7 +551,7 @@ namespace Catalogs
             {
                 primitives.Add(PrimitiveManager.Instance.GetDetachPrimitivesForParent(attachingObj, referenceObj));
             }
-
+            
             return primitives;
         }
 

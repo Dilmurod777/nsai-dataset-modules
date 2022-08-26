@@ -22,7 +22,7 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
         callback();
         yield return null;
     }
-    
+
     public IEnumerator Sequence(List<IEnumerator> list)
     {
         foreach (var c in list)
@@ -79,7 +79,7 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 
         var rfmDiff = referenceObjA.transform.position - referenceObjB.transform.position;
         var finalPosition = objB.transform.position + rfmDiff;
-        
+
         yield return Robot.Instance.Move(objA, finalPosition);
     }
 
@@ -403,16 +403,23 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 
     public IEnumerator GetAttachPrimitivesForParent(string nameA, string nameB)
     {
+        yield return CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(nameA);
+        yield return DelayPrimitive(0.5f);
+
         yield return SimplePrimitive(() =>
         {
             var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameA);
             attachingObj.GetComponent<MeshRenderer>().enabled = true;
         });
 
-
+        yield return Instance.ChangeObjectMaterialToInProgressCoroutine(nameA);
+        yield return DelayPrimitive(2f);
+        
         yield return SimplePrimitive(() =>
         {
             var attachingObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameA);
+            if (attachingObj.GetComponent<ObjectMeta>()?.status == ObjectMeta.Status.Attached) return;
+
             var referenceObj = Helpers.FindObjectInFigure(Constants.FigureType.Current, nameB);
             var objectMeta = attachingObj.GetComponent<ObjectMeta>();
 
@@ -431,13 +438,7 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
             text += attachingObj.name + delimiter + referenceObj.name;
             UIManager.UpdateReply(text);
         });
-
-        yield return CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(nameA);
-        yield return DelayPrimitive(0.5f);
-
-        yield return Instance.ChangeObjectMaterialToInProgressCoroutine(nameA);
-        yield return DelayPrimitive(2f);
-
+        
         yield return Instance.CreateRotatePrimitives(nameA);
         yield return DelayPrimitive(1.0f);
         yield return Instance.CreateFromScatteredToRfmPrimitives(nameA, nameB);

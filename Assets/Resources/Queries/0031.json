@@ -1,20 +1,70 @@
 {
-  "query": "demonstrate front side of this figure",
-  "programs": [
-    "FilterType tasks root",
-    "FilterAttr task_id current_task_id prev",
-    "FilterType subtasks prev",
-    "FilterAttr subtask_id current_subtask_id prev",
-    "Unique prev",
-    "QueryAttr figure prev",
-    "Filter3DAttr name prev root3D",
-    "Unique prev",
-    "ShowSide front prev"
-  ],
-  "context": {
-    "current_task_id": "32-11-61-000-802",
-    "current_subtask_id": "32-11-61-020-009",
-    "current_instruction_order": "2"
-  },
-  "reply": "showing front side of figure {'name': '402-32-11-61-990-802-C'}"
+    "query": "show execution of this subtask",
+    "programs":
+    [
+        "FilterType tasks root",
+        "FilterAttr task_id current_task_id prev",
+        "FilterType subtasks prev",
+        "FilterAttr subtask_id current_subtask_id prev",
+        "FilterType instructions prev",
+        "FilterType actions prev"
+    ],
+    "context":
+    {
+        "current_task_id": "32-11-61-000-802",
+        "current_subtask_id": "32-11-61-020-008",
+        "current_instruction_order": "1"
+    },
+    "reply":
+    [
+        {
+            "detach":
+            [
+                "49",
+                "47"
+            ]
+        },
+        {
+            "detach":
+            [
+                "50",
+                "47"
+            ]
+        },
+        {
+            "detach":
+            [
+                "48",
+                "47"
+            ]
+        },
+        {
+            "detach":
+            [
+                "47",
+                "52"
+            ]
+        },
+        {
+            "detach":
+            [
+                "54",
+                "52"
+            ]
+        },
+        {
+            "detach":
+            [
+                "53",
+                "52"
+            ]
+        },
+        {
+            "detach":
+            [
+                "52",
+                "51"
+            ]
+        }
+    ]
 }
