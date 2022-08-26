@@ -1,0 +1,22 @@
+{
+    "query": "show side by side look of this figure",
+    "programs":
+    [
+        "FilterType tasks root",
+        "FilterAttr task_id current_task_id prev",
+        "FilterType subtasks prev",
+        "FilterAttr subtask_id current_subtask_id prev",
+        "Unique prev",
+        "QueryAttr figure prev",
+        "Filter3DAttr name prev root3D",
+        "Unique prev",
+        "SideBySideLook prev"
+    ],
+    "context":
+    {
+        "current_task_id": "32-11-61-000-801",
+        "current_subtask_id": "32-11-61-020-004",
+        "current_instruction_order": "4"
+    },
+    "reply": "Showing side by side look of objects in figure 402-32-11-61-990-802-C"
+}

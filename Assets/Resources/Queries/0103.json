@@ -1,0 +1,22 @@
+{
+    "query": "stop exploring this figure",
+    "programs":
+    [
+        "FilterType tasks root",
+        "FilterAttr task_id current_task_id prev",
+        "FilterType subtasks prev",
+        "FilterAttr subtask_id current_subtask_id prev",
+        "Unique prev",
+        "QueryAttr figure prev",
+        "Filter3DAttr name prev root3D",
+        "Unique prev",
+        "Animate off prev"
+    ],
+    "context":
+    {
+        "current_task_id": "32-11-61-400-801",
+        "current_subtask_id": "32-11-61-420-002",
+        "current_instruction_order": "4"
+    },
+    "reply": "Stopping animation of figure 402-32-11-61-990-802-B"
+}
