@@ -1,1 +1,20 @@
-{"query": "display the summary for this instruction", "programs": ["FilterType tasks root", "FilterAttr task_id current_task_id prev", "FilterType subtasks prev", "FilterAttr subtask_id current_subtask_id prev", "FilterType instructions prev", "FilterAttr order current_instruction_order prev", "ShowInfo prev"], "context": {"current_task_id": "32-45-11-000-801", "current_subtask_id": "32-45-11-020-001", "current_instruction_order": "3"}, "reply": "order: 3\ncontent: Remove the outboard hubcap [3] or inboard hubcap [18] from the wheel and tire assembly [1].\nactions: 1 item(s)\nnotes: 1 item(s)\n"}
+{
+    "query": "display the summary for this instruction",
+    "programs":
+    [
+        "FilterType tasks root",
+        "FilterAttr task_id current_task_id prev",
+        "FilterType subtasks prev",
+        "FilterAttr subtask_id current_subtask_id prev",
+        "FilterType instructions prev",
+        "FilterAttr order current_instruction_order prev",
+        "ShowInfo prev"
+    ],
+    "context":
+    {
+        "current_task_id": "32-45-11-000-801",
+        "current_subtask_id": "32-45-11-020-001",
+        "current_instruction_order": "3"
+    },
+    "reply": "order: 3\ncontent: Remove the outboard hubcap [3] or inboard hubcap [18] from the wheel and tire assembly [1].\nactions: 1 item(s)\nnotes: 1 item(s)\n"
+}

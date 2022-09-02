@@ -67,7 +67,7 @@ namespace Catalogs
 
             if (dataObject == null) return "";
 
-            string result = dataObject[attr];
+            string result = dataObject is JSONArray ? dataObject[0][attr] : dataObject[attr];
 
             if (attr == "figure" && string.IsNullOrEmpty(result))
             {
@@ -90,7 +90,12 @@ namespace Catalogs
                 {
                     if (!dataObject.Value.IsArray)
                     {
-                        result +=dataObject.Value["content"] + "\n";
+                        var value = dataObject.Value["content"];
+                        if (value == "" || value == null)
+                        {
+                            value = dataObject.Value["title"];
+                        }
+                        result += value + "\n";
                     }
                 }
 
