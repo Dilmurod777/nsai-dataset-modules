@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Catalogs;
@@ -7,8 +6,6 @@ using Custom;
 using Instances;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
-using Exception = System.Exception;
 
 public class QueryExecutor : Singleton<QueryExecutor>
 {
