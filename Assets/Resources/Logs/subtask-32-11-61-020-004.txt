@@ -1,0 +1,9 @@
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [19] COTTER PIN
+Initial position: (-2.0, 2.3, 2.0)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+Practical final rotation: (37.5, 116.0, 270.0)

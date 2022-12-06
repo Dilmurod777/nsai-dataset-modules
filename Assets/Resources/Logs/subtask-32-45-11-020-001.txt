@@ -1,0 +1,102 @@
+---------------------------------------------
+Primitive: Move
+Object name: [4] CAM-LOC
+Initial position: (0.4, -1.6, -0.6)
+Theoretical final position: (0.8, -1.6, -0.8)
+Practical final position: (0.8, -1.6, -0.8)
+---------------------------------------------
+Primitive: Move
+Object name: [5] HUBCAP FAIRING
+Initial position: (0.4, -1.6, -0.6)
+Theoretical final position: (0.7, -1.6, -0.8)
+Practical final position: (0.7, -1.6, -0.8)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [6-1] BOLT
+Initial position: (0.3, -1.3, -0.6)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (0.7, -1.3, -0.8)
+Practical final position: (0.7, -1.3, -0.8)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [6-2] BOLT
+Initial position: (0.1, -1.7, -0.9)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (0.6, -1.7, -1.1)
+Practical final position: (0.6, -1.7, -1.1)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [6-3] BOLT
+Initial position: (0.3, -1.9, -0.4)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (0.8, -1.9, -0.7)
+Practical final position: (0.8, -1.9, -0.7)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [7-1] WASHER
+Initial position: (0.3, -1.3, -0.6)
+Theoretical final position: (0.9, -1.3, -0.9)
+Practical final position: (0.9, -1.3, -0.9)
+---------------------------------------------
+Primitive: Move
+Object name: [7-2] WASHER
+Initial position: (0.2, -1.7, -0.9)
+Theoretical final position: (0.7, -1.7, -1.2)
+Practical final position: (0.7, -1.7, -1.2)
+---------------------------------------------
+Primitive: Move
+Object name: [7-3] WASHER
+Initial position: (0.4, -1.9, -0.5)
+Theoretical final position: (0.9, -1.9, -0.7)
+Practical final position: (0.9, -1.9, -0.7)
+---------------------------------------------
+Primitive: Move
+Object name: [3] HUBCAP
+Initial position: (0.3, -1.6, -0.6)
+Theoretical final position: (0.9, -1.6, -0.9)
+Practical final position: (0.9, -1.6, -0.9)
+---------------------------------------------
+Primitive: Move
+Object name: [4] CAM-LOC
+Initial position: (0.4, -1.6, -0.6)
+Theoretical final position: (0.8, -1.6, -0.8)
+Practical final position: (0.8, -1.6, -0.8)
+---------------------------------------------
+Primitive: Move
+Object name: [5] HUBCAP FAIRING
+Initial position: (0.4, -1.6, -0.6)
+Theoretical final position: (0.7, -1.6, -0.8)
+Practical final position: (0.7, -1.6, -0.8)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [6-1] BOLT
+Initial position: (0.3, -1.3, -0.6)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (0.7, -1.3, -0.8)
+Practical final position: (0.7, -1.3, -0.8)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [6-2] BOLT
+Initial position: (0.1, -1.7, -0.9)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (0.6, -1.7, -1.1)
+Practical final position: (0.6, -1.7, -1.1)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [6-3] BOLT
+Initial position: (0.3, -1.9, -0.4)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (0.8, -1.9, -0.7)
+Practical final position: (0.8, -1.9, -0.7)
+Practical final rotation: (37.5, 26.0, 0.0)

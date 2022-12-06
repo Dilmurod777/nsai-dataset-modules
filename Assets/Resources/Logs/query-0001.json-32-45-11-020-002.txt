@@ -1,0 +1,78 @@
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [8-1] NUT
+Initial position: (0.2, -1.6, -0.8)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (0.2, -1.6, -0.8)
+Practical final position: (0.2, -1.6, -0.8)
+Practical final rotation: (37.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [8-2] NUT
+Initial position: (0.4, -1.6, -0.4)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (0.4, -1.6, -0.4)
+Practical final position: (0.4, -1.6, -0.4)
+Practical final rotation: (37.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [8-1] NUT
+Initial position: (0.2, -1.6, -0.8)
+Initial rotation: (37.5, 116.0, 270.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (0.2, -1.6, -0.8)
+Practical final position: (0.2, -1.6, -0.8)
+Practical final rotation: (15.0, 296.0, 90.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [8-2] NUT
+Initial position: (0.4, -1.6, -0.4)
+Initial rotation: (37.5, 116.0, 270.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (0.4, -1.6, -0.4)
+Practical final position: (0.4, -1.6, -0.4)
+Practical final rotation: (15.0, 296.0, 90.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [8-1] NUT
+Initial position: (0.2, -1.6, -0.8)
+Initial rotation: (15.0, 296.0, 90.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (0.2, -1.6, -0.8)
+Practical final position: (0.2, -1.6, -0.8)
+Practical final rotation: (292.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [8-2] NUT
+Initial position: (0.4, -1.6, -0.4)
+Initial rotation: (15.0, 296.0, 90.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (0.4, -1.6, -0.4)
+Practical final position: (0.4, -1.6, -0.4)
+Practical final rotation: (292.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: Move
+Object name: [9-1-1] WASHER
+Initial position: (0.2, -1.6, -0.7)
+Theoretical final position: (0.2, -1.6, -0.8)
+Practical final position: (0.2, -1.6, -0.8)
+---------------------------------------------
+Primitive: Move
+Object name: [9-1-2] WASHER
+Initial position: (0.2, -1.6, -0.8)
+Theoretical final position: (0.2, -1.6, -0.8)
+Practical final position: (0.2, -1.6, -0.8)
+---------------------------------------------
+Primitive: Move
+Object name: [9-2-1] WASHER
+Initial position: (0.3, -1.6, -0.5)
+Theoretical final position: (0.4, -1.6, -0.4)
+Practical final position: (0.4, -1.6, -0.4)
+---------------------------------------------
+Primitive: Move
+Object name: [9-2-2] WASHER
+Initial position: (0.4, -1.6, -0.4)
+Theoretical final position: (0.4, -1.6, -0.4)
+Practical final position: (0.4, -1.6, -0.4)

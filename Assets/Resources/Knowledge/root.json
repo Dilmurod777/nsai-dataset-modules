@@ -2,303 +2,6 @@
   {
     "tasks": [
       {
-        "task_id": "32-45-11-000-801",
-        "title": "Main Landing Gear Wheel and Tire Assembly Removal",
-        "references": [
-          {
-            "reference": "07-11-03-580-801",
-            "title": "Lift the Main Landing Gear Axles with the Axle Jacks (P/B 201)"
-          },
-          {
-            "reference": "10-11-05 P/B 201",
-            "title": "CHOCK INSTALLATION"
-          },
-          {
-            "reference": "32-00-01-480-801",
-            "title": "Landing Gear Downlock Pins Installation (P/B 201)"
-          },
-          {
-            "reference": "32-45-00-700-801",
-            "title": "Wheels Fast Check (Wheel Installed on the Airplane) (P/B 601)"
-          },
-          {
-            "reference": "32-45-00-700-803",
-            "title": "Tires - Inspection (P/B 601)"
-          }
-        ],
-        "tools_equipment": [
-          {
-            "reference": "COM-1524",
-            "description": "Deflator - Tire, Valve Core Removal and Installation (Large Bore)"
-          },
-          {
-            "reference": "COM-1818",
-            "description": "Dolly - Wheel/Brake Change"
-          },
-          {
-            "reference": "COM-4046",
-            "description": "Deflator - Tire, Valve Core Removal and Installation (Small Bore) and Tire Deflation"
-          },
-          {
-            "reference": "SPL-1865",
-            "description": "Equipment - Removal / Installation, Wheel Retention Nut, MLG and NLG"
-          },
-          {
-            "reference": "SPL-1876",
-            "description": "Protector - Thread & Axle, MLG"
-          },
-          {
-            "reference": "SPL-14320",
-            "description": "Protector - Thread, Eqpt, MLG Axle (1/8 inch undersized threads)"
-          }
-        ],
-        "zones": [
-          {
-            "zone": "734",
-            "area": "Left Main Landing Gear"
-          },
-          {
-            "zone": "744",
-            "area": "Right Main Landing Gear"
-          }
-        ],
-        "preparation": {
-          "subtasks": [
-            {
-              "subtask_id": "32-45-11-480-001",
-              "content": "If the downlock pins are not installed in the nose and main landing gear, do this task: Landing Gear Downlock Pins Installation, TASK 32-00-01-480-801",
-              "warnings": [
-                {
-                  "content": "MAKE SURE THAT THE DOWNLOCK PINS ARE INSTALLED ON ALL THE LANDING GEAR. WITHOUT THE DOWNLOCK PINS, THE LANDING GEAR CAN RETRACT. THIS CAN CAUSE INJURIES TO PERSONS, AND DAMAGE TO EQUIPMENT."
-                }
-              ]
-            },
-            {
-              "subtask_id": "32-45-11-480-002",
-              "content": "Make sure the tires have chocks installed around them (CHOCK INSTALLATION, PAGEBLOCK 10-11-05/201)."
-            },
-            {
-              "subtask_id": "32-45-11-860-001",
-              "content": "Make sure that the parking brake is released."
-            },
-            {
-              "subtask_id": "32-45-11-580-001",
-              "content": "Lift the wheel and tire assemblies with jacks until they are clear of the ground, do this task: Lift the Main Landing Gear Axles with the Axle Jacks, TASK 07-11-03-580-801."
-            },
-            {
-              "subtask_id": "32-45-11-860-002",
-              "content": "Make sure that the parking brake is set.",
-              "notes": [
-                {
-                  "content": "When you set the parking brake, the brake rotors will be aligned for wheel installation."
-                }
-              ]
-            },
-            {
-              "subtask_id": "32-45-11-840-001",
-              "content": "Do the following steps to examine the tire and wheel assembly to see if it is safe to remove without tire deflation, or deflate the tire",
-              "warnings": [
-                {
-                  "content": "FULLY DEFLATE THE TIRE BEFORE YOU REMOVE THE WHEEL AND TIRE ASSEMBLY. OR, DO AN INSPECTION OF THE WHEEL AND TIRE TO MAKE SURE THAT THEY ARE SAFE. AIR PRESSURE CAN CAUSE AN EXPLOSION OF THE DAMAGED WHEEL AND TIRE COMPONENTS. INJURIES TO PERSONNEL, AND DAMAGE TO EQUIPMENT CAN OCCUR."
-                },
-                {
-                  "content": "REMOVE ONLY ONE WHEEL AND TIRE ASSEMBLY FROM THE MAIN LANDING GEAR AT A TIME. IF YOU REMOVE THE TWO WHEEL AND TIRE ASSEMBLIES AT THE SAME TIME, STRUCTURAL DAMAGE AND INJURY TO PERSONS CAN OCCUR IF THE AIRPLANE FALLS."
-                }
-              ],
-              "notes": [
-                {
-                  "content": "If you will not install the same wheel and tire assembly, deflate the tire to prevent transporting an inflated tire."
-                }
-              ]
-            }
-          ]
-        },
-        "figures": [
-          {
-            "title": "401-32-45-11-990-801-A",
-            "figure_items": {
-              "1": "[1] OUTBOARD WHEEL AND TIRE ASSEMBLY",
-              "2": "[2] ANTISKID TRANSDUCER DOG",
-              "3": "[3] HUBCAP",
-              "4": "[4] CAM-LOC",
-              "5": "[5] HUBCAP FAIRING",
-              "6": "[6] BOLT",
-              "7": "[7] WASHER",
-              "8": "[8] NUT",
-              "9": "[9] WASHER",
-              "10": "[10] BOLT",
-              "MAIN_LANDING_GEAR": "MAIN LANDING GEAR WHEEL ASSEMBLY"
-            }
-          },
-          {
-            "title": "401-32-11-61-990-801-B",
-            "figure_items": {
-              "17": "[17] INBOARD WHEEL AND TIRE ASSEMBLY",
-              "15": "[15] WASHER",
-              "16": "[16] NUT",
-              "18": "[18] HUBCAP",
-              "7": "[7] WASHER",
-              "6": "[6] BOLT",
-              "MAIN_LANDING_GEAR": "MAIN LANDING GEAR WHEEL ASSEMBLY"
-            }
-          }
-        ],
-        "subtasks": [
-          {
-            "subtask_id": "32-45-11-020-001",
-            "content": "Do these steps to remove the hubcap",
-            "figure": "401-32-45-11-990-801-A",
-            "instructions": [
-              {
-                "order": "1",
-                "content": "For an outboard wheel, turn the eight cam-locs [4] 1/4 turn to disconnect the hubcap fairing [5] from the outboard hubcap [3].",
-                "actions": [
-                  {
-                    "detach": [
-                      "4",
-                      "3"
-                    ]
-                  },
-                  {
-                    "detach": [
-                      "5",
-                      "3"
-                    ]
-                  }
-                ]
-              },
-              {
-                "order": "2",
-                "content": "Remove the three bolts [6] and the three washers [7] to disconnect the outboard hubcap [3] or inboard hubcap [18] from the wheel and tire assembly [1].",
-                "actions": [
-                  {
-                    "detach": [
-                      "6",
-                      "3"
-                    ]
-                  },
-                  {
-                    "detach": [
-                      "7",
-                      "3"
-                    ]
-                  }
-                ]
-              },
-              {
-                "order": "3",
-                "content": "Remove the outboard hubcap [3] or inboard hubcap [18] from the wheel and tire assembly [1].",
-                "actions": [
-                  {
-                    "detach": [
-                      "3",
-                      "1"
-                    ]
-                  }
-                ],
-                "notes": [
-                  {
-                    "content": "Use the thread protector, SPL-1369, for the downlock link pin [2] when you do this step."
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "subtask_id": "32-45-11-020-002",
-            "content": "Do these steps to remove the wheel and tire assembly",
-            "figure": "401-32-45-11-990-801-B",
-            "instructions": [
-              {
-                "order": "1",
-                "content": "Remove the two nuts [8], the two washers [9], and the bolts [10] that hold the axle nut [16] to the axle.",
-                "warnings": [
-                  {
-                    "content": "DO NOT PUT FINGERS IN THE LIGHTENING HOLES OF THE WHEEL RETAINING NUT SOCKET TOOL WHEN YOU REMOVE OR INSTALL THE WHEEL RETAINING NUT. THIS CAN CAUSE INJURIES TO PERSONS."
-                  }
-                ],
-                "actions": [
-                  {
-                    "detach": [
-                      "8",
-                      "16"
-                    ]
-                  },
-                  {
-                    "detach": [
-                      "9",
-                      "16"
-                    ]
-                  },
-                  {
-                    "detach": [
-                      "10",
-                      "16"
-                    ]
-                  }
-                ]
-              },
-              {
-                "order": "2",
-                "content": "Remove the nut [16] with the socket, SPL-1865.",
-                "actions": [
-                  {
-                    "detach": [
-                      "16",
-                      "1"
-                    ]
-                  }
-                ]
-              },
-              {
-                "order": "3",
-                "content": "Remove the retention washer [15].",
-                "actions": [
-                  {
-                    "detach": [
-                      "15",
-                      "1"
-                    ]
-                  }
-                ]
-              },
-              {
-                "order": "4",
-                "content": "Install the thread protector assembly, of the protector, SPL-1876, or the thread protector, SPL-14320 (for undersized threads) on the axle threads.",
-                "actions": []
-              },
-              {
-                "order": "5",
-                "content": "Use the wheel/brake changer dolly, COM-1818, to lift and remove the wheel and tire assembly [1].",
-                "actions": []
-              },
-              {
-                "order": "6",
-                "content": "Mark the reason for the tire removal on the tire to aid the inspectors when they examine the tire.",
-                "actions": []
-              },
-              {
-                "order": "7",
-                "content": "Remove the wheel and tire assembly.",
-                "actions": [
-                  {
-                    "detach": [
-                      "1",
-                      "MAIN_LANDING_GEAR"
-                    ]
-                  }
-                ]
-              },
-              {
-                "order": "8",
-                "content": "Install the axle protector assembly, of the protector, SPL-1876, on the axle.",
-                "actions": []
-              }
-            ]
-          }
-        ]
-      },
-      {
         "task_id": "32-11-61-000-801",
         "title": "Main Landing Gear Upper Side Strut Removal",
         "general": [
@@ -2135,7 +1838,304 @@
             ]
           }
         ]
-      }     
+      },
+      {
+        "task_id": "32-45-11-000-801",
+        "title": "Main Landing Gear Wheel and Tire Assembly Removal",
+        "references": [
+          {
+            "reference": "07-11-03-580-801",
+            "title": "Lift the Main Landing Gear Axles with the Axle Jacks (P/B 201)"
+          },
+          {
+            "reference": "10-11-05 P/B 201",
+            "title": "CHOCK INSTALLATION"
+          },
+          {
+            "reference": "32-00-01-480-801",
+            "title": "Landing Gear Downlock Pins Installation (P/B 201)"
+          },
+          {
+            "reference": "32-45-00-700-801",
+            "title": "Wheels Fast Check (Wheel Installed on the Airplane) (P/B 601)"
+          },
+          {
+            "reference": "32-45-00-700-803",
+            "title": "Tires - Inspection (P/B 601)"
+          }
+        ],
+        "tools_equipment": [
+          {
+            "reference": "COM-1524",
+            "description": "Deflator - Tire, Valve Core Removal and Installation (Large Bore)"
+          },
+          {
+            "reference": "COM-1818",
+            "description": "Dolly - Wheel/Brake Change"
+          },
+          {
+            "reference": "COM-4046",
+            "description": "Deflator - Tire, Valve Core Removal and Installation (Small Bore) and Tire Deflation"
+          },
+          {
+            "reference": "SPL-1865",
+            "description": "Equipment - Removal / Installation, Wheel Retention Nut, MLG and NLG"
+          },
+          {
+            "reference": "SPL-1876",
+            "description": "Protector - Thread & Axle, MLG"
+          },
+          {
+            "reference": "SPL-14320",
+            "description": "Protector - Thread, Eqpt, MLG Axle (1/8 inch undersized threads)"
+          }
+        ],
+        "zones": [
+          {
+            "zone": "734",
+            "area": "Left Main Landing Gear"
+          },
+          {
+            "zone": "744",
+            "area": "Right Main Landing Gear"
+          }
+        ],
+        "preparation": {
+          "subtasks": [
+            {
+              "subtask_id": "32-45-11-480-001",
+              "content": "If the downlock pins are not installed in the nose and main landing gear, do this task: Landing Gear Downlock Pins Installation, TASK 32-00-01-480-801",
+              "warnings": [
+                {
+                  "content": "MAKE SURE THAT THE DOWNLOCK PINS ARE INSTALLED ON ALL THE LANDING GEAR. WITHOUT THE DOWNLOCK PINS, THE LANDING GEAR CAN RETRACT. THIS CAN CAUSE INJURIES TO PERSONS, AND DAMAGE TO EQUIPMENT."
+                }
+              ]
+            },
+            {
+              "subtask_id": "32-45-11-480-002",
+              "content": "Make sure the tires have chocks installed around them (CHOCK INSTALLATION, PAGEBLOCK 10-11-05/201)."
+            },
+            {
+              "subtask_id": "32-45-11-860-001",
+              "content": "Make sure that the parking brake is released."
+            },
+            {
+              "subtask_id": "32-45-11-580-001",
+              "content": "Lift the wheel and tire assemblies with jacks until they are clear of the ground, do this task: Lift the Main Landing Gear Axles with the Axle Jacks, TASK 07-11-03-580-801."
+            },
+            {
+              "subtask_id": "32-45-11-860-002",
+              "content": "Make sure that the parking brake is set.",
+              "notes": [
+                {
+                  "content": "When you set the parking brake, the brake rotors will be aligned for wheel installation."
+                }
+              ]
+            },
+            {
+              "subtask_id": "32-45-11-840-001",
+              "content": "Do the following steps to examine the tire and wheel assembly to see if it is safe to remove without tire deflation, or deflate the tire",
+              "warnings": [
+                {
+                  "content": "FULLY DEFLATE THE TIRE BEFORE YOU REMOVE THE WHEEL AND TIRE ASSEMBLY. OR, DO AN INSPECTION OF THE WHEEL AND TIRE TO MAKE SURE THAT THEY ARE SAFE. AIR PRESSURE CAN CAUSE AN EXPLOSION OF THE DAMAGED WHEEL AND TIRE COMPONENTS. INJURIES TO PERSONNEL, AND DAMAGE TO EQUIPMENT CAN OCCUR."
+                },
+                {
+                  "content": "REMOVE ONLY ONE WHEEL AND TIRE ASSEMBLY FROM THE MAIN LANDING GEAR AT A TIME. IF YOU REMOVE THE TWO WHEEL AND TIRE ASSEMBLIES AT THE SAME TIME, STRUCTURAL DAMAGE AND INJURY TO PERSONS CAN OCCUR IF THE AIRPLANE FALLS."
+                }
+              ],
+              "notes": [
+                {
+                  "content": "If you will not install the same wheel and tire assembly, deflate the tire to prevent transporting an inflated tire."
+                }
+              ]
+            }
+          ]
+        },
+        "figures": [
+          {
+            "title": "401-32-45-11-990-801-A",
+            "figure_items": {
+              "1": "[1] OUTBOARD WHEEL AND TIRE ASSEMBLY",
+              "2": "[2] ANTISKID TRANSDUCER DOG",
+              "3": "[3] HUBCAP",
+              "4": "[4] CAM-LOC",
+              "5": "[5] HUBCAP FAIRING",
+              "6": "[6] BOLT",
+              "7": "[7] WASHER",
+              "8": "[8] NUT",
+              "9": "[9] WASHER",
+              "10": "[10] BOLT",
+              "MAIN_LANDING_GEAR": "MAIN LANDING GEAR WHEEL ASSEMBLY"
+            }
+          },
+          {
+            "title": "401-32-11-61-990-801-B",
+            "figure_items": {
+              "17": "[17] INBOARD WHEEL AND TIRE ASSEMBLY",
+              "15": "[15] WASHER",
+              "16": "[16] NUT",
+              "18": "[18] HUBCAP",
+              "7": "[7] WASHER",
+              "6": "[6] BOLT",
+              "MAIN_LANDING_GEAR": "MAIN LANDING GEAR WHEEL ASSEMBLY"
+            }
+          }
+        ],
+        "subtasks": [
+          {
+            "subtask_id": "32-45-11-020-001",
+            "content": "Do these steps to remove the hubcap",
+            "figure": "401-32-45-11-990-801-A",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "For an outboard wheel, turn the eight cam-locs [4] 1/4 turn to disconnect the hubcap fairing [5] from the outboard hubcap [3].",
+                "actions": [
+                  {
+                    "detach": [
+                      "4",
+                      "3"
+                    ]
+                  },
+                  {
+                    "detach": [
+                      "5",
+                      "3"
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "2",
+                "content": "Remove the three bolts [6] and the three washers [7] to disconnect the outboard hubcap [3] or inboard hubcap [18] from the wheel and tire assembly [1].",
+                "actions": [
+                  {
+                    "detach": [
+                      "6",
+                      "3"
+                    ]
+                  },
+                  {
+                    "detach": [
+                      "7",
+                      "3"
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "3",
+                "content": "Remove the outboard hubcap [3] or inboard hubcap [18] from the wheel and tire assembly [1].",
+                "actions": [
+                  {
+                    "detach": [
+                      "3",
+                      "1"
+                    ]
+                  }
+                ],
+                "notes": [
+                  {
+                    "content": "Use the thread protector, SPL-1369, for the downlock link pin [2] when you do this step."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "subtask_id": "32-45-11-020-002",
+            "content": "Do these steps to remove the wheel and tire assembly",
+            "figure": "401-32-45-11-990-801-B",
+            "instructions": [
+              {
+                "order": "1",
+                "content": "Remove the two nuts [8], the two washers [9], and the bolts [10] that hold the axle nut [16] to the axle.",
+                "warnings": [
+                  {
+                    "content": "DO NOT PUT FINGERS IN THE LIGHTENING HOLES OF THE WHEEL RETAINING NUT SOCKET TOOL WHEN YOU REMOVE OR INSTALL THE WHEEL RETAINING NUT. THIS CAN CAUSE INJURIES TO PERSONS."
+                  }
+                ],
+                "actions": [
+                  {
+                    "detach": [
+                      "8",
+                      "16"
+                    ]
+                  },
+                  {
+                    "detach": [
+                      "9",
+                      "16"
+                    ]
+                  },
+                  {
+                    "detach": [
+                      "10",
+                      "16"
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "2",
+                "content": "Remove the nut [16] with the socket, SPL-1865.",
+                "actions": [
+                  {
+                    "detach": [
+                      "16",
+                      "1"
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "3",
+                "content": "Remove the retention washer [15].",
+                "actions": [
+                  {
+                    "detach": [
+                      "15",
+                      "1"
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "4",
+                "content": "Install the thread protector assembly, of the protector, SPL-1876, or the thread protector, SPL-14320 (for undersized threads) on the axle threads.",
+                "actions": []
+              },
+              {
+                "order": "5",
+                "content": "Use the wheel/brake changer dolly, COM-1818, to lift and remove the wheel and tire assembly [1].",
+                "actions": []
+              },
+              {
+                "order": "6",
+                "content": "Mark the reason for the tire removal on the tire to aid the inspectors when they examine the tire.",
+                "actions": []
+              },
+              {
+                "order": "7",
+                "content": "Remove the wheel and tire assembly.",
+                "actions": [
+                  {
+                    "detach": [
+                      "1",
+                      "MAIN_LANDING_GEAR"
+                    ]
+                  }
+                ]
+              },
+              {
+                "order": "8",
+                "content": "Install the axle protector assembly, of the protector, SPL-1876, on the axle.",
+                "actions": []
+              }
+            ]
+          }
+        ]
+      }
     ]
   }
 ]

@@ -446,12 +446,42 @@ namespace Catalogs
             for (var i = 0; i < a.Count; i++)
             {
                 var actionA = a[i];
-                var actionB = parsedB[i];
 
-                if (actionA.Operation != actionB.Operation) return Constants.InvalidActions;
+                for (var j = 0; j < b.Count; j++)
+                {
+                    var actionB = parsedB[j];
+                    var key = ContextManager.Instance.CurrentTask.TaskId
+                              + "#" + ContextManager.Instance.CurrentSubtask.SubtaskId
+                              + "#" + ContextManager.Instance.CurrentInstruction.Order
+                              + "#" + actionB.Operation
+                              + "#" + actionB.Components[0]
+                              + "#" + actionB.Components[1];
 
-                if (actionA.Components[0] != actionB.Components[0] ||
-                    actionA.Components[1] != actionB.Components[1]) return Constants.InvalidActions;
+                    if (ContextManager.Instance.CompletedActions.Contains(key)) continue;
+
+                    if (actionA.Operation != actionB.Operation) return Constants.InvalidActions;
+
+                    if (actionA.Components[0] != actionB.Components[0] ||
+                        actionA.Components[1] != actionB.Components[1]) return Constants.InvalidActions;
+
+                    ContextManager.Instance.CompletedActions.Add(ContextManager.Instance.CurrentTask.TaskId
+                                                                 + "#" + ContextManager.Instance.CurrentSubtask.SubtaskId
+                                                                 + "#" + ContextManager.Instance.CurrentInstruction.Order
+                                                                 + "#" + actionB.Operation
+                                                                 + "#" + actionB.Components[0]
+                                                                 + "#" + actionB.Components[1]);
+                    break;
+                }
+            }
+
+            for (var i = 0; i < a.Count; i++)
+            {
+                ContextManager.Instance.CompletedActions.Add(ContextManager.Instance.CurrentTask.TaskId
+                                                             + "#" + ContextManager.Instance.CurrentSubtask.SubtaskId
+                                                             + "#" + ContextManager.Instance.CurrentInstruction.Order
+                                                             + "#" + a[i].Operation
+                                                             + "#" + a[i].Components[0]
+                                                             + "#" + a[i].Components[1]);
             }
 
             return Constants.ValidActions;
@@ -462,6 +492,7 @@ namespace Catalogs
             Debug.Log("Attach: " + args);
             var argsList = args.Split(Constants.ArgsSeparator);
             var valid = ContextManager.Instance.GetAttribute<string>(argsList[0]) == Constants.ValidActions;
+            Debug.Log("Validity: " + valid);
 
             if (!valid) return;
 
@@ -474,6 +505,7 @@ namespace Catalogs
                 {
                     primitives.Add(PrimitiveManager.SimplePrimitive(() =>
                     {
+                        ContextManager.Instance.Prev = null;
                         UIManager.UpdateReply("Attaching " + action.Components[0] + " from " + action.Components[1]);
                     }));
                     primitives.AddRange(GetAttachPrimitives(action.Components[0], action.Components[1]));
@@ -488,6 +520,7 @@ namespace Catalogs
             Debug.Log("Detach: " + args);
             var argsList = args.Split(Constants.ArgsSeparator);
             var valid = ContextManager.Instance.GetAttribute<string>(argsList[0]) == Constants.ValidActions;
+            Debug.Log("Validity: " + valid);
 
             if (!valid) return;
 
@@ -500,6 +533,7 @@ namespace Catalogs
                 {
                     primitives.Add(PrimitiveManager.SimplePrimitive(() =>
                     {
+                        ContextManager.Instance.Prev = null;
                         UIManager.UpdateReply("Detaching " + action.Components[0] + " from " + action.Components[1]);
                     }));
                     primitives.AddRange(GetDetachPrimitives(action.Components[0], action.Components[1]));

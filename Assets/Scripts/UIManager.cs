@@ -361,7 +361,7 @@ public class UIManager : Singleton<UIManager>
                 break;
             case UIOptionType.Query:
                 query = data[0] as Query;
-                ContextManager.Instance.SetCurrentQuery(query);
+                ContextManager.Instance.SetCurrentQuery(query, true);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
