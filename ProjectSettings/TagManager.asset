@@ -8,7 +8,6 @@ TagManager:
   - KnowledgeTaskUI
   - KnowledgeSubtaskUI
   - KnowledgeInstructionUI
-  - KnowledgeUI
   - HomeButton
   - KnowledgeContent
   - QueriesContent
@@ -27,8 +26,9 @@ TagManager:
   - ResetButton
   - QueryPlayButton
   - FigureFocusVirtualCamera
-  - BasicOperationsUI
   - ObjectFocusVirtualCamera
+  - CloneObject
+  - Grid
   layers:
   - Default
   - TransparentFX

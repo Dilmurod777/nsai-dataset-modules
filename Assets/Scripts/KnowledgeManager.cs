@@ -6,8 +6,6 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using Catalogs;
-using Cinemachine;
-using UnityEngine.Serialization;
 
 public class KnowledgeManager : Singleton<KnowledgeManager>
 {
@@ -16,7 +14,6 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 	public List<Task> Tasks = new List<Task>();
 	public List<Query> Queries = new List<Query>();
 
-	[FormerlySerializedAs("isExecutingSubtask")] [HideInInspector]
 	public bool isExecuting;
 
 	public void ReadKnowledgeAndSetUp()
@@ -36,7 +33,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 		if (Queries.Count > 0) return;
 
 		Queries = new List<Query>();
-		var directoryInfo = new DirectoryInfo("Assets/Resources/Queries");
+		var directoryInfo = new DirectoryInfo("Assets/Resources/" + Constants.QueriesDirectory);
 		var files = directoryInfo.GetFiles();
 
 		foreach (var file in files)
@@ -44,7 +41,7 @@ public class KnowledgeManager : Singleton<KnowledgeManager>
 			if (!file.Name.EndsWith(".json")) continue;
 
 			var basename = file.Name.Split('.')[0];
-			var jsonContent = Resources.Load<TextAsset>("Queries/" + basename);
+			var jsonContent = Resources.Load<TextAsset>(Constants.QueriesDirectory + "/" + basename);
 			var queryData = JSON.Parse(jsonContent.ToString());
 
 			var programs = new List<string>();

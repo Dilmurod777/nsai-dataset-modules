@@ -1,23 +1,19 @@
 {
-  "query": "uninstall 15 from 1",
-  "programs": [
-    "ExtractNumbers Query",
-    "CreateActions detach Yes prev",
-    "SaveVal2Var prev var1",
-    "FilterType tasks root",
-    "FilterAttr task_id current_task_id prev",
-    "FilterType subtasks prev",
-    "FilterAttr subtask_id current_subtask_id prev",
-    "FilterType instructions prev",
-    "FilterAttr order current_instruction_order prev",
-    "FilterType actions prev",
-    "CheckActionsValidity var1 prev",
-    "Detach prev var1"
-  ],
-  "context": {
-    "current_task_id": "32-45-11-000-801",
-    "current_subtask_id": "32-45-11-020-002",
-    "current_instruction_order": "3"
-  },
-  "reply": "Performing the following actions \ndetach 15 from 1"
+    "query": "show the subtask_id of this subtask",
+    "programs":
+    [
+        "FilterType tasks root",
+        "FilterAttr task_id current_task_id prev",
+        "FilterType subtasks prev",
+        "FilterAttr subtask_id current_subtask_id prev",
+        "Unique prev",
+        "QueryAttr subtask_id prev"
+    ],
+    "context":
+    {
+        "current_task_id": "32-11-61-000-802",
+        "current_subtask_id": "32-11-61-020-007",
+        "current_instruction_order": "2"
+    },
+    "reply": "32-11-61-020-007"
 }

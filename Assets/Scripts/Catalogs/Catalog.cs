@@ -5,7 +5,6 @@ using Action = Instances.Action;
 
 namespace Catalogs
 {
-	// public class Catalog : IGeneralCatalogInterface, IActionsCatalog3DInterface, IKnowledgeCatalogInterface
 	public class Catalog : IGeneralCatalogInterface, IKnowledgeCatalogInterface, IActionsCatalog3DInterface
 	{
 		private static Catalog _instance;
@@ -142,9 +141,14 @@ namespace Catalogs
 			return _knowledgeCatalog.QueryAttr(args);
 		}
 
-		public string ShowInfo(List<JSONNode> dataObjects)
+		public void ShowInfo(string args)
 		{
-			return _knowledgeCatalog.ShowInfo(dataObjects);
+			_knowledgeCatalog.ShowInfo(args);
+		}
+
+		public void NotUnderstood(string args)
+		{
+			_generalCatalog.NotUnderstood(args);
 		}
 	}
 }

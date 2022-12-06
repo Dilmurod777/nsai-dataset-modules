@@ -17,6 +17,7 @@ namespace Catalogs
 		List<string> ExtractNumbers(string args);
 		List<string> ExtractID(string args);
 		string Same(string args);
+		void NotUnderstood(string args);
 	}
 
 	public class GeneralCatalog : IGeneralCatalogInterface
@@ -32,10 +33,12 @@ namespace Catalogs
 			{
 				case "var1":
 				case "var_1":
+				case "val_1":
 					ContextManager.Instance.Var1 = source;
 					break;
 				case "var2":
 				case "var_2":
+				case "val_2":
 					ContextManager.Instance.Var2 = source;
 					break;
 			}
@@ -158,6 +161,11 @@ namespace Catalogs
 			var var2 = ContextManager.Instance.GetAttribute<string>(argsList[1]);
 
 			return var1;
+		}
+		
+		public void NotUnderstood(string args)
+		{
+			UIManager.UpdateReply("Not Understood");
 		}
 	}
 }
