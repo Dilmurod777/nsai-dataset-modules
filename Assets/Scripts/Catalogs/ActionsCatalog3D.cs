@@ -485,7 +485,7 @@ namespace Catalogs
 			if (attachingObj.transform.childCount > 0)
 			{
 				primitives.Add(CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj.transform.GetChild(0).gameObject));
-				primitives.Add(PrimitiveManager.DelayPrimitive(0.5f));
+				primitives.Add(PrimitiveManager.DelayPrimitive(2.5f));
 				primitives.Add(PrimitiveManager.Instance.GetDetachPrimitivesForChildren(attachingObj, referenceObj));
 			}
 			else

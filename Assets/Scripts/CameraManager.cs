@@ -101,7 +101,7 @@ public class CameraManager : Singleton<CameraManager>
 	public IEnumerator GetCameraCloser(float finalFov = 25.0f)
 	{
 		var initialMinFov = _virtualCamera.GetComponent<CinemachineFollowZoom>().m_MinFOV;
-		const float duration = 2.0f;
+		const float duration = 5.0f;
 
 		var delta = 0.0f;
 		while (delta < duration)

@@ -232,10 +232,10 @@ public class PrimitiveManager : Singleton<PrimitiveManager>
 		yield return SimplePrimitive(() => { UIManager.UpdateReply(text); });
 
 		yield return CameraManager.Instance.UpdateVirtualCameraTargetCoroutine(attachingObj);
-		yield return DelayPrimitive(0.5f);
+		yield return DelayPrimitive(2.5f);
 
 		yield return Instance.ChangeObjectMaterialToInProgressCoroutine(attachingObj);
-		yield return DelayPrimitive(2f);
+		yield return DelayPrimitive(2.5f);
 
 		var rotationAxis = objectMeta.attachRotationAxis;
 
