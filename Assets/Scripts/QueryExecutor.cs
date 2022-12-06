@@ -103,6 +103,11 @@ public class QueryExecutor : Singleton<QueryExecutor>
             }
         }
 
+        if (ContextManager.Instance.Prev != null)
+        {
+            UIManager.UpdateReply(ContextManager.Instance.Prev.ToString());
+        }
+
         UIManager.Instance.UpdateUI();
     }
 

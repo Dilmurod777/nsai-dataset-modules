@@ -1,0 +1,36 @@
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [13] COTTER PIN
+Initial position: (-0.7, 1.0, 0.8)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (-0.6, 1.0, 0.7)
+Practical final position: (-0.6, 1.0, 0.7)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [13] COTTER PIN
+Initial position: (-0.7, 1.0, 0.8)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (-0.6, 1.0, 0.7)
+Practical final position: (-0.6, 1.0, 0.7)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [13] COTTER PIN
+Initial position: (-0.7, 1.0, 0.8)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (-0.6, 1.0, 0.7)
+Practical final position: (-0.6, 1.0, 0.7)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [13] COTTER PIN
+Initial position: (-0.7, 1.0, 0.8)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (-0.6, 1.0, 0.7)
+Practical final position: (-0.6, 1.0, 0.7)
+Practical final rotation: (37.5, 26.0, 0.0)

@@ -43,6 +43,7 @@ namespace UIElements
                     _buttonComponent.onClick.RemoveAllListeners();
                     _buttonComponent.onClick.AddListener(() =>
                     {
+                        ContextManager.Instance.CompletedActions.Clear();
                         AssetManager.Instance.ResetFigures();
                         KnowledgeManager.Instance.ResetTasks();
                         SceneManager.Instance.LoadScene(SceneManager.MenuSceneNameGlobal);

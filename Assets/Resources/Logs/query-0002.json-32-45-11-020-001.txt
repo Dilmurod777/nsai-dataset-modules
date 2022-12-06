@@ -1,0 +1,6 @@
+---------------------------------------------
+Primitive: Move
+Object name: [4] CAM-LOC
+Initial position: (0.4, -1.6, -0.6)
+Theoretical final position: (0.8, -1.6, -0.8)
+Practical final position: (0.8, -1.6, -0.8)

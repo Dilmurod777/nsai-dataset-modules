@@ -16,6 +16,7 @@ public class ContextManager : Singleton<ContextManager>
     public object Prev;
     public object Var1;
     public object Var2;
+    public SortedSet<string> CompletedActions = new SortedSet<string>();
 
     public T GetAttribute<T>(string attributeName)
     {
@@ -229,12 +230,15 @@ public class ContextManager : Singleton<ContextManager>
         }
     }
 
-    public void SetCurrentQuery(Query query)
+    public void SetCurrentQuery(Query query, bool updateOthers = false)
     {
         CurrentQuery = query;
-        SetCurrentTask(query.TaskId);
-        SetCurrentSubtask(query.SubtaskId);
-        SetCurrentInstruction(query.InstructionOrder);
+        if (updateOthers)
+        {
+            SetCurrentTask(query.TaskId);
+            SetCurrentSubtask(query.SubtaskId);
+            SetCurrentInstruction(query.InstructionOrder);
+        }
     }
 
     public void ResetCurrentTask()
