@@ -22,7 +22,7 @@ public class UIManager : Singleton<UIManager>
     public void SetUpMenus()
     {
         SetUpKnowledgeOptions(KnowledgeManager.Instance.Tasks);
-        SetUpQueryOptions(KnowledgeManager.Instance.Queries);
+        // SetUpQueryOptions(KnowledgeManager.Instance.Queries);
     }
 
     public void UpdateUI()

@@ -55,3 +55,321 @@ Object name: [21] SIDE STRUT WASHER
 Initial position: (-2.1, 2.3, 2.1)
 Theoretical final position: (-2.1, 2.3, 2.0)
 Practical final position: (-2.1, 2.3, 2.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [3] UPPER SIDE STRUT
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [3] UPPER SIDE STRUT
+Initial position: (-2.4, 1.8, 2.1)
+Theoretical final position: (-2.1, 1.9, 1.8)
+Practical final position: (-2.1, 1.9, 1.8)
+---------------------------------------------
+Primitive: Move
+Object name: [3] UPPER SIDE STRUT
+Initial position: (-2.1, 1.9, 1.8)
+Theoretical final position: (-2.2, 2.3, 1.8)
+Practical final position: (-2.2, 2.3, 1.8)
+---------------------------------------------
+Primitive: Rotate
+Object name: [22] SIDE STRUT PIN
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [22] SIDE STRUT PIN
+Initial position: (-2.6, 1.8, 1.6)
+Theoretical final position: (-2.5, 2.3, 1.3)
+Practical final position: (-2.5, 2.3, 1.3)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [22] SIDE STRUT PIN
+Initial position: (-2.5, 2.3, 1.3)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-2.2, 2.3, 1.8)
+Practical final position: (-2.2, 2.3, 1.8)
+Practical final rotation: (37.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [21] SIDE STRUT WASHER
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [21] SIDE STRUT WASHER
+Initial position: (-2.5, 1.8, 1.9)
+Theoretical final position: (-2.1, 2.3, 2.1)
+Practical final position: (-2.1, 2.3, 2.1)
+---------------------------------------------
+Primitive: Move
+Object name: [21] SIDE STRUT WASHER
+Initial position: (-2.1, 2.3, 2.1)
+Theoretical final position: (-2.1, 2.3, 2.0)
+Practical final position: (-2.1, 2.3, 2.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [20] SIDE STRUT NUT
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [20] SIDE STRUT NUT
+Initial position: (-2.5, 1.8, 1.9)
+Theoretical final position: (-2.0, 2.3, 2.1)
+Practical final position: (-2.0, 2.3, 2.1)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [20] SIDE STRUT NUT
+Initial position: (-2.0, 2.3, 2.1)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-2.1, 2.3, 2.0)
+Practical final position: (-2.1, 2.3, 2.0)
+Practical final rotation: (37.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [16] CROSSBOLT
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [16] CROSSBOLT
+Initial position: (-2.7, 1.8, 1.9)
+Theoretical final position: (-2.3, 2.3, 2.1)
+Practical final position: (-2.3, 2.3, 2.1)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [16] CROSSBOLT
+Initial position: (-2.3, 2.3, 2.1)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (-2.1, 2.3, 2.0)
+Practical final position: (-2.1, 2.3, 2.0)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [17] WASHER
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [17] WASHER
+Initial position: (-2.6, 1.8, 1.8)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+---------------------------------------------
+Primitive: Move
+Object name: [17] WASHER
+Initial position: (-2.0, 2.3, 2.0)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [18] NUT
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [18] NUT
+Initial position: (-2.6, 1.8, 1.8)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [18] NUT
+Initial position: (-2.0, 2.3, 2.0)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [19] COTTER PIN
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [19] COTTER PIN
+Initial position: (-2.6, 1.8, 1.9)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [19] COTTER PIN
+Initial position: (-2.0, 2.3, 2.0)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+Practical final rotation: (37.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [3] UPPER SIDE STRUT
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [3] UPPER SIDE STRUT
+Initial position: (-2.4, 1.8, 2.1)
+Theoretical final position: (-2.1, 1.9, 1.8)
+Practical final position: (-2.1, 1.9, 1.8)
+---------------------------------------------
+Primitive: Move
+Object name: [3] UPPER SIDE STRUT
+Initial position: (-2.1, 1.9, 1.8)
+Theoretical final position: (-2.2, 2.3, 1.8)
+Practical final position: (-2.2, 2.3, 1.8)
+---------------------------------------------
+Primitive: Rotate
+Object name: [22] SIDE STRUT PIN
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [22] SIDE STRUT PIN
+Initial position: (-2.6, 1.8, 1.6)
+Theoretical final position: (-2.5, 2.3, 1.3)
+Practical final position: (-2.5, 2.3, 1.3)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [22] SIDE STRUT PIN
+Initial position: (-2.5, 2.3, 1.3)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-2.2, 2.3, 1.8)
+Practical final position: (-2.2, 2.3, 1.8)
+Practical final rotation: (37.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [21] SIDE STRUT WASHER
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [21] SIDE STRUT WASHER
+Initial position: (-2.5, 1.8, 1.9)
+Theoretical final position: (-2.1, 2.3, 2.1)
+Practical final position: (-2.1, 2.3, 2.1)
+---------------------------------------------
+Primitive: Move
+Object name: [21] SIDE STRUT WASHER
+Initial position: (-2.1, 2.3, 2.1)
+Theoretical final position: (-2.1, 2.3, 2.0)
+Practical final position: (-2.1, 2.3, 2.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [20] SIDE STRUT NUT
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [20] SIDE STRUT NUT
+Initial position: (-2.5, 1.8, 1.9)
+Theoretical final position: (-2.0, 2.3, 2.1)
+Practical final position: (-2.0, 2.3, 2.1)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [20] SIDE STRUT NUT
+Initial position: (-2.0, 2.3, 2.1)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-2.1, 2.3, 2.0)
+Practical final position: (-2.1, 2.3, 2.0)
+Practical final rotation: (37.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [16] CROSSBOLT
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [16] CROSSBOLT
+Initial position: (-2.7, 1.8, 1.9)
+Theoretical final position: (-2.3, 2.3, 2.1)
+Practical final position: (-2.3, 2.3, 2.1)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [16] CROSSBOLT
+Initial position: (-2.3, 2.3, 2.1)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (-2.1, 2.3, 2.0)
+Practical final position: (-2.1, 2.3, 2.0)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [17] WASHER
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [17] WASHER
+Initial position: (-2.6, 1.8, 1.8)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+---------------------------------------------
+Primitive: Move
+Object name: [17] WASHER
+Initial position: (-2.0, 2.3, 2.0)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [18] NUT
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [18] NUT
+Initial position: (-2.6, 1.8, 1.8)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [18] NUT
+Initial position: (-2.0, 2.3, 2.0)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: Rotate
+Object name: [19] COTTER PIN
+Initial rotation: (-0.7, 0.2, 0.2, 0.7)
+Theoretical final rotation: (270.0, 26.0, 0.0)
+Practical final rotation: (270.0, 26.0, 0.0)
+---------------------------------------------
+Primitive: Move
+Object name: [19] COTTER PIN
+Initial position: (-2.6, 1.8, 1.9)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [19] COTTER PIN
+Initial position: (-2.0, 2.3, 2.0)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-2.0, 2.3, 2.0)
+Practical final position: (-2.0, 2.3, 2.0)
+Practical final rotation: (37.5, 116.0, 270.0)

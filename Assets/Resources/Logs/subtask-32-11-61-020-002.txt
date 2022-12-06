@@ -58,3 +58,69 @@ Rotation axis: (1.0, 0.0, 0.0)
 Theoretical final position: (-0.9, 1.4, 0.9)
 Practical final position: (-0.9, 1.4, 0.9)
 Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [6] PIN
+Initial position: (-1.0, 1.4, 1.0)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (-0.9, 1.4, 0.9)
+Practical final position: (-0.9, 1.4, 0.9)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [5] NUT
+Initial position: (-1.0, 1.4, 1.0)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-1.1, 1.4, 0.9)
+Practical final position: (-1.1, 1.4, 0.9)
+Practical final rotation: (37.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: Move
+Object name: [4] WASHER
+Initial position: (-1.0, 1.4, 1.0)
+Theoretical final position: (-1.1, 1.4, 0.9)
+Practical final position: (-1.1, 1.4, 0.9)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [2] DOWN LOCK LINK PIN
+Initial position: (-0.9, 1.4, 1.1)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-0.7, 1.4, 1.6)
+Practical final position: (-0.7, 1.4, 1.6)
+Practical final rotation: (37.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [6] PIN
+Initial position: (-1.0, 1.4, 1.0)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (1.0, 0.0, 0.0)
+Theoretical final position: (-0.9, 1.4, 0.9)
+Practical final position: (-0.9, 1.4, 0.9)
+Practical final rotation: (37.5, 26.0, 0.0)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [5] NUT
+Initial position: (-1.0, 1.4, 1.0)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-1.1, 1.4, 0.9)
+Practical final position: (-1.1, 1.4, 0.9)
+Practical final rotation: (37.5, 116.0, 270.0)
+---------------------------------------------
+Primitive: Move
+Object name: [4] WASHER
+Initial position: (-1.0, 1.4, 1.0)
+Theoretical final position: (-1.1, 1.4, 0.9)
+Practical final position: (-1.1, 1.4, 0.9)
+---------------------------------------------
+Primitive: MoveWithRotation
+Object name: [2] DOWN LOCK LINK PIN
+Initial position: (-0.9, 1.4, 1.1)
+Initial rotation: (270.0, 26.0, 0.0)
+Rotation axis: (0.0, 1.0, 0.0)
+Theoretical final position: (-0.7, 1.4, 1.6)
+Practical final position: (-0.7, 1.4, 1.6)
+Practical final rotation: (37.5, 116.0, 270.0)
